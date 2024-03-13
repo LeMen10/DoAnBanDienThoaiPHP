@@ -75,7 +75,7 @@ class ProductModel extends connect {
             if(strstr($brand, " ")) {
                 $arrayValueBrand = explode(" ", $brand);
 
-                $query_brand = "JOIN category c ON p.`category` = c.`id` 
+                $query_brand = "LEFT JOIN category c ON p.`category` = c.`id` 
                                 WHERE ( c.`name` = '".$arrayValueBrand[0] ."'" ;
 
                 // thêm điều kiện để thấy giá trị theo từng value
@@ -84,7 +84,7 @@ class ProductModel extends connect {
                 }
                 $query_brand .= ")";
             } else {
-                $query_brand = $brand != "" ? "JOIN category c ON p.`category` = c.`id` WHERE c.`name` = '".$brand ."'" : "";
+                $query_brand = $brand != "" ? "LEFT JOIN category c ON p.`category` = c.`id` WHERE c.`name` = '".$brand ."'" : "";
             }
             $query_weight = $weight != "" ? str_replace("WHERE", "AND", $weight) : "";
         } else {
@@ -93,9 +93,9 @@ class ProductModel extends connect {
         }
 
         $sql = "SELECT * FROM `phone` p 
-                JOIN image i ON p.`id` = i.`phoneID` 
-                JOIN variant v ON p.`id` = v.`phoneID` 
-                JOIN spec s ON p.`id` = s.`phoneID`
+                LEFT JOIN image i ON p.`id` = i.`phoneID` 
+                LEFT JOIN variant v ON p.`id` = v.`phoneID` 
+                LEFT JOIN spec s ON p.`id` = s.`phoneID`
                 ". $query_brand ."
                 ".$query_weight."
                 GROUP BY p.`id`";
@@ -115,7 +115,7 @@ class ProductModel extends connect {
             if(strstr($brand, " ")) {
                 $arrayValueBrand = explode(" ", $brand);
 
-                $query_brand = "JOIN category c ON p.`category` = c.`id` 
+                $query_brand = "LEFT JOIN category c ON p.`category` = c.`id` 
                                 WHERE ( c.`name` = '".$arrayValueBrand[0] ."'" ;
 
                 // thêm điều kiện để thấy giá trị theo từng value
@@ -124,7 +124,7 @@ class ProductModel extends connect {
                 }
                 $query_brand .= ")";
             } else {
-                $query_brand = $brand != "" ? "JOIN category c ON p.`category` = c.`id` WHERE c.`name` = '".$brand ."'" : "";
+                $query_brand = $brand != "" ? "LEFT JOIN category c ON p.`category` = c.`id` WHERE c.`name` = '".$brand ."'" : "";
             }
             $query_weight = $weight != "" ? str_replace("WHERE", "AND", $weight) : " ";
         } else {
@@ -135,9 +135,9 @@ class ProductModel extends connect {
         $begin = ($page * 6) - 6;
 
         $sql = "SELECT p.`id` as PhoneId, p.`name` as PhoneName, i.`image` as PhoneImage, v.`price` as PhonePrice FROM `phone` p 
-                JOIN image i ON p.`id` = i.`phoneID` 
-                JOIN variant v ON p.`id` = v.`phoneID` 
-                JOIN spec s ON p.`id` = s.`phoneID`
+                LEFT JOIN image i ON p.`id` = i.`phoneID` 
+                LEFT JOIN variant v ON p.`id` = v.`phoneID` 
+                LEFT JOIN spec s ON p.`id` = s.`phoneID`
                 ". $query_brand ."
                 ".$query_weight."
                 GROUP BY p.`id` 
@@ -164,13 +164,22 @@ class ProductModel extends connect {
     }
 
     public function getPhoneWeightByWeightAndCountByPhoneID($query_weight){
-        $sql = "SELECT s.bodyWeight AS bodyWeight, COUNT(p.id) as count FROM spec s, phone p ". $query_weight ." AND s.phoneID = p.id GROUP BY s.bodyWeight";
-        
+        $sql = "
+            SELECT SUM(count) AS total_count
+            FROM (
+                SELECT s.bodyWeight AS bodyWeight, COUNT(p.id) AS count
+                FROM spec s
+                JOIN phone p ON s.phoneID = p.id
+                ". $query_weight ."
+                GROUP BY s.bodyWeight
+            ) AS weight_counts;
+        ";
+
         $result = mysqli_query($this->con, $sql);
-        $rows = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $rows[] = $row;
+        if (!$result) {
+            die("Query error: " . mysqli_error($this->con));
         }
-        return $rows;
+        $row = mysqli_fetch_assoc($result);
+        return $row['total_count'] ?? 0; 
     }
 }

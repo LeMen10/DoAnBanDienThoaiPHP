@@ -11,7 +11,12 @@ class trash_product extends Controller
     }
     public function index()
     {
-        return $this->view('main_admin_layout', ['page' => 'trash_product']);
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $trash_products_per_page = $this->product_model->getTrashProductPerPage($page);
+
+        $all_trash_products = $this->product_model->getAllTrashProduct();
+        $quantity = count($all_trash_products);
+        return $this->view('main_admin_layout', ['page' => 'trash_product', 'quantity' => $quantity, 'trash_products_per_page' => $trash_products_per_page]);
     }
     public function restore_product()
     {
