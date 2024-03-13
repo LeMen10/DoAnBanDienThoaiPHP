@@ -1,34 +1,9 @@
 <?php
-    require_once('/Code/Web/DoAnBanDienThoai/src/app/database/connect.php');
-    require_once('/Code/Web/DoAnBanDienThoai/src/app/models/ProductModel.php');
+    // require_once('/Code/Web/DoAnBanDienThoai/src/app/database/connect.php');
+    // require_once('/Code/Web/DoAnBanDienThoai/src/app/models/ProductModel.php');
     
-    // Hàm thêm tham số vào URL nếu chưa tồn tại
-    function addOrUpdateQueryParam($url, $paramName, $paramValue) {
-        $urlParts = parse_url($url);
-        parse_str($urlParts['query'], $queryParams);
-    
-        // Kiểm tra xem tham số đã tồn tại trong URL chưa
-        if (array_key_exists($paramName, $queryParams)) {
-            // Nếu đã tồn tại, cập nhật giá trị của tham số
-            $queryParams[$paramName] = $paramValue;
-        } else {
-            // Nếu chưa tồn tại, thêm tham số vào URL
-            $queryParams[$paramName] = $paramValue;
-        }
-    
-        // Xây dựng lại query string và trả về URL mới
-        $newQueryString = http_build_query($queryParams);
-        return $urlParts['path'] . '?' . $newQueryString;
-    }
-    
-    // Hàm xóa tham số khỏi URL
-    function removeQueryParam($url, $paramName) {
-        $urlParts = parse_url($url);
-        parse_str($urlParts['query'], $queryParams);
-        unset($queryParams[$paramName]);
-        $newQueryString = http_build_query($queryParams);
-        return $urlParts['path'] . '?' . $newQueryString;
-    }
+    require_once('/Code/Web/DoAnBanDienThoaiPHP/src/app/includes/addOrUpdateQueryParam.php');
+    require_once('/Code/Web/DoAnBanDienThoaiPHP/src/app/includes/formatMoney.php');
 
     $query_sort_option = [
         "default" => "",
@@ -95,34 +70,12 @@
                     <div class="product-select-box">
                         <div class="product-short">
                             <p>Sort By:</p>
-                            <select class="nice-select" id="sortDropdown">
+                            <select class="nice-select" id="sortDropdown" onchange="changeSortDropDown(event)">
                                 <option <?php if($sort == "default") echo "selected" ?>  value="default">Default</option>
                                 <option <?php if($sort == "name_asc") echo "selected" ?>  value="name_asc">Name (A - Z)</option>
                                 <option <?php if($sort == "name_desc") echo "selected" ?>  value="name_desc">Name (Z - A)</option>
                                 <option <?php if($sort == "price_asc") echo "selected" ?>  value="price_asc">Price (Low &gt; High)</option>
                                 <option <?php if($sort == "price_desc") echo "selected" ?>  value="price_desc">Price (High &gt; Low)</option>
-
-                                <script>
-                                    document.getElementById("sortDropdown").addEventListener("change", function() {
-                                        const selectedOption = this.options[this.selectedIndex].value;
-                                        const currentUrl = window.location.href;
-                                        if(currentUrl.includes("&sort")) {
-                                            const arrCurUrl = currentUrl.split("&");
-                                            const newArrCurUrl = arrCurUrl.map((value) => {
-                                                if(value.includes("sort=")) {
-                                                    const newValue = "sort=" + selectedOption;
-                                                    return newValue;
-                                                }
-                                                return value;
-                                            }).join("&");
-
-                                            window.location.href = newArrCurUrl;
-                                        } 
-                                        else {
-                                            window.location.href = currentUrl + "&sort=" + selectedOption;
-                                        }
-                                    });
-                                </script>
                             </select>
                         </div>
                     </div>
@@ -133,26 +86,6 @@
                             <div class="product-area shop-product-area">
                                 <div class="row">
                                     <?php  
-                                        function format_money($price) {
-                                            $new_price = "";
-                                            $length = strlen($price);
-                                            // Duyệt từ dưới lên trên
-                                            $count = 1;
-                                            for ($i = $length - 1; $i >= 0; $i--) {
-                                                if($count == 3) {
-                                                    $new_price = "." . $price[$i] . $new_price;
-                                                    $count = 1;
-                                                } else {
-                                                    // Thêm số hiện tại vào $new_price
-                                                    $new_price = $price[$i] . $new_price;
-                                                    $count++;
-                                                }
-                                            }
-                                            // xóa dấu . ở đầu câu và cuối câu
-                                            $new_price = trim($new_price, '.');
-                                            return $new_price;
-                                        }
-                                        
                                         if (count($result_6_phones) > 0) {
                                             for ($i = 0; $i < count($result_6_phones); $i++) {
                                                 echo " <div class='col-lg-4 col-md-4 col-sm-6 mt-40'> ";
@@ -164,20 +97,6 @@
                                                 echo " </div> ";
                                                 echo " <div class='product_desc'> ";
                                                 echo " <div class='product_desc_info'> ";
-                                                // echo " <div class='product-review'> ";
-                                                // echo " <h5 class='manufacturer'> ";
-                                                // echo " <a href='shop-left-sidebar.html'>Graphic Corner</a> ";
-                                                // echo " </h5> ";
-                                                // echo " <div class='rating-box'> ";
-                                                // echo " <ul class='rating'> ";
-                                                // echo " <li><i class='fa-regular fa-star'></i></i></li> ";
-                                                // echo " <li><i class='fa-regular fa-star'></i></i></li> ";
-                                                // echo " <li><i class='fa-regular fa-star'></i></i></li> ";
-                                                // echo " <li><i class='fa-regular fa-star'></i></i></li> ";
-                                                // echo " <li class='no-star'><i class='fa-regular fa-star'></i></i></li> ";
-                                                // echo " </ul> ";
-                                                // echo " </div> ";
-                                                // echo " </div> ";
                                                 echo " <h4><a class='product_name' href='single-product.html'>".$result_6_phones[$i]["PhoneName"]."</a></h4>";
                                                 echo " <div class='price-box'> ";
                                                 echo " <span class='new-price'>".format_money($result_6_phones[$i]["PhonePrice"])." VNĐ</span> ";
@@ -188,7 +107,7 @@
                                                 echo " </div> ";
                                             }
                                         } else {
-                                            echo "<h1 class='w-100 text-center'>0 results</h1>";
+                                            echo "<p class='w-100 h3 font-weight-normal text-center mt-40'>0 có sản phẩm tương ứng</p>";
                                         }
                                     ?>
                                     
@@ -233,11 +152,6 @@
                                     echo '<li><a href="'. addOrUpdateQueryParam($updatePageInUrl, "brand", $result_all_categories[$i]['name']) .'">'.$result_all_categories[$i]['name'].'</a></li>';
                                 };
                             ?>
-                            
-                            <!-- <li><a href="# ">Devita</a></li>
-                            <li><a href="# ">Cameras</a></li>
-                            <li><a href="# ">Sony</a></li>
-                            <li><a href="# ">Computer</a></li> -->
                         </ul>
                     </div>
                 </div>
@@ -246,21 +160,6 @@
                         <h2>Filter By</h2>
                     </div>
                     <button class="btn-clear-all mb-sm-30 mb-xs-30"><a href="/src/index.php?ctrl=shop" class="black">Clear all</a></button>
-                    <!-- <div class="filter-sub-area">
-                        <h5 class="filter-sub-titel">Brand</h5>
-                        <div class="categori-checkbox">
-                            <form action="#">
-                                <ul>
-                                    <li><input type="checkbox" name="product-categori"><a href="#">Prime Video (13)</a>
-                                    </li>
-                                    <li><input type="checkbox" name="product-categori"><a href="#">Computers (12)</a>
-                                    </li>
-                                    <li><input type="checkbox" name="product-categori"><a href="#">Electronics (11)</a>
-                                    </li>
-                                </ul>
-                            </form>
-                        </div>
-                    </div> -->
                     <div class="filter-sub-area pt-sm-10 pt-xs-10">
                         <h5 class="filter-sub-titel">Categories</h5>
                         <div class="categori-checkbox">
@@ -268,115 +167,15 @@
                                 <ul>
                                 <?php 
                                     for ($i = 0; $i < count($result_all_categories); $i++) {
-                                        $updatePageInUrl =  addOrUpdateQueryParam($currentUrl, "page", 1);
+                                        $updateCategoriesInUrl =  addOrUpdateQueryParam($currentUrl, "page", 1);
                                         $isChecked = (strlen(strstr($brand, $result_all_categories[$i]['name']))) ? 'checked' : '';
-                                        echo '<li><input url="'. $updatePageInUrl .'" ' . $isChecked . ' class="checkbox-categories" type="checkbox" name="' . $result_all_categories[$i]['name'] . '"><a class="a-categories" href="#">' . $result_all_categories[$i]['name'] . ' (' . $result_all_categories[$i]['count'] . ')</a></li>';
+                                        echo '<li><input url="'. $updateCategoriesInUrl .'" ' . $isChecked . ' class="checkbox-categories" type="checkbox" name="' . $result_all_categories[$i]['name'] . '"><a class="a-disabled" href="#">' . $result_all_categories[$i]['name'] . ' (' . $result_all_categories[$i]['count'] . ')</a></li>';
                                     }
                                 ?>
-
-                                    <script>
-                                        const allALinkCategories = document.querySelectorAll(".a-categories");
-                                        for (let i = 0;i< allALinkCategories.length; i++) {
-                                            allALinkCategories[i].addEventListener("click" , (e) => {
-                                                e.preventDefault();
-                                            })
-                                        }
-                                        const allInputCheckboxCategories = document.querySelectorAll(".checkbox-categories");
-                                        for (let i = 0;i< allInputCheckboxCategories.length; i++) {
-                                            allInputCheckboxCategories[i].addEventListener("change" , (e) => {
-                                                const currentUrl = e.target.getAttribute("url");
-                                                const selectedOption = e.target.getAttribute("name");
-                                                
-                                                // nếu check vào brand đó
-                                                if(e.target.checked) {
-                                                    // nếu trên url đã có param brand thì thêm vô
-                                                    if(currentUrl.includes("&brand")) {
-                                                        // cắt để lấy ra param filet đó theo dấu &
-                                                        const arrCurUrl = currentUrl.split("&");
-                                                        const newArrCurUrl = arrCurUrl.map((value) => {
-                                                            // lấy cái param brand ra thêm
-                                                            if(value.includes("brand=") && !value.includes(selectedOption)) {
-                                                                // thêm các giá trị cần brand vô
-                                                                const newValue = value + "+" + selectedOption;
-                                                                return newValue;
-                                                            }
-                                                            return value;
-                                                        }).join("&");
-
-                                                        window.location.href = newArrCurUrl;
-                                                    } 
-                                                    else {
-                                                        // nếu trên url ko có param brand thì thêm
-                                                        window.location.href = currentUrl + "&brand=" + selectedOption;
-                                                    }
-
-                                                } else {
-                                                    // nếu uncheck vào brand đó
-                                                    if(currentUrl.includes("&brand")) {
-                                                        const arrCurUrl = currentUrl.split("&");
-                                                        const newArrCurUrl = arrCurUrl.map((value) => {
-                                                            // ktra và lấy param ra để xóa
-                                                            if(value.includes("brand=") && value.includes(selectedOption)) {
-                                                                const arrValue = value.split("=")[1];
-
-                                                                // nếu có nhiều value trong param đó thì tìm và xóa cái uncheck
-                                                                if(value.includes("+")) {
-                                                                    const arrayValueAfterRemoveEqual = arrValue.split("+");
-                                                                    const removeValue = arrayValueAfterRemoveEqual.map(v => v === selectedOption ? "" : v).join("+");
-                                                                    // vì khi xóa hoặc thêm value trong param sẽ dư ra 1 dấu + ở cuối.
-                                                                    // đổi 2 dấu ++ thành 1, xóa + ở cuối
-                                                                    const newValue = removeValue.replace(/\++/g, "+").replace(/\+$/, '').replace(/\=+/g, "=");
-                                                                    // khi xóa value đầu tiên sẽ xuất hiện =+ ở đầu => xóa dấu +
-                                                                    if(newValue[0] === "+") {
-                                                                        return "brand=" + newValue.slice(1);
-                                                                    }
-                                                                    return "brand=" + newValue;
-                                                                } else {
-                                                                    // nếu chỉ có 1 value trong param đó thì xóa luôn param brand
-                                                                    return "";
-                                                                }
-                                                                
-                                                            }
-                                                            return value;
-                                                        }).join("&").replace(/\&&/g , "&").replace(/\&$/, '');
-                                                            // vì khi xóa hoặc thêm param trong url sẽ dư ra 1 dấu & ở cuối.
-                                                            // đổi 2 dấu && thành 1, xóa & ở cuối
-                                                        window.location.href = newArrCurUrl;
-                                                    } 
-                                                }
-                                            })
-                                        }
-                                    </script>
                                 </ul>
                             </form>
                         </div>
                     </div>
-                    <!-- <div class="filter-sub-area pt-sm-10 pt-xs-10">
-                        <h5 class="filter-sub-titel">Size</h5>
-                        <div class="size-checkbox">
-                            <form action="#">
-                                <ul>
-                                    <li><input type="checkbox" name="product-size"><a href="#">S (3)</a></li>
-                                    <li><input type="checkbox" name="product-size"><a href="#">M (3)</a></li>
-                                    <li><input type="checkbox" name="product-size"><a href="#">L (3)</a></li>
-                                    <li><input type="checkbox" name="product-size"><a href="#">XL (3)</a></li>
-                                </ul>
-                            </form>
-                        </div>
-                    </div> -->
-                    <!-- <div class="filter-sub-area pt-sm-10 pt-xs-10">
-                        <h5 class="filter-sub-titel">Color</h5>
-                        <div class="color-categoriy">
-                            <form action="#">
-                                <ul>
-                                    <li><span class="white"></span><a href="#">White (1)</a></li>
-                                    <li><span class="black"></span><a href="#">Black (1)</a></li>
-                                    <li><span class="Orange"></span><a href="#">Orange (3) </a></li>
-                                    <li><span class="Blue"></span><a href="#">Blue (2) </a></li>
-                                </ul>
-                            </form>
-                        </div>
-                    </div> -->
                     <div class="filter-sub-area pt-sm-10 pb-sm-15 pb-xs-15">
                         <h5 class="filter-sub-titel">Weight</h5>
                         <div class="categori-checkbox">
@@ -391,43 +190,11 @@
                                         $count_tu_170g_den_200g = count($product_model->getPhoneWeightByWeightAndCountByPhoneID($query_weight_option["tu_170g_den_200g"]));
                                         $count_tu_200g_tro_len = count($product_model->getPhoneWeightByWeightAndCountByPhoneID($query_weight_option["tu_200g_tro_len"]));
 
-                                        echo '<li><input ' . $is1Checked . ' class="radio-weight" type="radio" name="tu_duoi_170g"><a class="a-weight" href="#">dưới 170g (' . $count_tu_duoi_170g . ') </a></li>';
-                                        echo '<li><input ' . $is2Checked . ' class="radio-weight" type="radio" name="tu_170g_den_200g"><a class="a-weight" href="#">170g->200g (' . $count_tu_170g_den_200g . ') </a></li>';
-                                        echo '<li><input ' . $is3Checked . ' class="radio-weight" type="radio" name="tu_200g_tro_len"><a class="a-weight" href="#">trên 200g (' . $count_tu_200g_tro_len . ') </a></li>';
+                                        echo '<li><input ' . $is1Checked . ' class="radio-weight" type="radio" name="tu_duoi_170g"><a class="a-disabled" href="#">dưới 170g (' . $count_tu_duoi_170g . ') </a></li>';
+                                        echo '<li><input ' . $is2Checked . ' class="radio-weight" type="radio" name="tu_170g_den_200g"><a class="a-disabled" href="#">170g->200g (' . $count_tu_170g_den_200g . ') </a></li>';
+                                        echo '<li><input ' . $is3Checked . ' class="radio-weight" type="radio" name="tu_200g_tro_len"><a class="a-disabled" href="#">trên 200g (' . $count_tu_200g_tro_len . ') </a></li>';
                                     ?>
                                 </ul>
-                                <script>
-                                        const allALinkWeight = document.querySelectorAll(".a-weight");
-                                        for (let i = 0;i< allALinkWeight.length; i++) {
-                                            allALinkWeight[i].addEventListener("click" , (e) => {
-                                                e.preventDefault();
-                                            })
-                                        }
-                                        const allInputCheckboxWeight = document.querySelectorAll(".radio-weight");
-                                        for (let i = 0;i< allInputCheckboxWeight.length; i++) {
-                                            allInputCheckboxWeight[i].addEventListener("change" , (e) => {
-                                                const currentUrl = window.location.href;
-                                                const selectedOption = e.target.getAttribute("name");
-                                                if(e.target.checked) {
-                                                    if(currentUrl.includes("&weight")) {
-                                                        const arrCurUrl = currentUrl.split("&");
-                                                        const newArrCurUrl = arrCurUrl.map((value) => {
-                                                            if(value.includes("weight=")) {
-                                                                const newValue = "weight=" + selectedOption;
-                                                                return newValue;
-                                                            }
-                                                            return value;
-                                                        }).join("&");
-
-                                                        window.location.href = newArrCurUrl;
-                                                    } 
-                                                    else {
-                                                        window.location.href = currentUrl + "&weight=" + selectedOption;
-                                                    }
-                                                }
-                                            });
-                                        };
-                                </script>
                             </form>
                         </div>
                     </div>
@@ -436,3 +203,105 @@
         </div>
     </div>
 </div>
+
+<script>
+    // bỏ trạng thái click của thẻ a
+    const allALinkCategories = document.querySelectorAll(".a-disabled");
+    for (let i = 0;i< allALinkCategories.length; i++) {
+        allALinkCategories[i].addEventListener("click" , (e) => {
+            e.preventDefault();
+        })
+    }
+
+    // filter = categories
+    const allInputCheckboxCategories = document.querySelectorAll(".checkbox-categories");
+    for (let i = 0;i< allInputCheckboxCategories.length; i++) {
+        allInputCheckboxCategories[i].addEventListener("change" , (e) => {
+            const currentUrl = e.target.getAttribute("url");
+            const selectedOption = e.target.getAttribute("name");
+            
+            // nếu check vào brand đó
+            if(e.target.checked) {
+                // nếu trên url đã có param brand thì thêm vô
+                if(currentUrl.includes("&brand")) {
+                    // cắt để lấy ra param filter đó theo dấu &
+                    const arrCurUrl = currentUrl.split("&");
+                    const newArrCurUrl = arrCurUrl.map((value) => {
+                        // lấy cái param brand ra thêm
+                        if(value.includes("brand=") && !value.includes(selectedOption)) {
+                            // thêm các giá trị brand cần filter vô
+                            const newValue = value + "+" + selectedOption;
+                            return newValue;
+                        }
+                        return value;
+                    }).join("&");
+
+                    window.location.href = newArrCurUrl;
+                } 
+                else {
+                    // nếu trên url ko có param brand thì thêm
+                    window.location.href = currentUrl + "&brand=" + selectedOption;
+                }
+
+            } else {
+                // nếu uncheck vào brand đó
+                if(currentUrl.includes("&brand")) {
+                    const arrCurUrl = currentUrl.split("&");
+                    const newArrCurUrl = arrCurUrl.map((value) => {
+                        // ktra và lấy param ra để xóa
+                        if(value.includes("brand=") && value.includes(selectedOption)) {
+                            const arrayValueAfterRemoveEqual = value.split("=")[1];
+
+                            // nếu có nhiều value trong param đó thì tìm và xóa cái uncheck
+                            if(value.includes("+")) {
+                                const arrCurUrlAfterSpliting = arrayValueAfterRemoveEqual.split("+");
+                                const removeValue = arrCurUrlAfterSpliting.map(v => v === selectedOption ? "" : v).join("+");
+                                // vì khi xóa hoặc thêm value trong param sẽ dư ra 1 dấu + ở cuối.
+                                // đổi 2 dấu ++ thành 1, xóa + ở cuối
+                                // khi xóa value đầu tiên sẽ xuất hiện =+ ở đầu => xóa dấu +
+                                const newValue = removeValue.replace(/\++/g, "+").replace(/\+$/, '').replace(/\=+/g, "=").replace(/^\+/g, "");
+
+                                return "brand=" + newValue;
+                            } else {
+                                // nếu chỉ có 1 value trong param đó thì xóa luôn param brand
+                                return "";
+                            }
+                            
+                        }
+                        return value;
+                    }).join("&").replace(/\&&/g , "&").replace(/\&$/, '');
+                        // vì khi xóa hoặc thêm param trong url sẽ dư ra 1 dấu & ở cuối.
+                        // đổi 2 dấu && thành 1, xóa & ở cuối
+                    window.location.href = newArrCurUrl;
+                } 
+            }
+        })
+    }
+
+
+    // filter = weight
+    const allInputCheckboxWeight = document.querySelectorAll(".radio-weight");
+    for (let i = 0;i< allInputCheckboxWeight.length; i++) {
+        allInputCheckboxWeight[i].addEventListener("change" , (e) => {
+            const currentUrl = window.location.href;
+            const selectedOption = e.target.getAttribute("name");
+            if(e.target.checked) {
+                if(currentUrl.includes("&weight")) {
+                    const arrCurUrlAfterSpliting = currentUrl.split("&");
+                    const newArrCurUrl = arrCurUrlAfterSpliting.map((value) => {
+                        if(value.includes("weight=")) {
+                            const newValue = "weight=" + selectedOption;
+                            return newValue;
+                        }
+                        return value;
+                    }).join("&");
+
+                    window.location.href = newArrCurUrl;
+                } 
+                else {
+                    window.location.href = currentUrl + "&weight=" + selectedOption;
+                }
+            }
+        });
+    };
+</script>

@@ -2,10 +2,64 @@
 
 require './app/database/connect.php';
 
-class ProductModel extends connect
-{
+class ProductModel extends connect {
     public function getAll(){
         $sql = "SELECT * FROM phone";
+        $result = mysqli_query($this->con, $sql);
+        $rows = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $rows[] = $row;
+        }
+        return $rows;
+    }
+
+    public function getTrashProductByID($id){
+        $sql = "SELECT * FROM phone WHERE phone.`visible` = 0 and phone.`id` = ".$id."";
+        $result = mysqli_query($this->con, $sql);
+        $rows = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $rows[] = $row;
+        }
+        return $rows;
+    }
+    
+    public function restoreProduct($id) {
+        $sql = "UPDATE phone SET `visible` = 1 WHERE `id` = ".$id."";
+        $result = mysqli_query($this->con, $sql);
+        
+        if ($result && mysqli_affected_rows($this->con) > 0) {
+            return true; 
+        } else {
+            return false; 
+        }
+    }
+
+    public function getTrashProductPerPage($page){
+        $begin = ($page * 5) - 5;
+        $sql = "
+            SELECT p.id as id, name, price, image, category 
+            FROM phone p 
+            LEFT JOIN image i ON p.id = i.id 
+            LEFT JOIN variant v ON p.id = v.id 
+            WHERE p.visible = 0
+            LIMIT ".$begin.",5
+        ";
+        $result = mysqli_query($this->con, $sql);
+        $rows = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $rows[] = $row;
+        }
+        return $rows;
+    }
+
+    public function getAllTrashProduct(){
+        $sql = "
+            SELECT p.id 
+            FROM phone p 
+            LEFT JOIN image i ON p.id = i.id 
+            LEFT JOIN variant v ON p.id = v.id 
+            WHERE p.visible = 0
+        ";
         $result = mysqli_query($this->con, $sql);
         $rows = [];
         while ($row = mysqli_fetch_assoc($result)) {
