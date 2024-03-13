@@ -1,9 +1,7 @@
 <?php
-    // require_once('/Code/Web/DoAnBanDienThoai/src/app/database/connect.php');
-    // require_once('/Code/Web/DoAnBanDienThoai/src/app/models/ProductModel.php');
-    
-    require_once('/Code/Web/DoAnBanDienThoaiPHP/src/app/includes/addOrUpdateQueryParam.php');
-    require_once('/Code/Web/DoAnBanDienThoaiPHP/src/app/includes/formatMoney.php');
+require './app/includes/addOrUpdateQueryParam.php';
+require './app/includes/formatMoney.php';
+
 
     $query_sort_option = [
         "default" => "",

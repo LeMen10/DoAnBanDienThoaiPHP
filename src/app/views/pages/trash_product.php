@@ -1,6 +1,6 @@
 <?php 
-    require_once('/Code/Web/DoAnBanDienThoaiPHP/src/app/includes/addOrUpdateQueryParam.php');
-    require_once('/Code/Web/DoAnBanDienThoaiPHP/src/app/includes/formatMoney.php');
+    require './app/includes/addOrUpdateQueryParam.php';
+    require './app/includes/formatMoney.php';
 
     $product_model = new ProductModel();
     $all_trash_products = $product_model->getAllTrashProduct();

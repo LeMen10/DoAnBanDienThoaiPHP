@@ -16,9 +16,9 @@ class login extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'];
             $password = $_POST['password'];
-            // $acc = $this->acc_model->LoadAllCustomer($email,$password);
-            // echo json_encode(['success'=>true, 'acc'=> $acc]);
-            echo json_encode(['success'=>true, 'email'=> $email, 'password' => $password]);
+            $user = $this->acc_model->CheckLogin($email,$password);
+            
+            echo json_encode(['success'=>true, 'user'=> $user]);
         }
     }
 

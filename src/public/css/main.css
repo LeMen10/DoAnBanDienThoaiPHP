@@ -4780,9 +4780,18 @@ thead {
 .login-form .check-box input[type="checkbox"]:checked+label::after {
     opacity: 1;
 }
+/* thông báo lỗi bên trang register */
 .login-form .error{
     display: none;
     color: red;
+}
+/* thông báo lỗi bên trang login */
+.login-form .error_login{
+    display: none;
+    color: red;
+}
+.fa-solid.fa-xmark {
+    cursor: pointer;
 }
 
 /*-- Place Order --*/

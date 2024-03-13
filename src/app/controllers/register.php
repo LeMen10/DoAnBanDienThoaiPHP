@@ -31,10 +31,10 @@ class register extends Controller
             $lastName = $_POST['lastName'];
             $email = $_POST['email'];
             $password = $_POST['password'];
-            $address = $_POST['address'];
+            // $address = $_POST['address'];
             $phone = $_POST['phone'];
             
-            $check = $this->acc_model->Register($firstName,$lastName,$email,$password,$address,$phone);
+            $check = $this->acc_model->Register($firstName,$lastName,$email,$password,$phone);
             echo json_encode(['success'=>true, 'check' => $check]);
         }
     }
