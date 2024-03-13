@@ -1,8 +1,7 @@
 <?php
 require_once './config.php';
 
-class connect
-{
+class connect {
     public $con;
     function __construct()
     {
