@@ -2,20 +2,36 @@
 require './app/database/connect.php';
 
 class AccountModel extends connect{
-    public function CheckLogin($email, $password) {
-        $query = "SELECT * FROM 'customer' WHERE 'email' = '$email' AND 'password' = '$password'";
-        $check = true;
-        $result = mysqli_query($this->con, $query);
-        if (!$result) {
-            $check = false;
+    // public function CheckLogin($email, $password) {
+    //     $query = "SELECT * FROM customer WHERE email = '$email' AND password = '$password'";
+    //     $check = false;
+    //     $result = mysqli_query($this->con, $query);
+    //     // if (!$result) {
+    //     //     $check = false;
+    //     // }
+    //     if ($row = mysqli_fetch_assoc($result)) {
+    //         $check = true;
+    //     }
+    //     return $check;
+    // }
+    
+        public function CheckLogin($email, $password) {
+            $query = "SELECT customer.* , author.name AS authorName FROM customer, author WHERE email = '$email' AND password = '$password' AND customer.author = author.ID";
+            
+            $result = mysqli_query($this->con, $query);
+            // $check = false;
+            $user = null;
+            if($result->num_rows){
+                $user = mysqli_fetch_array($result);
+                
+            }
+            return $user;
         }
-        return $check;
-    }
 
 
-    public function Register($firstName, $lastName, $email, $password, $address, $phoneNumber){
+    public function Register($firstName, $lastName, $email, $password, $phoneNumber){
         $fullName = $firstName.' '.$lastName;
-        $sql = "INSERT INTO `customer`(`name`,`email`, `password`,`address`,`phoneNumber`) VALUES ('$fullName','$email','$password','$address','$password')";
+        $sql = "INSERT INTO `customer`(`name`,`email`, `password`,`phoneNumber`) VALUES ('$fullName','$email','$password','$phoneNumber')";
         $check = true;
         $result = mysqli_query($this->con, $sql);
       
@@ -23,7 +39,7 @@ class AccountModel extends connect{
     }
 
     public function CheckRegister($email) {
-        $query = "SELECT * FROM customer WHERE email = '$email' ";
+        $query = "SELECT * FROM customer WHERE email = '$email'";
         $result = mysqli_query($this->con, $query);
         $check = false;
         if ($row = mysqli_fetch_assoc($result)) {
