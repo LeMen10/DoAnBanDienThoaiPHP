@@ -1,12 +1,11 @@
 <?php 
-    require_once('/Code/Web/DoAnBanDienThoaiPHP/src/app/includes/addOrUpdateQueryParam.php');
-    require_once('/Code/Web/DoAnBanDienThoaiPHP/src/app/includes/formatMoney.php');
+    require './app/includes/addOrUpdateQueryParam.php';
+    require './app/includes/formatMoney.php';
 
     $product_model = new ProductModel();
-    $all_trash_products = $product_model->getAllTrashProduct();
 
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-    $trash_products_per_page = $product_model->getTrashProductPerPage($page);
+    $trash_products_per_page = isset($trash_products_per_page) ? $trash_products_per_page : [];
     
     $currentUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 ?>
@@ -27,6 +26,9 @@
                     </thead>
                     <tbody>
                         <?php
+                            if(count($trash_products_per_page) == 0) {
+                                echo "<p class='w-100 h3 font-weight-normal text-center mt-40'>0 có sản phẩm tương ứng</p>";
+                            } 
                             for($i = 0; $i < count($trash_products_per_page); $i++) {
                                 $price = $trash_products_per_page[$i]["price"] ? format_money($trash_products_per_page[$i]["price"]) : 0;
 
@@ -53,7 +55,7 @@
                             <ul class="pagination-box pt-xs-20 pb-xs-15">
                                 <?php 
                                     $productsPerPage = 5;
-                                    $num_all_rows = count($all_trash_products);
+                                    $num_all_rows = isset($quantity) ? $quantity : 0;
                                     $totalPages = ceil($num_all_rows / $productsPerPage);
                                     
                                     if($page > 1) {
