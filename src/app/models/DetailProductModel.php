@@ -56,4 +56,25 @@ class DetailProductModel extends Connect{
         }
         return $Images;
     }
+
+    public function addToCart($phoneID, $Quantity, $userID)
+    {
+        $sql = 'INSERT INTO `cart`( `phoneID`, `quantity`, `customerID`) VALUES ('.$phoneID.', '.$Quantity.', '.$userID.') ';
+        return mysqli_query($this->con, $sql);
+    }
+    public function getTotalCart($userID)
+    {
+        $sql = 'SELECT c.quantity, v.price FROM cart c JOIN variant v ON c.variantID = v.id 
+        WHERE c.customerID = '.$userID;
+        $result = mysqli_query($this->con, $sql);
+        $totalValue =  array(
+            'price' => 0, 
+            'count' => 0   
+        );
+        while ($row = mysqli_fetch_assoc($result)) {
+           $totalValue['price'] += $row['price'];
+           $totalValue['quantity'] += $row['quantity'];
+        }
+        return $totalValue;
+    }
 }

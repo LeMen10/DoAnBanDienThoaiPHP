@@ -1481,7 +1481,20 @@ textarea:focus {
     transition: all 0.3s ease-in-out;
 }
 
-.cart-quantity .add-to-cart:hover {
+.cart-quantity .buy-now {
+    border: none;
+    font-size: 14px;
+    color: white;
+    position: relative;
+    background: #e80f0f;
+    cursor: pointer;
+    font-weight: 500;
+    text-transform: capitalize;
+    padding: 13px 70px;
+    border-radius: 2px;
+    transition: all 0.3s ease-in-out;
+}
+.cart-quantity .add-to-cart:hover, .cart-quantity .buy-now:hover{
     background: #242424;
     color: #ffffff;
 }

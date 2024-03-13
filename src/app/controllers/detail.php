@@ -43,6 +43,25 @@ class detail extends Controller
             echo json_encode(['success'=>true,'variant' => $Variant]);
         }
     }
+
+    public function addToCart()
+    {
+        if($_SERVER['REQUEST_METHOD'] == 'POST')
+        {
+            $phoneID = $_POST['phoneID'];
+            $sizeID = $_POST['sizeID'];
+            $colorID = $_POST['colorID'];
+            $userID = $_POST['userID'];
+            $quantity = $_POST['quantity'];
+            $Variant = $this->product_model -> getVariant($phoneID, $sizeID, $colorID);
+            $totalCart = null;
+            if($this->product_model -> addToCart($Variant['id'], $quantity, $userID))
+            {
+                $totalCart = $this->product_model -> getTotalCart($userID);
+            }
+            echo json_encode(['success'=>true,'totalcart' => $totalCart]);
+        }
+    }
     public function show()
     {
     }
