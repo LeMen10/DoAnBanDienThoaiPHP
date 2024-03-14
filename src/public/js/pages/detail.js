@@ -36,7 +36,7 @@ function handleMoreInformation() {
         productDesc.style.maxHeight = 'none';
         moreInfoBtn.textContent = 'Ẩn bớt';
     } else {
-        productDesc.style.maxHeight = '10em';
+        productDesc.style.maxHeight = '9em';
         moreInfoBtn.textContent = 'Xem thêm';
     }
 }
@@ -51,21 +51,21 @@ function handleIncreaseQuantity() {
         });
 }
 function handleDecreaseQuantity() {
-    if (parseInt(quantityInput.value) == 1) return;
+    if (parseInt(quantityInput.value) <= 1) return;
     quantityInput.value = parseInt(quantityInput.value) - 1;
 }
 function handleEnterKeyPress() {
-    if (isNaN(quantityInput.value) || quantityInput.value.trim() === '') {
-        quantityInput.value = 1;
-        return;
-    }
     loadQuantityProduct()
         .then(quantity => {
+            if (isNaN(quantityInput.value) || quantityInput.value.trim() === '') {
+                quantityInput.value = (quantity == 0? 0:1);
+                return;
+            }
             if (parseInt(quantityInput.value) > quantity) {
                 quantityInput.value = quantity;
             }
             if (parseInt(quantityInput.value) <= 0) {
-                quantityInput.value = 1;
+                quantityInput.value = (quantity == 0? 0:1);
             }
         })
         .catch(error => {
@@ -152,33 +152,44 @@ function clearSelect(selectElement) {
         selectElement.remove(0);
     }
 }
-function handleAddCart()
-{
+function handleAddCart() {
     const priceCart = document.querySelector(".item-text");
-    const countCart = document.querySelector(".cart-item-count");
-    loadQuantityProduct()
-    .then(totalcart => {
-       console.log(totalcart);
-    })
-    .catch(error => {
-        console.log(error);
-    });
+    const phoneID = elementPhoneID.getAttribute('data-id');
+    const sizeID = elementSizeID.value;
+    const colorID = elementColorID.value;
+    const quantity = quantityInput.value;
+    if(quantity == 0)
+    {
+        alert("Đã hết hàng!");
+        return;
+    }
+    var tokenString = sessionStorage.getItem('token');
+    if (tokenString) {
+        var userID = JSON.parse(tokenString);
+        console.log(userID);
+    } else {
+        alert("Vui lòng đăng nhập để mua hàng!");
+        return;
+    }
+    loadCart(userID, phoneID, sizeID, colorID, quantity)
+        .then(cart => {
+            if (cart != null) {
+                priceCart.innerHTML = `${cart['price']} <span class='cart-item-count'>${cart['count']}</span>`;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
 }
-const loadCart = () => {
+const loadCart = (userID, phoneID, sizeID, colorID, quantity) => {
     return new Promise((resolve, reject) => {
-        let userID  = 1;
-        let phoneID = elementPhoneID.getAttribute('data-id');
-        let sizeID = elementSizeID.value;
-        let colorID = elementColorID.value;
-        let quantity = quantityInput.value;
         $.ajax({
             type: 'post',
             url: 'index.php?ctrl=detail&act=addToCart',
-            data: { phoneID, sizeID, colorID, quantity, userID},
+            data: { phoneID, sizeID, colorID, quantity, userID },
             dataType: 'json',
             success: res => {
-                resolve(res.totalcart);
-
+                resolve(res.cart);
             },
             error: err => {
                 reject(err);

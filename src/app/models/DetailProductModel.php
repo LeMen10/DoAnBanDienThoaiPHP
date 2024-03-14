@@ -57,9 +57,9 @@ class DetailProductModel extends Connect{
         return $Images;
     }
 
-    public function addToCart($phoneID, $Quantity, $userID)
+    public function addToCart($variantID, $Quantity, $userID)
     {
-        $sql = 'INSERT INTO `cart`( `phoneID`, `quantity`, `customerID`) VALUES ('.$phoneID.', '.$Quantity.', '.$userID.') ';
+        $sql = 'INSERT INTO `cart`( `variantID`, `quantity`, `customerID`) VALUES ('.$variantID.', '.$Quantity.', '.$userID.') ';
         return mysqli_query($this->con, $sql);
     }
     public function getTotalCart($userID)
@@ -73,7 +73,7 @@ class DetailProductModel extends Connect{
         );
         while ($row = mysqli_fetch_assoc($result)) {
            $totalValue['price'] += $row['price'];
-           $totalValue['quantity'] += $row['quantity'];
+           $totalValue['count'] += $row['quantity'];
         }
         return $totalValue;
     }

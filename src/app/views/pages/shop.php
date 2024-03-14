@@ -1,4 +1,5 @@
 <?php
+<<<<<<< Updated upstream
     require_once('/Code/Web/DoAnBanDienThoai/src/app/database/connect.php');
     require_once('/Code/Web/DoAnBanDienThoai/src/app/models/ProductModel.php');
     
@@ -29,6 +30,10 @@
         $newQueryString = http_build_query($queryParams);
         return $urlParts['path'] . '?' . $newQueryString;
     }
+=======
+    require './app/includes/addOrUpdateQueryParam.php';
+    require './app/includes/formatMoney.php';
+>>>>>>> Stashed changes
 
     $query_sort_option = [
         "default" => "",
@@ -156,9 +161,9 @@
                                         if (count($result_6_phones) > 0) {
                                             for ($i = 0; $i < count($result_6_phones); $i++) {
                                                 echo " <div class='col-lg-4 col-md-4 col-sm-6 mt-40'> ";
-                                                echo " <div class='single-product-wrap'> ";
+                                                echo " <div class='single-product-wrap' onclick='callDetailPage(".$result_6_phones[$i]["PhoneId"].")'> ";
                                                 echo " <div class='product-image'> ";
-                                                echo " <a href=''> ";
+                                                echo " <a> ";
                                                 echo " <img src='public/img/phone_image/".$result_6_phones[$i]["PhoneImage"]."' alt='".$result_6_phones[$i]["PhoneImage"]."'> ";
                                                 echo " </a> ";
                                                 echo " </div> ";

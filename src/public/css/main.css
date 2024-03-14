@@ -1844,6 +1844,25 @@ textarea:focus {
     font-weight: 400;
     position: relative;
 }
+#suggestionBox {
+    position: absolute; /* Đảm bảo suggestion box có thể di chuyển tùy ý */
+    top: 100%; /* Hiển thị suggestion box phía dưới ô input */
+    left: 0; /* Đảm bảo suggestion box bắt đầu từ vị trí trái nhất */
+    width: 100%; /* Chiều rộng tương đương với ô input */
+    background-color: #fff; /* Màu nền */
+    border: 1px solid #ccc; /* Viền */
+    border-top: none; /* Loại bỏ viền phía trên để không gây mờ ảnh ảnh */
+    z-index: 1; /* Đảm bảo suggestion box luôn hiển thị trên các phần tử khác */
+}
+
+#suggestionBox div {
+    padding: 5px 10px; /* Khoảng cách giữa các mục trong suggestion box */
+    cursor: pointer; /* Con trỏ chuột thành kiểu tay khi di chuột qua mỗi mục */
+}
+
+#suggestionBox div:hover {
+    background-color: #f0f0f0; /* Màu nền khi di chuột qua mỗi mục */
+}
 
 .select-search-category ul.list {
     height: 440px;
@@ -6049,7 +6068,7 @@ span.required {
 .product-details-view-content .product-desc {
     border-bottom: 1px solid #e1e1e1;
     margin-bottom: 25px;
-    max-Height: 10em;
+    max-Height: 9em;
     overflow: hidden;
     position: relative;
 }

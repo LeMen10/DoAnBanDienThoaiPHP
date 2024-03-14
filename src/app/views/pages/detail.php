@@ -60,19 +60,7 @@
                             echo "<h2>".$productDetail["phonename"]."</h2>
                             <span class='product-details-ref' id='category-name'>Category: ".$productDetail["categoryname"]."</span>
                             <span class='product-details-ref' id='quantity-value'>Quantity: ".$Variants[0]["quantity"]."</span>
-                            <div class='rating-box pt-20'>
-                                <ul class='rating rating-with-review-item'>
-                                    <li><i class='fa fa-star-o'></i></li>
-                                    <li><i class='fa fa-star-o'></i></li>
-                                    <li><i class='fa fa-star-o'></i></li>
-                                    <li class='no-star'><i class='fa fa-star-o'></i></li>
-                                    <li class='no-star'><i class='fa fa-star-o'></i></li>
-                                    <li class='review-item'><a href='#'>Read Review</a></li>
-                                    <li class='review-item'><a href='#'>Write Review</a></li>
-                                </ul>
-                            </div>
                             <div class='price-box pt-20'>
-                                
                                 <span class='new-price new-price-2'  id='price-value'><span>đ</span>".$Variants[0]["price"]."</span>
                             </div>
                             <div class='product-desc' data-id = '".$productDetail["phoneID"]."'>
@@ -126,31 +114,30 @@
                                 </p>
                                 <span id='moreInfoBtn'>Xem thêm</span>
                             </div>
-                            
-                        <div class='product-variants'>
-                        <div class='produt-variants-size'>
-                            <label>Size</label>
-                            <select class='nice-select' id='sizeSelect'>".$sizeOption."</select>
-                        </div>
-                        <div class='produt-variants-color'>
-                            <label>Color</label>
-                            <select class='nice-select' id='colorSelect'>".$colorOption."</select>
-                        </div>
-                    </div>
-                    <div class='single-add-to-cart'>
-                        <form action='#' class='cart-quantity'>
-                            <div class='quantity'>
-                                <label>Quantity</label>
-                                <div class='cart-plus-minus'>
-                                    <input class='cart-plus-minus-box' value='1' type='text'>
-                                    <div class='dec qtybutton'><i class='fa fa-angle-down'></i></div>
-                                    <div class='inc qtybutton'><i class='fa fa-angle-up'></i></div>
+                            <div class='product-variants'>
+                                <div class='produt-variants-size'>
+                                    <label>Size</label>
+                                    <select class='nice-select' id='sizeSelect'>".$sizeOption."</select>
+                                </div>
+                                <div class='produt-variants-color'>
+                                    <label>Color</label>
+                                    <select class='nice-select' id='colorSelect'>".$colorOption."</select>
                                 </div>
                             </div>
-                            <button class='add-to-cart' type='submit'>Add to cart</button>
-                            <button class='buy-now' type='submit'>Buy now</button>
-                        </form>
-                    </div>";
+                            <div class='single-add-to-cart'>
+                                <form action='#' class='cart-quantity'>
+                                    <div class='quantity'>
+                                        <label>Quantity</label>
+                                        <div class='cart-plus-minus'>
+                                            <input class='cart-plus-minus-box' value='".($Variants[0]["quantity"] == 0 ? 0:1)."' type='text'>
+                                            <div class='dec qtybutton'><i class='fa fa-angle-down'></i></div>
+                                            <div class='inc qtybutton'><i class='fa fa-angle-up'></i></div>
+                                        </div>
+                                    </div>
+                                    <button class='add-to-cart' type='submit'>Add to cart</button>
+                                    <button class='buy-now' type='submit'>Buy now</button>
+                                </form>
+                            </div>";
                         }
                         ?>
                         

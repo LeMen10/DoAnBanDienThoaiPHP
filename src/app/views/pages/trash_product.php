@@ -1,3 +1,18 @@
+<<<<<<< Updated upstream
+=======
+<?php 
+    require './app/includes/addOrUpdateQueryParam.php';
+    require './app/includes/formatMoney.php';
+    $product_model = new ProductModel();
+    $all_trash_products = $product_model->getAllTrashProduct();
+
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $trash_products_per_page = $product_model->getTrashProductPerPage($page);
+    
+    $currentUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+?>
+
+>>>>>>> Stashed changes
 <div class="row g-4">
     <div class="col-12">
         <div class="bg-light rounded h-100 pt-3 pb-3 px-4">
