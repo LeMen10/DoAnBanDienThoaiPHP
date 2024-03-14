@@ -24,9 +24,7 @@ function addEventQuantityInput() {
             handleEnterKeyPress();
         }
     });
-    quantityInput.addEventListener('blur', function (event) {
-        handleEnterKeyPress();
-    });
+    quantityInput.addEventListener('blur', handleEnterKeyPress);
 }
 
 function handleMoreInformation() {

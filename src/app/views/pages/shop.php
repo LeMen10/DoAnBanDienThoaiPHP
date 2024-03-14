@@ -1,5 +1,4 @@
 <?php
-<<<<<<< Updated upstream
     require_once('/Code/Web/DoAnBanDienThoai/src/app/database/connect.php');
     require_once('/Code/Web/DoAnBanDienThoai/src/app/models/ProductModel.php');
     
@@ -30,10 +29,6 @@
         $newQueryString = http_build_query($queryParams);
         return $urlParts['path'] . '?' . $newQueryString;
     }
-=======
-    require './app/includes/addOrUpdateQueryParam.php';
-    require './app/includes/formatMoney.php';
->>>>>>> Stashed changes
 
     $query_sort_option = [
         "default" => "",
