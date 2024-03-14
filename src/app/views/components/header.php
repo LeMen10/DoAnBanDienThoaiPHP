@@ -25,39 +25,22 @@
                                 </a>
                             </li>
                             <li class="hm-wishlist">
-                            <!-- <div class="dropdown show">
-                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Dropdown link
-                            </a>
-
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                            </div> -->
                             <?php
                                 if(isset($user)){
-                                    print_r($user);
-                                    var_dump($user);
-                                    echo $user;
-                                    // echo "<a href='index.php?ctrl=login'>
-                                    //         <i class='fa-regular fa-user'></i>
-                                    //     </a>";
                                     
-                                        
-                                    
+                                    echo "<a href='index.php?ctrl=login'>
+                                            <i class='fa-regular fa-user'></i>
+                                        </a>";
                                 }
                                 else {
                                     echo "<a href='index.php?ctrl=login'>
                                                 <i id='avatar' class=''></i>
+                                                <div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>
+                                                    <a class='dropdown-item' href='#'>Action</a>
+                                                    <a class='dropdown-item' href='#'>Another action</a>
+                                                    <a class='dropdown-item' href='#'>Something else here</a>
+                                                </div>
                                             </a>";
-                                        echo "<div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>
-                                                <a class='dropdown-item' href='#'>Action</a>
-                                                <a class='dropdown-item' href='#'>Another action</a>
-                                                <a class='dropdown-item' href='#'>Something else here</a>
-                                            </div>";
-                                    
                                 }
 
                             ?>
