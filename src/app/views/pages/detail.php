@@ -114,14 +114,25 @@
                                 </p>
                                 <span id='moreInfoBtn'>Xem thêm</span>
                             </div>
-                            <div class='product-variants'>
-                                <div class='produt-variants-size'>
-                                    <label>Size</label>
-                                    <select class='nice-select' id='sizeSelect'>".$sizeOption."</select>
-                                </div>
-                                <div class='produt-variants-color'>
-                                    <label>Color</label>
-                                    <select class='nice-select' id='colorSelect'>".$colorOption."</select>
+                            
+                        <div class='product-variants'>
+                        <div class='produt-variants-size'>
+                            <label>Size</label>
+                            <select class='nice-select' id='sizeSelect'>".$sizeOption."</select>
+                        </div>
+                        <div class='produt-variants-color'>
+                            <label>Color</label>
+                            <select class='nice-select' id='colorSelect'>".$colorOption."</select>
+                        </div>
+                    </div>
+                    <div class='single-add-to-cart'>
+                        <form action='#' class='cart-quantity'>
+                            <div class='quantity'>
+                                <label>Quantity</label>
+                                <div class='cart-plus-minus'>
+                                    <input class='cart-plus-minus-box' value='".($Variants[0]["quantity"] == 0? 0: 1)."' type='text'>
+                                    <div class='dec qtybutton'><i class='fa fa-angle-down'></i></div>
+                                    <div class='inc qtybutton'><i class='fa fa-angle-up'></i></div>
                                 </div>
                             </div>
                             <div class='single-add-to-cart'>

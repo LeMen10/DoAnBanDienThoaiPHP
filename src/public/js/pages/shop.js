@@ -19,7 +19,8 @@ const changeSortDropDown = (event) => {
     }
 };
 
-const callDetailPage = (phoneID) =>
+//chuyển trang detail
+function showDetail (phoneID)
 {
-    window.location.href = "index.php?ctrl=detail&phoneID=" + phoneID;
+    window.location.href = "index.php?ctrl=detail&phoneID="+ phoneID;
 }

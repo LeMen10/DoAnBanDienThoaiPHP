@@ -156,7 +156,7 @@
                                         if (count($result_6_phones) > 0) {
                                             for ($i = 0; $i < count($result_6_phones); $i++) {
                                                 echo " <div class='col-lg-4 col-md-4 col-sm-6 mt-40'> ";
-                                                echo " <div class='single-product-wrap' onclick='callDetailPage(".$result_6_phones[$i]["PhoneId"].")'> ";
+                                                echo " <div class='single-product-wrap' onClick='showDetail(".$result_6_phones[$i]["PhoneId"].")'> ";
                                                 echo " <div class='product-image'> ";
                                                 echo " <a> ";
                                                 echo " <img src='public/img/phone_image/".$result_6_phones[$i]["PhoneImage"]."' alt='".$result_6_phones[$i]["PhoneImage"]."'> ";
