@@ -20,7 +20,7 @@ const changeSortDropDown = (event) => {
 };
 
 //chuyển trang detail
-function showDetail (phoneID)
+function showDetail(phoneID)
 {
     window.location.href = "index.php?ctrl=detail&phoneID="+ phoneID;
 }

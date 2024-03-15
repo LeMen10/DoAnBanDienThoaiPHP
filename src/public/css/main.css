@@ -6058,7 +6058,7 @@ span.required {
 .product-details-view-content .product-desc {
     border-bottom: 1px solid #e1e1e1;
     margin-bottom: 25px;
-    max-Height: 10em;
+    max-Height: 9em;
     overflow: hidden;
     position: relative;
 }
