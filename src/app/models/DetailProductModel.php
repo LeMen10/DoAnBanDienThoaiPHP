@@ -56,4 +56,5 @@ class DetailProductModel extends Connect{
         }
         return $Images;
     }
+    
 }
