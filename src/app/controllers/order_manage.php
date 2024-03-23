@@ -18,7 +18,9 @@ class order_manage extends Controller
         // $id = $_POST['id_product'];
         $order = $this->order_model->GetAllOrder();
         // $order_detail = $this->order_model->GetDetailOrderProduct($id);
-        return $this->view('main_admin_layout', ['page' => 'order_admin', 'order' => $order, 'orders'=> $orders, 'quantity'=> $quantity]);
+
+        $sort = $this->order_model->SortByDate();
+        return $this->view('main_admin_layout', ['page' => 'order_admin', 'order' => $order, 'orders'=> $orders, 'quantity'=> $quantity, 'sort' => $sort]);
     }
     public function GetDetailProduct(){
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -39,6 +41,26 @@ class order_manage extends Controller
             echo json_encode(['success'=>true, 'isSuccess'=> $isSuccess]);
         }
     }
+    public function Search_Admin(){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $ten = $_POST['ten'];
+            
+            $result = $this->order_model->Search($ten);
+            
+            echo json_encode(['success'=>true, 'search'=> $result]);
+        }
+    }
+
+    // public function SortOrderStatus(){
+    //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    //         // $date = $_POST['date'];
+            
+           
+    //         $isDate = $this->order_model->SortByDate();
+            
+    //         echo json_encode(['success'=>true, 'isSuccess'=> $isDate]);
+    //     }
+    // }
     
     
 }

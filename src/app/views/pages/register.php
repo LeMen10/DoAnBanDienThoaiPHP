@@ -22,13 +22,6 @@
                     <input name="Email" id="Email" class="mb-0" type="email" placeholder="Email Address">
                     <div class="error_login" id="error_email" >Sai định dạng Email.(VD:acb@gmail.com)</div>
                 </div>
-
-                <!-- <div class="col-md-12 mb-20">
-                    <label>Address</label>
-                    
-                    <input name="Address" id="Address" class="mb-0" type="address" placeholder="Address">
-                    <div class="error" id="error_address" >Không nhập các ký tự đặc biệt.</div>
-                </div> -->
                 <div class="col-md-6 mb-20">
                     <label>Password</label>
                     
@@ -40,12 +33,6 @@
                     
                     <input name="Confirm_Password" id="Confirm_Password" class="mb-0" type="password" placeholder="Confirm Password">
                     <div class="error" id="error_confirmPassword" >Không trùng khớp với Passwword.</div>
-                </div>
-                <div class="col-md-12 mb-20">
-                    <label>Phone</label>
-                    
-                    <input name="Phone" id="Phone" class="mb-0" type="phone" placeholder="Phone">
-                    <div class="error" id="error_phone" >Sai định dạng số điện thoại.(SĐT phải đủ 10 số.VD:0999999999)</div>
                 </div>
                 
                 <div class="col-12">

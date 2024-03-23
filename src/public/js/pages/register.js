@@ -4,8 +4,6 @@ $(document).ready(() => {
     firstName = document.getElementById(`FirstName`);
     lastName = document.getElementById("LastName");
     addressMail = document.getElementById("Email");
-    // address = document.getElementById("Address");
-    phone = document.getElementById("Phone");
     password = document.getElementById("Password");
     confirmPassword = document.getElementById("Confirm_Password");
     icon = document.querySelector('.hm-wishlist');
@@ -13,8 +11,6 @@ $(document).ready(() => {
     document.getElementById("FirstName").addEventListener('change' ,validate_FirstName );
     document.getElementById("LastName").addEventListener('change' ,validate_LastName );
     document.getElementById("Email").addEventListener('change' ,validateEmail );
-    // document.getElementById("Address").addEventListener('change' ,validate_Address );
-    document.getElementById("Phone").addEventListener('change' ,validatePhoneNumber );
     document.getElementById("Password").addEventListener('change' ,validatePass);
     document.getElementById("Confirm_Password").addEventListener('change' ,validatePass_Repass );
 
@@ -23,25 +19,22 @@ $(document).ready(() => {
 
 function handleRegister() {
     if (firstName.value === "" || lastName.value === ""  || addressMail.value === "" 
-    || phone.value === "" || password.value === "" || confirmPassword.value === ""){
+    || password.value === "" || confirmPassword.value === ""){
         alert("Vui lòng nhập đầy đủ thông tin.");
     }
     else{
-        if(!validate_FirstName() || !validate_LastName() || !validateEmail() || !validatePass() ||  !validatePass_Repass() || !validatePhoneNumber()){
+        if(!validate_FirstName() || !validate_LastName() || !validateEmail() || !validatePass() ||  !validatePass_Repass() ){
             return;
             
         }
         else {
-            CheckRegister(firstName.value,lastName.value,addressMail.value,password.value,phone.value);
+            CheckRegister(firstName.value,lastName.value,addressMail.value,password.value);
         }
-        
-        
-        
     }
     
     
 }
-const CheckRegister = (firstName, lastName, email, password, phone) => {
+const CheckRegister = (firstName, lastName, email, password) => {
     return $.ajax({
         type: 'post',
         url: 'index.php?ctrl=register&act=CheckRegister',
@@ -52,7 +45,7 @@ const CheckRegister = (firstName, lastName, email, password, phone) => {
                 alert("Người dùng đã tồn tại!");
             }
             else{
-                InsertAccount(firstName, lastName, email, password, phone);
+                InsertAccount(firstName, lastName, email, password);
             }
         },
         error: err => {
@@ -60,11 +53,11 @@ const CheckRegister = (firstName, lastName, email, password, phone) => {
         }
     })
 }
-const InsertAccount = (firstName, lastName, email, password, phone) => {
+const InsertAccount = (firstName, lastName, email, password) => {
     return $.ajax({
         type: 'post',
         url: 'index.php?ctrl=register&act=InsertAccount',
-        data: {firstName, lastName, email, password, phone },
+        data: {firstName, lastName, email, password },
         dataType: 'json',
         success: res => {
             if(res.check){
@@ -120,22 +113,6 @@ function validateEmail(){
         check = true;
     } 
     return check;
-}
-
-function validatePhoneNumber(){
-    var check = false;
-    var regex = /^0(\d{9}|9\d{8})$/;
-    if (!regex.test(phone.value) )   {
-        document.getElementById("error_phone").style.display = "block";
-        check = false;
-    }
-    else{
-        document.getElementById("error_phone").style.display = "none";
-        check = true;
-    
-    } 
-    return check;
-
 }
 
 function validatePass_Repass(){

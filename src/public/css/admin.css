@@ -430,3 +430,15 @@ input:checked+.slider:before {
 .disable-vertical{
     vertical-align: unset !important;
 }
+.time span{
+    margin-right: 50px;
+}
+.select_tg{
+    border-radius: 38px;
+}
+#searchInput{
+    background-color: #fff;
+    width: 300px;
+    margin-right: 20px;
+    height: 30px;
+}

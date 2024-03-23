@@ -18,9 +18,9 @@ class AccountModel extends connect{
         }
 
 
-    public function Register($firstName, $lastName, $email, $password, $phoneNumber){
+    public function Register($firstName, $lastName, $email, $password){
         $fullName = $firstName.' '.$lastName;
-        $sql = "INSERT INTO `customer`(`name`,`email`, `password`,`phoneNumber`) VALUES ('$fullName','$email','$password','$phoneNumber')";
+        $sql = "INSERT INTO `customer`(`name`,`email`, `password`) VALUES ('$fullName','$email','$password')";
         $check = true;
         $result = mysqli_query($this->con, $sql);
       
