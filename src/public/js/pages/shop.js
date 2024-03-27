@@ -91,21 +91,9 @@ const filterByWeight = () => {
             const currentUrl = e.target.getAttribute("url");
             const selectedOption = e.target.getAttribute("name");
             if(e.target.checked) {
-                if(currentUrl.includes("&weight")) {
-                    const arrCurUrlAfterSpliting = currentUrl.split("&");
-                    const newArrCurUrl = arrCurUrlAfterSpliting.map((value) => {
-                        if(value.includes("weight=")) {
-                            const newValue = "weight=" + selectedOption;
-                            return newValue;
-                        }
-                        return value;
-                    }).join("&");
-    
-                    window.location.href = newArrCurUrl;
-                } 
-                else {
-                    window.location.href = currentUrl + "&weight=" + selectedOption;
-                }
+                const param = "weight";
+                
+                changeParamInUrl(param, selectedOption, currentUrl);
             }
         });
     };
@@ -115,19 +103,7 @@ const filterByWeight = () => {
 const changeSortDropDown = (event) => {
     const selectedOption = event.target.value;
     const currentUrl = window.location.href;
-    if(currentUrl.includes("&sort")) {
-        const arrCurUrl = currentUrl.split("&");
-        const newArrCurUrl = arrCurUrl.map((value) => {
-            if(value.includes("sort=")) {
-                const newValue = "sort=" + selectedOption;
-                return newValue;
-            }
-            return value;
-        }).join("&");
+    const param = "sort";
 
-        window.location.href = newArrCurUrl;
-    } 
-    else {
-        window.location.href = currentUrl + "&sort=" + selectedOption;
-    }
+    changeParamInUrl(param, selectedOption, currentUrl);
 };

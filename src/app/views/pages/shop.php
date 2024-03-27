@@ -95,12 +95,17 @@
                                             $productsPerPage = 6;
                                             $totalPages = ceil($num_all_rows / $productsPerPage);
                                             
+                                            $startPage = max(1, min($page - 2, $totalPages - 4)); // Tính toán trang bắt đầu
+                                            $endPage = min($totalPages, max(1, $page + 2)); // Tính toán trang kết thúc
+
                                             if($page > 1) {
                                                 echo '<li><a href="'. addOrUpdateQueryParam($currentUrl, "page", $page - 1) .'" class="Previous"><i class="fa fa-chevron-left"></i> Previous</a></li>';
                                             }
-                                            for ($i = 1; $i <= $totalPages; $i++) {
+
+                                            for ($i = $startPage; $i <= $endPage; $i++) {
                                                 echo '<li class="'.($page == $i ? 'active' : '').'"><a href="'.addOrUpdateQueryParam($currentUrl, "page", $i).'">'.$i.'</a></li>';
                                             }
+
                                             if($page < $totalPages) {
                                                 echo '<li> <a href="'. addOrUpdateQueryParam($currentUrl, "page", $page + 1) .' " class="Next"> Next <i class="fa fa-chevron-right"></i></a> </li>';
                                             }

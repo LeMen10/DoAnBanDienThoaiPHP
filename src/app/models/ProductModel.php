@@ -13,8 +13,8 @@ class ProductModel extends connect {
         return $rows;
     }
 
-    public function getTrashProductByID($id){
-        $sql = "SELECT * FROM phone WHERE phone.`visible` = 0 and phone.`id` = ".$id."";
+    public function getVariantOfTrashProductByIdVariant($id){
+        $sql = "SELECT * FROM variant WHERE `visible` = 0 and `id` = ".$id."";
         $result = mysqli_query($this->con, $sql);
         $rows = [];
         while ($row = mysqli_fetch_assoc($result)) {
@@ -23,8 +23,8 @@ class ProductModel extends connect {
         return $rows;
     }
     
-    public function restoreProduct($id) {
-        $sql = "UPDATE phone SET `visible` = 1 WHERE `id` = ".$id."";
+    public function restoreVariantOfTrashProduct($id) {
+        $sql = "UPDATE `variant` SET `visible`= 1 WHERE id = ".$id."";
         $result = mysqli_query($this->con, $sql);
         
         if ($result && mysqli_affected_rows($this->con) > 0) {
@@ -33,15 +33,17 @@ class ProductModel extends connect {
             return false; 
         }
     }
-
-    public function getTrashProductPerPage($page){
+    
+    public function getTrashProductPerPage($page, $query){
         $begin = ($page * 5) - 5;
         $sql = "
-            SELECT p.id as id, name, price, image, category 
+            SELECT c.name as category, p.id as id, p.name, price, image, v.size as size, cl.color as color, v.id as variantID
             FROM phone p 
-            LEFT JOIN image i ON p.id = i.id 
-            LEFT JOIN variant v ON p.id = v.id 
-            WHERE p.visible = 0
+            LEFT JOIN category c ON p.category = c.id 
+            LEFT JOIN variant v ON p.id = v.phoneID 
+            LEFT JOIN color cl ON p.id = cl.phoneID 
+            LEFT JOIN (SELECT * FROM image ig GROUP BY ig.phoneID, ig.colorID) AS img ON p.id = img.phoneID 
+            WHERE p.visible = 1 AND cl.colorID = v.colorID AND img.colorID = v.colorID AND v.visible = 0 AND p.name LIKE '%".$query."%'
             LIMIT ".$begin.",5
         ";
         $result = mysqli_query($this->con, $sql);
@@ -52,13 +54,15 @@ class ProductModel extends connect {
         return $rows;
     }
 
-    public function getAllTrashProduct(){
+    public function getAllTrashProduct($query){
         $sql = "
-            SELECT p.id 
+            SELECT v.id AS variantid, v.quantity AS quantity, p.name AS phonename, c.name AS category, cl.color, v.price, v.size, img.image
             FROM phone p 
-            LEFT JOIN image i ON p.id = i.id 
-            LEFT JOIN variant v ON p.id = v.id 
-            WHERE p.visible = 0
+            LEFT JOIN category c ON p.category = c.id 
+            LEFT JOIN variant v ON p.id = v.phoneID 
+            LEFT JOIN color cl ON p.id = cl.phoneID 
+            LEFT JOIN (SELECT * FROM image ig GROUP BY ig.phoneID, ig.colorID) AS img ON p.id = img.phoneID 
+            WHERE p.visible = 1 AND cl.colorID = v.colorID AND img.colorID = v.colorID AND v.visible = 0 AND p.name LIKE '%".$query."%'
         ";
         $result = mysqli_query($this->con, $sql);
         $rows = [];
