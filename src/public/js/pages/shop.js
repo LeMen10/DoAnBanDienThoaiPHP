@@ -107,3 +107,9 @@ const changeSortDropDown = (event) => {
 
     changeParamInUrl(param, selectedOption, currentUrl);
 };
+
+//chuyển trang detail
+function showDetail(phoneID)
+{
+    window.location.href = "index.php?ctrl=detail&phoneID="+ phoneID;
+}
