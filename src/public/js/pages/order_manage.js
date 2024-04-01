@@ -5,11 +5,12 @@ function update(id, select) {
     updateStatus(id, value);
 }
 function search() {
-    var id;
+    
     var input = document.getElementById("searchInput");
     var ten = input.value;
-    Search(ten);
-    // handle(id);
+    SearchOrder(ten.trim());
+    // SortByDate();
+    
 
 }
 function handle(id) {
@@ -20,7 +21,7 @@ function handle(id) {
         else LoadOrderDetail(id);
     }
 }
-const Search = (ten) => {
+const SearchOrder = (ten) => {
     return $.ajax({
         type: 'post',
         url: 'index.php?ctrl=order_manage&act=Search_Admin',
@@ -28,7 +29,7 @@ const Search = (ten) => {
         dataType: 'json',
         success: res => {
             if (res.search) {
-                console.log(res.search);
+                
                 var a = "";
                 document.getElementById("body").innerHTML = "";
                 res.search.forEach(element => {
@@ -74,8 +75,8 @@ const Search = (ten) => {
                         "<tr>" +
                         "<td class='empty-" + element["id"] + "' colspan='7'></td>" +
                         " </tr>";
-                        console.log(element); 
-                                 document.getElementById("body").innerHTML += a;
+                        
+                        document.getElementById("body").innerHTML += a;
 
                 })
 
@@ -176,6 +177,28 @@ function LoadOrderDetail(id) {
             }
 
 
+        },
+        error: err => {
+            console.log(err);
+        }
+    })
+}
+
+const SortByDate = () => {
+    return $.ajax({
+        type: 'post',
+        url: 'index.php?ctrl=order_manage&act=SortDate',
+        data: {  },
+        dataType: 'json',
+        success: res => {
+          if(res.success){
+            const sortOrder = res.sort;
+            console.log(sortOrder);
+          }
+          else {
+            console.log('eror',res.message);
+          }
+        
         },
         error: err => {
             console.log(err);

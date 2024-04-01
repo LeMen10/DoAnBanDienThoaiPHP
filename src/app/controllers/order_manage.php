@@ -15,13 +15,17 @@ class order_manage extends Controller
         $page = isset($_GET["page"]) ? $_GET["page"] : 1;
         $orders = $this->order_model->GetAllOrderByPage($page);
         $quantity = $this->order_model->GetQuantityOrder();
+        
         // $id = $_POST['id_product'];
         $order = $this->order_model->GetAllOrder();
         // $order_detail = $this->order_model->GetDetailOrderProduct($id);
 
-        $sort = $this->order_model->SortByDate();
-        return $this->view('main_admin_layout', ['page' => 'order_admin', 'order' => $order, 'orders'=> $orders, 'quantity'=> $quantity, 'sort' => $sort]);
+        //$sort = $this->order_model->SortByDate();
+        return $this->view('main_admin_layout', ['page' => 'order_admin', 'order' => $order, 'orders'=> $orders, 'quantity'=> $quantity]);
+        // return $this->view('main_admin_layout', ['page' => 'order_admin', 'order' => $order, 'orders'=> $orders, 'quantity'=> $quantity]);
+
     }
+
     public function GetDetailProduct(){
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'];
@@ -51,16 +55,12 @@ class order_manage extends Controller
         }
     }
 
-    // public function SortOrderStatus(){
-    //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //         // $date = $_POST['date'];
+    public function SortDate(){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $sort = $this->order_model->SortByDate();
             
-           
-    //         $isDate = $this->order_model->SortByDate();
-            
-    //         echo json_encode(['success'=>true, 'isSuccess'=> $isDate]);
-    //     }
-    // }
-    
+            echo json_encode(['success'=>true, 'sort'=> $sort]);
+        }
+    }
     
 }

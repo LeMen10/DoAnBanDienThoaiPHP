@@ -1,17 +1,25 @@
-var email, password, icon_close, checkShowPass;
+var email, password ,icon_close, checkShowPass;
 $(document).ready(() => {
     email = document.getElementById("input_email");
     password = document.getElementById("input_pass");
     checkShowPass = document.getElementById("show_passs");
-    console.log(checkShowPass);
+    
     checkShowPass.addEventListener('change', ShowPass);
 
     document.getElementById("input_email").addEventListener('change', validateEmail);
     document.getElementById("input_email").addEventListener('change', validateEmail);
     document.getElementById("btn_Login").addEventListener('click', handleLogin);
+
+    document.getElementById("Forgotten_password").addEventListener('click', FormForgotPassword);
     icon = document.getElementById("icon_close");
     icon.addEventListener('click', close_formLogin);
 })
+function FormForgotPassword() {
+    
+    window.location.href = "index.php?ctrl=forgot_password";
+    // window.location.href = "index.php?ctrl=forgot";
+
+}
 function handleLogin() {
     if (email.value == "" || password.value == "") {
         alert("Vui lòng nhập đầy đủ thông tin");

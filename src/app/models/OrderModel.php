@@ -23,10 +23,12 @@ class OrderModel extends connect{
         return $quantity;
     }
     public function GetAllOrderByPage($page) {
-        $begin = ($page * 3) - 3;
+        $begin = ($page * 5) - 5;
         $query = "SELECT o.id, c.name, o.totalPayment, o.date , o.orderStatus 
         FROM `customer` c, `order` o WHERE c.id = o.customerID
-        LIMIT $begin, 3;";
+        ORDER BY o.date desc
+        LIMIT $begin, 5;";
+        
         $result = mysqli_query($this->con, $query);
         $order = [];
         while ($row = mysqli_fetch_assoc($result)) {

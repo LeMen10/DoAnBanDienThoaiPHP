@@ -19,8 +19,7 @@ class register extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {           
             $email = $_POST['email'];
             $check = $this->acc_model->CheckRegister($email);
-            // $acc = $this->acc_model->LoadAllCustomer($email,$password);
-            // echo json_encode(['success'=>true, 'acc'=> $acc]);
+          
             echo json_encode(['success'=>true, 'check' => $check]);
         }
     }
