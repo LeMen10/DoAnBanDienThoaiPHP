@@ -472,7 +472,8 @@ input {
 }
 
 select {
-    width: 100%;
+    width: 138px;
+    
     background: #eceff8;
     border: 2px solid #eceff8;
     height: 45px;
@@ -1961,15 +1962,17 @@ textarea:focus {
 }
 
 /*Header Middle Wishlist*/
+
 .hm-wishlist {
     float: right;
     position: relative;
+   
 }
 
 .hm-wishlist>a {
     border: 1px solid #e1e1e1;
     font-size: 20px;
-    color: #242424;
+    color: black;
     width: 45px;
     text-align: center;
     height: 45px;
@@ -1981,6 +1984,52 @@ textarea:focus {
 .hm-wishlist>a:hover {
     cursor: pointer;
 }
+/* lớp giả */
+.hm-wishlist::after {
+    content: "";
+    position: absolute;
+    display: block;
+    top: 30px;
+    left: 0px;
+    width: 60px;
+    height: 30px;
+    background-color: transparent; 
+}
+
+
+/* Ẩn user-menu mặc định */
+#user-menu {
+    display: none;
+    position: absolute;
+    /* display: flex;  */
+    flex-direction: column;  
+    right: 0;
+    width: 75px;
+    background-color: #000;
+    color: wheat;
+    cursor: pointer;
+    font-size: 18px;
+    z-index: 20;
+
+    
+}
+
+#user-menu li a:hover {
+    text-decoration: underline;
+    color: white;
+
+}
+/* Hiển thị user-menu khi di chuột vào user-container */
+.user-container:hover #user-menu {
+    display: flex;
+    width: 102px;
+    background-color: gray;
+    border: 1px solid black;
+    border-radius: 14px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
 
 /*Header Middle Minicart*/
 .hm-minicart {
@@ -4627,6 +4676,10 @@ thead {
     background-color: #f6f6f6;
 }
 
+.flex-0 {
+    flex: 0;
+}
+
 .your-order-table table th {
     border-top: medium none;
     font-weight: normal;
@@ -4877,6 +4930,22 @@ thead {
 .fa-solid.fa-xmark {
     cursor: pointer;
 }
+#btn_register{
+    width: 106px;
+    line-height: 100%;
+    padding-top: 8px;
+}
+.process{
+    width: 100%;
+}
+.process-register{
+    display: flex;
+    justify-content: space-between;
+}
+.dang-Ky{
+    font-weight: 600;
+    color: #000;
+}
 
 /*-- Place Order --*/
 .register-button {
@@ -4892,7 +4961,7 @@ thead {
     font-weight: 400;
     text-transform: uppercase;
     color: #ffffff;
-    background-color: #363f4d;
+    background-color: #b194ac;
     border-radius: 3px;
     transition: all 0.3s ease-in-out;
 }
@@ -6669,392 +6738,37 @@ span.required {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.3);
 }
+#btn_Login{
+    width: 54px;
+    border-radius: 20px
+}
 
 /* cart */
 .li-product-thumbnail a img {
     width: 68px;
 }
-
-/* Purchase order */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
+/* forgotten password */
+.ok-forgotPass-button{
+    border-radius: 15px;
 }
 
-.status-purchase-order {
+/* forgot password trang reseet password */
+.processing{
     display: flex;
-    justify-content: space-between;
-    list-style-type: none;
-    background-color: #fed700;
-    padding: 0;
-}
-
-.empty-list {
-    margin: 30px;
-    font-size: 30px;
-    font-weight: 700;
-    color: gray;
-    text-align: center;
-}
-
-.status-li {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 5px;
-    color: black;
-    line-height: 35px;
-    font-weight: 500;
-    cursor: pointer;
-}
-
-.status-li.status-active {
-    border-bottom: 2px solid red;
-    color: red;
-    font-weight: 600;
-}
-.search-purchase-order {
-    margin-top: 10px;
-    position: relative;
-    height: 45px;
-    border-radius: 5px;
-    border: 1px solid #e1e1e1;
-}
-
-#search-purchase {
-    height: 45px;
-    font-size: 13px;
-    color: #a5a5a5;
-    background: transparent;
-    border: none;
     width: 100%;
-    padding: 0 60px 0 60px;
-}
-
-.search-purchase-order .search-order-button {
-    border: none;
-    background: #fed700;
-    color: #242424;
-    font-size: 20px;
-    width: 45px;
-    border-radius: 0 2px 2px 0;
-    height: 45px;
-    line-height: 45px;
-    position: absolute;
-    left: 0;
-    top: 0;
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
-}
-
-.purchase-order-item {
-    margin: 10px 0;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #f7f7f7;
-    border: 1px solid #e1e1e1;
-}
-
-.purchase-order-item .order-info {
-    display: flex;
     align-items: center;
-    justify-content: space-between;
-    font-size: 18px;
+}
+#bt_sendEmail{
+    height: 32px;
+    width: 82px;
+}
+
+.mt-0{
     font-weight: 700;
+    color: black;
     height: 30px;
-}
-
-.purchase-order-item .partition-line {
-    margin: 5px 0;
-    width: 100%;
-    height: 1px;
-    padding: 0 10px;
-    border-bottom: 1px solid black;
-}
-
-.purchase-order-item .product-list {
-    margin: 10px 0;
-}
-
-.product-list .product-info {
-    width: 100%;
-    display: flex;
-    font-size: 20px;
-    font-weight: 500;
-    border-bottom: 1px solid black;
-    padding-bottom: 10px;
-}
-
-.product-list .product-info .image_product {
-    margin-right: 10px;
-}
-
-.detail-info {
-    width: 100%;
-    margin: 10px 0;
-    justify-content: center;
-}
-
-.detail-info .product-name {
-    font-size: 24px;
-    font-weight: 500;
-}
-
-.product-list .product-info .price-content {
-    justify-content: space-between;
-    display: flex;
-    font-size: 16px;
-    font-weight: 700;
-}
-
-.price-content div {
-    display: flex;
-    justify-content: space-between;
-}
-
-.payment-info {
-    display: flex;
-    justify-content: space-between;
-    font-size: 18px;
-    font-weight: 600;
-    text-align: center;
-}
-
-.payment-info .more-info {
-    text-align: right;
-}
-
-.payment-info .more-info .change-info {
-    border: none;
-    margin-right: 10px;
-    font-size: 14px;
-    color: black;
-    position: relative;
-    background: #fed700;
-    cursor: pointer;
-    font-weight: 500;
-    text-transform: capitalize;
-    padding: 13px 20px;
-    border-radius: 2px;
-    transition: all 0.5s ease-in-out;
-}
-
-.payment-info .more-info .change-info:hover {
-    background: #333333;
-    color: #ffffff;
-    text-shadow: 0 0 10px rgba(255, 240, 33, 0.9), 0 0 10px rgba(255, 245, 48, 0.8), 0 0 10px rgba(255, 234, 40, 0.8);
-}
-
-.payment-info .more-info .cancel-order {
-    border: none;
-    font-size: 14px;
-    color: white;
-    position: relative;
-    background: #e80f0f;
-    cursor: pointer;
-    font-weight: 500;
-    text-transform: capitalize;
-    padding: 13px 20px;
-    border-radius: 2px;
-    transition: all 0.3s ease-in-out;
-}
-
-.payment-info .more-info .cancel-order:hover {
-    background: #333333;
-    color: #ffffff;
-    text-shadow: 0 0 10px rgba(255, 20, 20, 0.9), 0 0 10px rgba(255, 46, 46, 0.8), 0 0 10px rgba(237, 7, 7, 0.8);
-}
-
-.purchase-order-pagination
-{
-    text-align: center;
-}
-.purchase-order-pagination .page-Index
-{
-    font-size: 20px;
-    margin: 10px;
-}
-.empty-list-order
-{
-    text-align: center;
-    font-size: 30px;
-    margin: 20px;
-    color: #888;
-    font-weight: 700;
-}
-.container .form-container {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
-.container .form-container h2 {
-    margin-bottom: 20px;
-}
-
-/* detail order */
-.detail-purchase-order {
-    display: block;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #f7f7f7;
-    margin-bottom: 30px;
-}
-.title-order
-{
-    display: flex;
-}
-
-.detail-purchase-order .title-order a {
-    text-align: left;
-    width: 10%;
-    text-decoration: none;
-    color: #333;
-}
-
-.detail-purchase-order .title-order h1 {
-     text-align: left;
-    width: 50%;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.detail-purchase-order .title-order h2 {
-    text-align: right;
-    width: 40%;
-    font-size: 16px;
-    font-weight: normal;
-}
-.status-order-map
-{
-    text-align: center;
-}
-.status-order-map .item-map {
-    width:20%;
-    position: relative;
-    display: inline-block;
-    text-align: center;
-    margin-top: 40px;
-    padding: 50px 20px;
-}
-
-.status-order-map .item-map .circle {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    z-index: 12;
     width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 5px solid gray;
-    background-color: white; 
-    transform: translate(-50%, 0);
 }
-.status-order-map .item-map .circle.active {
-    border: 5px solid green;
-}
-.status-order-map .item-map .circle.red-active {
-    border: 5px solid red;
-}
-
-.status-order-map .item-map .line-map {
-    position: absolute;
-    left: 50%;
-    top: 20px;
-    width: 100%;
-    height: 5px;
-    z-index: 10;
-    background-color: gray;
-    transform: translate(0, -25%);
-}
-.status-order-map .item-map .line-map.active {
-    background-color: green;
-}
-.status-order-map .item-map .line-map.red-active {
-    background-color: red;
-}
-
-.status-label {
-    margin-top: 5px;
-    line-height: 20px;
-}
-.cancel-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-}
-.cancel-form {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    border-radius: 14px;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    z-index: 1000;
-}
-.cancel-form.cancel-form-active,
-.cancel-overlay.cancel-form-active
-{
-    display: block;
-}
-.cancel-body {
-    display: flex;
-    align-items: center;
-    margin: 20px;
-}
-
-.cancel-body i {
-    color:black;
-    margin-right: 10px;
-    font-size: -webkit-xxx-large;
-}
-.cancel-body span {
-    font-size: 24px;
-    color: red;
-    font-weight: 600;
-}
-.cancel-form .cancel-footer .confirm-btn
-{
-    background-color: #fed700;
-    border: none;
-    color: black;
-    font-weight: 500;
-}
-.cancel-form .cancel-footer .confirm-btn:hover
-{
-    background-color: red;
-    color: white;
-}
-
-.cancel-form .close-btn {
-    background: none;
-    border: none;
-    color: #aaa;
-    font-size: 24px;
-    cursor: pointer;
-    position: absolute;
-    top: 5px;
-    right: 5px;
-}
-.cancel-form .close-btn:hover
-{
-    color: red;
-}
-
-.cancel-footer {
-    text-align: center;
-}
-
 
 /*----------------------------------------------------------------------------------------------------*/
 /*------------------------------------------> The End <-----------------------------------------------*/

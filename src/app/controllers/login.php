@@ -10,7 +10,7 @@ class login extends Controller
     }
     public function index()
     {
-        return $this->view('main_layout', ['page' => 'login']);
+        return $this->view('null_layout', ['page' => 'login']);
     }
     public function Login(){
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

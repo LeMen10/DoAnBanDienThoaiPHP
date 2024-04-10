@@ -19,8 +19,7 @@ class register extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {           
             $email = $_POST['email'];
             $check = $this->acc_model->CheckRegister($email);
-            // $acc = $this->acc_model->LoadAllCustomer($email,$password);
-            // echo json_encode(['success'=>true, 'acc'=> $acc]);
+          
             echo json_encode(['success'=>true, 'check' => $check]);
         }
     }
@@ -31,10 +30,8 @@ class register extends Controller
             $lastName = $_POST['lastName'];
             $email = $_POST['email'];
             $password = $_POST['password'];
-            // $address = $_POST['address'];
-            $phone = $_POST['phone'];
             
-            $check = $this->acc_model->Register($firstName,$lastName,$email,$password,$phone);
+            $check = $this->acc_model->Register($firstName,$lastName,$email,$password);
             echo json_encode(['success'=>true, 'check' => $check]);
         }
     }

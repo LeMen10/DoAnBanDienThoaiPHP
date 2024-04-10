@@ -14,6 +14,7 @@ class home extends Controller
         // $products = $this->product_model->getAll();
         
         return $this->view('main_layout', ['page' => 'home']);
+
     }
     public function show()
     {
