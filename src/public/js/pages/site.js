@@ -1,27 +1,51 @@
-var icon;
+var icon, menuOption, log_out;
 $(document).ready(() => {
-    icon = document.querySelector('#avatar');
-    const id = parseInt(sessionStorage.getItem('token').replace(/"/g,""));
+    log_out = document.querySelector(".log_out");
+    menuOption = document.querySelector(".hm-wishlist");
+    if(menuOption == null) {
+        return;
+    }
+    const token = sessionStorage.getItem('token');
+    if(token == null){
+        document.getElementById("avatar").addEventListener('click' ,formLogIn );
+        
+    }
+    else{
+        const id = parseInt(token.replace(/"/g, "")) ;
+        LoadName(id);
+        
+    }
     
-    LoadName(id);
 })
-function LoadName(id){
+function LoadName(id) {
     return $.ajax({
         type: 'post',
         url: 'index.php?ctrl=home&act=getUserName',
         data: { id },
         dataType: 'json',
         success: res => {
-            var name_split = res.user['name'][0].toUpperCase();
-            icon.innerHTML = name_split;
             
+            menuOption.innerHTML += "<ul id='user-menu' >" +
+                                        "<li><a >Đơn mua</a></li>" +
+                                        "<li><a class='log_out' onClick = 'Log_Out()'>Đăng xuất</a></li>" +
+                                    "</ul>"
+            icon = document.querySelector('#avatar');
+            var name_split = res.user['name'][0].toUpperCase();
+            icon.textContent = name_split;
+
+
         },
         error: err => {
             console.log(err);
         }
-
     })
-    
+}
+function Log_Out(){
+    sessionStorage.removeItem('token');
+    window.location.href = 'index.php?ctrl=login';
+}
+function formLogIn() {
+    window.location.href = 'index.php?ctrl=login';
 }
 
 function changeParamInUrl(param, paramValue, url) {

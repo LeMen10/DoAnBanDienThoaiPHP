@@ -32,6 +32,7 @@
     font-size: 32px;
 }
 
+
 /*** Button ***/
 .btn {
     transition: .5s;
@@ -282,9 +283,162 @@
 }
 
 /* product */
-.image_product{
+.image_product {
     width: 18%;
 }
-.product-item{
+
+.product-item {
     background-color: #fff;
+}
+
+/* ẩn hiện menu */
+.nav-item {
+    position: relative;
+}
+
+.nav-item:hover .dropdown-menu {
+    display: block;
+
+}
+
+/* =============================================== */
+
+.detail_product {
+    box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+.product_info {
+    text-align: center;
+}
+
+#product-item {
+    text-align: center;
+}
+
+.profile {
+    padding-top: 5px;
+    display: flex;
+    border-radius: 10px;
+    padding: 5px 10px;
+    text-align: center;
+
+    justify-content: space-between;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+.sub_profile {
+    display: flex;
+}
+
+.title_profile {
+    font-weight: bold;
+}
+
+.order_product {
+
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+}
+
+.order_product .title_order_product {
+    /* justify-content: center; */
+    font-weight: bold;
+    text-align: center;
+    padding: 3px 186px;
+    /* align-items: center; */
+}
+
+.detail {
+    display: flex;
+    padding: 5px 20px;
+    justify-content: space-between;
+}
+
+.sp {
+    justify-content: center;
+}
+
+.img_pro {
+    height: 60px;
+    width: 60px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: red;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #1cdb6c;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #1cdb6c;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.mySelect {
+    height: 30px;
+}
+.disable-vertical{
+    vertical-align: unset !important;
+}
+.time span{
+    margin-right: 50px;
+}
+.select_tg{
+    border-radius: 38px;
+}
+#searchInput{
+    background-color: #fff;
+    width: 300px;
+    margin-right: 20px;
+    height: 30px;
 }

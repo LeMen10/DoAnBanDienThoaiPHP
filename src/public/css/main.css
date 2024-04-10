@@ -472,7 +472,8 @@ input {
 }
 
 select {
-    width: 100%;
+    width: 138px;
+    
     background: #eceff8;
     border: 2px solid #eceff8;
     height: 45px;
@@ -1886,15 +1887,17 @@ textarea:focus {
 }
 
 /*Header Middle Wishlist*/
+
 .hm-wishlist {
     float: right;
     position: relative;
+   
 }
 
 .hm-wishlist>a {
     border: 1px solid #e1e1e1;
     font-size: 20px;
-    color: #242424;
+    color: black;
     width: 45px;
     text-align: center;
     height: 45px;
@@ -1906,6 +1909,52 @@ textarea:focus {
 .hm-wishlist>a:hover {
     cursor: pointer;
 }
+/* lớp giả */
+.hm-wishlist::after {
+    content: "";
+    position: absolute;
+    display: block;
+    top: 30px;
+    left: 0px;
+    width: 60px;
+    height: 30px;
+    background-color: transparent; 
+}
+
+
+/* Ẩn user-menu mặc định */
+#user-menu {
+    display: none;
+    position: absolute;
+    /* display: flex;  */
+    flex-direction: column;  
+    right: 0;
+    width: 75px;
+    background-color: #000;
+    color: wheat;
+    cursor: pointer;
+    font-size: 18px;
+    z-index: 20;
+
+    
+}
+
+#user-menu li a:hover {
+    text-decoration: underline;
+    color: white;
+
+}
+/* Hiển thị user-menu khi di chuột vào user-container */
+.user-container:hover #user-menu {
+    display: flex;
+    width: 102px;
+    background-color: gray;
+    border: 1px solid black;
+    border-radius: 14px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
 
 /*Header Middle Minicart*/
 .hm-minicart {
@@ -4546,6 +4595,10 @@ thead {
     background-color: #f6f6f6;
 }
 
+.flex-0 {
+    flex: 0;
+}
+
 .your-order-table table th {
     border-top: medium none;
     font-weight: normal;
@@ -4793,6 +4846,22 @@ thead {
 .fa-solid.fa-xmark {
     cursor: pointer;
 }
+#btn_register{
+    width: 106px;
+    line-height: 100%;
+    padding-top: 8px;
+}
+.process{
+    width: 100%;
+}
+.process-register{
+    display: flex;
+    justify-content: space-between;
+}
+.dang-Ky{
+    font-weight: 600;
+    color: #000;
+}
 
 /*-- Place Order --*/
 .register-button {
@@ -4808,7 +4877,7 @@ thead {
     font-weight: 400;
     text-transform: uppercase;
     color: #ffffff;
-    background-color: #363f4d;
+    background-color: #b194ac;
     border-radius: 3px;
     transition: all 0.3s ease-in-out;
 }
@@ -6582,10 +6651,37 @@ span.required {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.3);
 }
+#btn_Login{
+    width: 54px;
+    border-radius: 20px
+}
 
 /* cart */
 .li-product-thumbnail a img{
     width: 68px;
+}
+
+/* forgotten password */
+.ok-forgotPass-button{
+    border-radius: 15px;
+}
+
+/* forgot password trang reseet password */
+.processing{
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+#bt_sendEmail{
+    height: 32px;
+    width: 82px;
+}
+
+.mt-0{
+    font-weight: 700;
+    color: black;
+    height: 30px;
+    width: 40px;
 }
 
 /*----------------------------------------------------------------------------------------------------*/

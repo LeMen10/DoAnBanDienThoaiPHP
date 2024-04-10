@@ -2,18 +2,7 @@
 require './app/database/connect.php';
 
 class AccountModel extends connect{
-    // public function CheckLogin($email, $password) {
-    //     $query = "SELECT * FROM customer WHERE email = '$email' AND password = '$password'";
-    //     $check = false;
-    //     $result = mysqli_query($this->con, $query);
-    //     // if (!$result) {
-    //     //     $check = false;
-    //     // }
-    //     if ($row = mysqli_fetch_assoc($result)) {
-    //         $check = true;
-    //     }
-    //     return $check;
-    // }
+
     
         public function CheckLogin($email, $password) {
             $query = "SELECT customer.* , author.name AS authorName FROM customer, author WHERE email = '$email' AND password = '$password' AND customer.author = author.ID";
@@ -29,9 +18,9 @@ class AccountModel extends connect{
         }
 
 
-    public function Register($firstName, $lastName, $email, $password, $phoneNumber){
+    public function Register($firstName, $lastName, $email, $password){
         $fullName = $firstName.' '.$lastName;
-        $sql = "INSERT INTO `customer`(`name`,`email`, `password`,`phoneNumber`) VALUES ('$fullName','$email','$password','$phoneNumber')";
+        $sql = "INSERT INTO `customer`(`name`,`email`, `password`) VALUES ('$fullName','$email','$password')";
         $check = true;
         $result = mysqli_query($this->con, $sql);
       
