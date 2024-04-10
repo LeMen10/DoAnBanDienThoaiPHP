@@ -35,17 +35,18 @@ class shop extends Controller
         $sort = isset($_GET['sort']) ? $_GET['sort'] : "default";
         $brand = isset($_GET['brand']) ? $_GET['brand'] : "";
         $weight = isset($_GET['weight']) ? $_GET['weight'] : "default";
-
+        $search = isset($_GET['search']) ? $_GET['search'] : "";
         $product_model = new ProductModel();
-        $result_6_phones = $product_model->getPhonesByPageNumber($productsPerPage, $page, $this->query_sort_option[$sort], $brand, $this->query_weight_option[$weight]);
+
+        $result_6_phones = $product_model->getPhonesByPageNumber($productsPerPage, $page, $this->query_sort_option[$sort], $brand, $this->query_weight_option[$weight], $search);
 
         if($page != 1 || $sort != "default" || $brand != "" || $weight != "default") {
             // lấy hết để hiển thị, phân trang
-            $result_all_phone = $product_model->getAllPhoneAndDetails($brand, $this->query_weight_option[$weight]);
+            $result_all_phone = $product_model->getAllPhoneAndDetails($brand, $this->query_weight_option[$weight], $search);
             $num_all_rows = count($result_all_phone);
         } else {
             // lấy hết để hiển thị, phân trang
-            $result_all_phone = $product_model->getAllPhoneAndDetails();
+            $result_all_phone = $product_model->getAllPhoneAndDetails($search);
             $num_all_rows = count($result_all_phone);
         }
 

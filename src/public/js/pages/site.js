@@ -1,3 +1,4 @@
+
 var icon, menuOption, log_out;
 $(document).ready(() => {
     log_out = document.querySelector(".log_out");
@@ -15,7 +16,6 @@ $(document).ready(() => {
         LoadName(id);
         
     }
-    
 })
 function LoadName(id) {
     return $.ajax({
@@ -23,8 +23,7 @@ function LoadName(id) {
         url: 'index.php?ctrl=home&act=getUserName',
         data: { id },
         dataType: 'json',
-        success: res => {
-            
+        success: res => {     
             menuOption.innerHTML += "<ul id='user-menu' >" +
                                         "<li><a >Đơn mua</a></li>" +
                                         "<li><a class='log_out' onClick = 'Log_Out()'>Đăng xuất</a></li>" +
@@ -32,8 +31,6 @@ function LoadName(id) {
             icon = document.querySelector('#avatar');
             var name_split = res.user['name'][0].toUpperCase();
             icon.textContent = name_split;
-
-
         },
         error: err => {
             console.log(err);
@@ -63,6 +60,15 @@ function changeParamInUrl(param, paramValue, url) {
         } 
         else {
             window.location.href = url + `&${param}=` + paramValue;
+        }
+    }
+}
+function navigateShopPage(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        var inputValue = searchBox.value.trim();
+        if (inputValue != "") {
+            window.location.href = "index.php?ctrl=shop&search=" + searchBox.value;
         }
     }
 }

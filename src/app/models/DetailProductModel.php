@@ -1,9 +1,7 @@
 <?php
 require './app/database/connect.php';
 class DetailProductModel extends Connect{
-    // public function getProductDetail($productId) {
-    //     $sql = "SELECT * FROM ";
-    // }
+
     public function getProductDetail($phoneID){
         $sql = "SELECT p.name AS phonename, p.date, p.detail, s.*, c.name AS categoryname
         FROM phone p JOIN spec s ON p.id = s.phoneID JOIN category c ON p.category = c.id

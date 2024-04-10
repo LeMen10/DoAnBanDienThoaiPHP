@@ -3,7 +3,7 @@ require './app/core/Controller.php';
 
 class home extends Controller
 {
-    private $product_model;
+    private $home_model;
     public function __construct()
     {
         $this->loadModel('HomeModel');
@@ -24,5 +24,9 @@ class home extends Controller
         $user  = $this->home_model->GetUser($id);
         echo json_encode(['success'=>true, 'user'=> $user]);
     }
-    
+    function GetSuggestion(){
+        $stringFind = $_POST['stringFind'];
+        $suggestions  = $this->home_model->GetSuggestion($stringFind);
+        echo json_encode(['success'=>true, 'suggest'=> $suggestions]);
+    }
 }

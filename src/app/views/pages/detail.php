@@ -15,6 +15,8 @@
             <div class="col-lg-5 col-md-6">
                 <div class="product-details-left">
                     <div class="product-details-images slider-navigation-1">
+                    <i class='fa-solid fa-angle-right fa-flip-horizontal' id='prevBtn'></i>
+                    <i class='fa-solid fa-angle-right' id='nextBtn'></i>
                     <?php
                         $centerSlider = "";
                         $bottomSlider = "";
@@ -27,11 +29,9 @@
                             }
                         }
                         echo $centerSlider;
-                        echo " <div class='slider-controls'>
-                        <button id='prevBtn'>Prev</button>
-                        <button id='nextBtn'>Next</button></div>";
-                        echo "<div class='product-details-thumbs slider-thumbs-1'>".$bottomSlider."
-                        </div>"
+                        echo "<div class='product-details-thumbs slider-thumbs-1'>";
+                        echo $bottomSlider;
+                        echo "<div class='overlay'></div></div>"
                         ?>
                       </div> 
                 </div>
@@ -60,17 +60,6 @@
                             echo "<h2>".$productDetail["phonename"]."</h2>
                             <span class='product-details-ref' id='category-name'>Category: ".$productDetail["categoryname"]."</span>
                             <span class='product-details-ref' id='quantity-value'>Quantity: ".$Variants[0]["quantity"]."</span>
-                            <div class='rating-box pt-20'>
-                                <ul class='rating rating-with-review-item'>
-                                    <li><i class='fa fa-star-o'></i></li>
-                                    <li><i class='fa fa-star-o'></i></li>
-                                    <li><i class='fa fa-star-o'></i></li>
-                                    <li class='no-star'><i class='fa fa-star-o'></i></li>
-                                    <li class='no-star'><i class='fa fa-star-o'></i></li>
-                                    <li class='review-item'><a href='#'>Read Review</a></li>
-                                    <li class='review-item'><a href='#'>Write Review</a></li>
-                                </ul>
-                            </div>
                             <div class='price-box pt-20'>
                                 
                                 <span class='new-price new-price-2'  id='price-value'><span>đ</span>".$Variants[0]["price"]."</span>
