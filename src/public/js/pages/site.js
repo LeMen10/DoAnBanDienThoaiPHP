@@ -47,3 +47,22 @@ function Log_Out(){
 function formLogIn() {
     window.location.href = 'index.php?ctrl=login';
 }
+
+function changeParamInUrl(param, paramValue, url) {
+    if(paramValue !== "") {
+        if(url.includes(param)) {
+            const arrCurUrlAfterSpliting = url.split("&");
+            const newArrCurUrl = arrCurUrlAfterSpliting.map((value) => {
+                if(value.includes(`${param}=`)) {
+                    const newValue = `${param}=` + paramValue;
+                    return newValue;
+                }
+                return value;
+            }).join("&");
+            window.location.href = newArrCurUrl;
+        } 
+        else {
+            window.location.href = url + `&${param}=` + paramValue;
+        }
+    }
+}

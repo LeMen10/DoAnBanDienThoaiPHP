@@ -148,6 +148,7 @@
                                 </div>
                             </div>
                             <button class='add-to-cart' type='submit'>Add to cart</button>
+                            <button class='buy-now' type='submit'>Buy now</button>
                         </form>
                     </div>";
                         }

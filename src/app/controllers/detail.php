@@ -11,10 +11,15 @@ class detail extends Controller
     }
     public function index()
     {
-        $productDetail = $this->product_model-> getProductDetail(4);
+        $phoneID = 0;
+        if(isset($_GET['phoneID']))
+        {
+            $phoneID = $_GET['phoneID'];
+        }
+        $productDetail = $this->product_model-> getProductDetail($phoneID);
         $Variants = $this->product_model->getAllProductVariants($productDetail["phoneID"]);
-        $Colors = $this->product_model->getAllColorSize(4, $Variants[0]["sizeID"]);
-        $Images = $this->product_model->getAllImage(4);
+        $Colors = $this->product_model->getAllColorSize($phoneID, $Variants[0]["sizeID"]);
+        $Images = $this->product_model->getAllImage($phoneID);
         return $this->view('main_layout', 
         ['page' => 'detail', 'productDetail' => $productDetail, 'Variants' => $Variants,
          'Colors' => $Colors, 'Images' => $Images]);
@@ -23,8 +28,6 @@ class detail extends Controller
     {
         if($_SERVER['REQUEST_METHOD'] == 'POST')
         {
-            
-            $minh = "1234567";
             $phoneID = $_POST['phoneID'];
             $sizeID = $_POST['sizeID'];
             $Colors =  $this->product_model->getAllColorSize($phoneID, $sizeID);
@@ -41,6 +44,25 @@ class detail extends Controller
             $colorID = $_POST['colorID'];
             $Variant = $this->product_model -> getVariant($phoneID, $sizeID, $colorID);
             echo json_encode(['success'=>true,'variant' => $Variant]);
+        }
+    }
+
+    public function addToCart()
+    {
+        if($_SERVER['REQUEST_METHOD'] == 'POST')
+        {
+            $phoneID = $_POST['phoneID'];
+            $sizeID = $_POST['sizeID'];
+            $colorID = $_POST['colorID'];
+            $userID = $_POST['userID'];
+            $quantity = $_POST['quantity'];
+            $Variant = $this->product_model -> getVariant($phoneID, $sizeID, $colorID);
+            $Cart = null;
+            if($this->product_model -> addToCart($Variant['id'], $quantity, $userID))
+            {
+                $Cart = $this->product_model -> getTotalCart($userID);
+            }
+            echo json_encode(['success'=>true,'cart' => $Cart]);
         }
     }
     public function show()
