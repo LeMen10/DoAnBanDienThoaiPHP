@@ -16,4 +16,14 @@ class HomeModel extends connect{
             }
             return $user;
         }
+
+        public function GetSuggestion($stringFind) {
+            $query = "SELECT name FROM phone WHERE name LIKE N'%".$stringFind."%'";
+            $result = mysqli_query($this->con, $query);
+            $suggestions = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $suggestions[] = $row;
+            }
+            return $suggestions;
+        }
 }

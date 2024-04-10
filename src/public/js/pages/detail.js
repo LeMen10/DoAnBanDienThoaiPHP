@@ -1,9 +1,14 @@
 var elementPhoneID, elementSizeID, elementColorID, quantityInput;
+var slides, images;
+var currentSlide = 0, totalSlides = 0;
 $(document).ready(() => {
     elementPhoneID = document.querySelector(`.product-desc`);
     elementSizeID = document.getElementById("sizeSelect");
     elementColorID = document.getElementById("colorSelect");
     quantityInput = document.querySelector(".cart-plus-minus-box");
+    slides = document.querySelectorAll('.lg-image');
+    images = document.querySelectorAll('.sm-image');
+    totalSlides = slides.length;
     document.getElementById("sizeSelect").addEventListener("change", handleSizeChange);
     document.getElementById("colorSelect").addEventListener("change", handleColorChange);
     document.getElementById("moreInfoBtn").addEventListener('click', handleMoreInformation);
@@ -13,8 +18,19 @@ $(document).ready(() => {
         event.preventDefault();
         handleAddCart();
     });
-    document.addEventListener("DOMContentLoaded", addSliderEvent);
     addEventQuantityInput();
+    // Thiết lập slider tự động
+    slides[currentSlide].classList.add('active');
+    setInterval(nextSlide, 10000);
+    const overlay = document.querySelector('.overlay');
+    overlay.style.width = (100/totalSlides)+'%';
+    document.getElementById('prevBtn').addEventListener('click', function () {
+        prevSlide();
+    });
+    document.getElementById('nextBtn').addEventListener('click', function () {
+
+        nextSlide();
+    });
 })
 
 function addEventQuantityInput() {
@@ -56,14 +72,14 @@ function handleEnterKeyPress() {
     loadQuantityProduct()
         .then(quantity => {
             if (isNaN(quantityInput.value) || quantityInput.value.trim() === '') {
-                quantityInput.value = (quantity == 0? 0:1);
+                quantityInput.value = (quantity == 0 ? 0 : 1);
                 return;
             }
             if (parseInt(quantityInput.value) > quantity) {
                 quantityInput.value = quantity;
             }
             if (parseInt(quantityInput.value) <= 0) {
-                quantityInput.value = (quantity == 0? 0:1);
+                quantityInput.value = (quantity == 0 ? 0 : 1);
             }
         })
         .catch(error => {
@@ -156,8 +172,7 @@ function handleAddCart() {
     const sizeID = elementSizeID.value;
     const colorID = elementColorID.value;
     const quantity = quantityInput.value;
-    if(quantity == 0)
-    {
+    if (quantity == 0) {
         alert("Đã hết hàng!");
         return;
     }
@@ -196,41 +211,19 @@ const loadCart = (userID, phoneID, sizeID, colorID, quantity) => {
     });
 }
 
-function addSliderEvent() {
-    var currentSlide = 0;
-    var slides = document.querySelectorAll('.lg-image');
-    console.log(slides);
-    var totalSlides = slides.length;
-
-    // Hiển thị slide đầu tiên
+function nextSlide() {
+    slides[currentSlide].classList.remove('active');
+    currentSlide = (currentSlide + 1) % totalSlides;
     slides[currentSlide].classList.add('active');
-
-    // Hàm chuyển đến slide tiếp theo
-    function nextSlide() {
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide + 1) % totalSlides;
-        slides[currentSlide].classList.add('active');
-    }
-
-    // Hàm chuyển đến slide trước đó
-    function prevSlide() {
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-        slides[currentSlide].classList.add('active');
-    }
-
-    // Thiết lập slider tự động
-    var intervalId = setInterval(nextSlide, 10000);
-
-    // Bắt sự kiện click cho nút Prev
-    document.getElementById('prevBtn').addEventListener('click', function () {
-        clearInterval(intervalId); // Dừng slider tự động khi người dùng nhấp vào nút
-        prevSlide();
-    });
-
-    // Bắt sự kiện click cho nút Next
-    document.getElementById('nextBtn').addEventListener('click', function () {
-        clearInterval(intervalId);
-        nextSlide();
-    });
+    moveOverlay();
+}
+function prevSlide() {
+    slides[currentSlide].classList.remove('active');
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    slides[currentSlide].classList.add('active');
+    moveOverlay();
+}
+function moveOverlay() {
+    const overlay = document.querySelector('.overlay');
+    overlay.style.left = (100/totalSlides)*currentSlide + '%';
 }

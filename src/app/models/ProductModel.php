@@ -68,7 +68,7 @@ class ProductModel extends connect {
         return $rows;
     }
     
-    public function getAllPhoneAndDetails($brand = "", $weight = "") {
+    public function getAllPhoneAndDetails($brand = "", $weight = "", $search = "") {
         // nếu có brand
         if($brand != "") {
             // nếu có hơn 1 value trong brand
@@ -98,6 +98,7 @@ class ProductModel extends connect {
                 LEFT JOIN spec s ON p.`id` = s.`phoneID`
                 ". $query_brand ."
                 ".$query_weight."
+                ".($search != "" ? ("WHERE p.`name` LIKE N'%".$search."%'"): "")."
                 GROUP BY p.`id`";
 
         $result = mysqli_query($this->con, $sql);
@@ -108,7 +109,7 @@ class ProductModel extends connect {
         return $rows;
     }
     
-    public function getPhonesByPageNumber($productsPerPage, $page, $sort, $brand, $weight = ""){
+    public function getPhonesByPageNumber($productsPerPage, $page, $sort, $brand, $weight = "", $search = ""){
         // nếu có brand
         if($brand != "") {
             // nếu có hơn 1 value trong brand
@@ -140,6 +141,7 @@ class ProductModel extends connect {
                 LEFT JOIN spec s ON p.`id` = s.`phoneID`
                 ". $query_brand ."
                 ".$query_weight."
+                ".($search != "" ? ("WHERE p.`name` LIKE N'%".$search."%'"): "")."
                 GROUP BY p.`id` 
                 ".$sort."
                 LIMIT $begin, $productsPerPage";
