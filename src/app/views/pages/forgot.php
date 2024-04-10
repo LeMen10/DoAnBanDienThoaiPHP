@@ -1,6 +1,6 @@
 <div class="modal-cus">
     <div class='modal-overlay'>
-        <img src="public/img/banner/1_1.jpg" alt="" class="w-100">
+        <img src="public/img/banner/resetPassword.jpg" alt="" class="w-100">
     </div>
 
     <div class="modal-body col-sm-12 col-md-12 col-xs-12 col-lg-6">
@@ -26,18 +26,18 @@
                         <input name= "password_RS" id="input_repeat_pass_RS" class="mb-0 js_input_pass" type="password" placeholder="Password">
                         <div class="error" id="error_passwordRe_RS" >Không trùng với Password.</div>
                     </div>
-                    
-                    <div class="col-md-8">
-                        <div class="check-box d-inline-block ml-0 ml-md-2 mt-10">
-                            <input type="checkbox" id="show_pass_RS">
-                            <label for="show_pass_RS">Show pass</label>
+                    <div class="processing">
+                        <div class="col-md-8">
+                            <div class="check-box d-inline-block ml-0 ml-md-2 mt-10">
+                                <input type="checkbox" id="show_pass_RS">
+                                <label for="show_pass_RS">Show pass</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <button name="bt_ok" id="bt_ok_RS" class="ok-forgotPass-button mt-0">OK</button>
                         </div>
                     </div>
-                    
-                    <div class="col-md-12">
-                        <button name="bt_ok" id="bt_ok_RS" class="ok-forgotPass-button mt-0">OK</button>
-                    </div>
-                 
                 </div>
             </div>
         <!-- </form> -->

@@ -11,7 +11,7 @@
 ?> -->
 <div class="modal-cus">
     <div class='modal-overlay'>
-        <img src="public/img/banner/1_1.jpg" alt="" class="w-100">
+        <img src="public/img/banner/login.jpg" alt="" class="w-100">
     </div>
 
     <div class="modal-body col-sm-12 col-md-12 col-xs-12 col-lg-6">
@@ -41,9 +41,13 @@
                     <div class="col-md-4 mt-10 mb-20 text-left text-md-right">
                         <a id="Forgotten_password" href="#"> Forgotten password</a>
                     </div>
-                    <div class="col-md-12">
-                        <button name="bt_login" id="btn_Login" class="login-button mt-0">Login</button>
+                    <div class="process">
+                        <div class="col-md-12 process-register">
+                            <button name="bt_login" id="btn_Login" class="login-button mt-0">Login</button>
+                            <a class="dang-Ky" href="index.php?ctrl=register">Đăng ký tài khoản.</a>
+                        </div>
                     </div>
+                    
                  
                 </div>
             </div>

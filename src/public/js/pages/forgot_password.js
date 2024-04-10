@@ -1,4 +1,4 @@
-var email;
+var email, close;
 $(document).ready(() => {
     email = document.getElementById("input_email");
     
@@ -6,7 +6,8 @@ $(document).ready(() => {
     
 
     document.getElementById("bt_sendEmail").addEventListener('click', handle);
-
+    close = document.getElementById("icon_close");
+    close.addEventListener('click', close_formLogin);
     
    
 })
@@ -74,5 +75,9 @@ function sendLink() {
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     console.log(xhttp.setRequestHeader)
     xhttp.send("email=" + email);
+
+}
+function close_formLogin() {
+    window.location.href = "index.php";
 
 }

@@ -1,4 +1,4 @@
-var email,password,confirmPassword, show_pass;
+var email,password,confirmPassword, show_pass, close;
 $(document).ready(() => {
     email = document.getElementById("email_RS");
     password = document.getElementById("input_pass_RS");
@@ -9,7 +9,9 @@ $(document).ready(() => {
     document.getElementById("email_RS").addEventListener('change' ,validateEmail);
     document.getElementById("input_pass_RS").addEventListener('change' ,validatePass);
     document.getElementById("input_repeat_pass_RS").addEventListener('change' ,validatePass_Repass );
-    
+    close = document.getElementById("icon_close");
+    close.addEventListener('click', close_formLogin);
+
     document.getElementById("bt_ok_RS").addEventListener('click' ,handle );
 })
 function handle() {
@@ -124,4 +126,8 @@ function ShowPass() {
         confirmPassword.type = "password";
         password.type = "password";
     }
+}
+function close_formLogin() {
+    window.location.href = "index.php";
+
 }

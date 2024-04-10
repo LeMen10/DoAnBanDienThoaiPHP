@@ -1,6 +1,6 @@
 <div class="modal-cus">
     <div class='modal-overlay'>
-        <img src="public/img/banner/1_1.jpg" alt="" class="w-100">
+        <img src="public/img/banner/forgotPassword.jpg" alt="" class="w-100">
     </div>
 
     <div class="modal-body col-sm-12 col-md-12 col-xs-12 col-lg-6">

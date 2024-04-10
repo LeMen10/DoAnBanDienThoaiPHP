@@ -1,4 +1,4 @@
-var firstName,lastName, address,addressMail, phone, password, confirmPassword , icon; 
+var firstName,lastName, address,addressMail, phone, password, confirmPassword , icon, close; 
 
 $(document).ready(() => {
     firstName = document.getElementById(`FirstName`);
@@ -13,6 +13,8 @@ $(document).ready(() => {
     document.getElementById("Email").addEventListener('change' ,validateEmail );
     document.getElementById("Password").addEventListener('change' ,validatePass);
     document.getElementById("Confirm_Password").addEventListener('change' ,validatePass_Repass );
+    close = document.getElementById("icon_close");
+    close.addEventListener('click', close_formLogin);
 
     document.getElementById("btn_register").addEventListener('click' ,handleRegister );
 })
@@ -141,7 +143,10 @@ function validatePass(){
     return check;
 
 }
+function close_formLogin() {
+    window.location.href = "index.php";
 
+}
 
 
 

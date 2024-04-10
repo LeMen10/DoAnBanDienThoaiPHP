@@ -4582,6 +4582,10 @@ thead {
     background-color: #f6f6f6;
 }
 
+.flex-0 {
+    flex: 0;
+}
+
 .your-order-table table th {
     border-top: medium none;
     font-weight: normal;
@@ -4829,6 +4833,22 @@ thead {
 .fa-solid.fa-xmark {
     cursor: pointer;
 }
+#btn_register{
+    width: 106px;
+    line-height: 100%;
+    padding-top: 8px;
+}
+.process{
+    width: 100%;
+}
+.process-register{
+    display: flex;
+    justify-content: space-between;
+}
+.dang-Ky{
+    font-weight: 600;
+    color: #000;
+}
 
 /*-- Place Order --*/
 .register-button {
@@ -4844,7 +4864,7 @@ thead {
     font-weight: 400;
     text-transform: uppercase;
     color: #ffffff;
-    background-color: #363f4d;
+    background-color: #b194ac;
     border-radius: 3px;
     transition: all 0.3s ease-in-out;
 }
@@ -6618,6 +6638,10 @@ span.required {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.3);
 }
+#btn_Login{
+    width: 54px;
+    border-radius: 20px
+}
 
 /* cart */
 .li-product-thumbnail a img{
@@ -6628,6 +6652,25 @@ span.required {
 .ok-forgotPass-button{
     border-radius: 15px;
 }
+
+/* forgot password trang reseet password */
+.processing{
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+#bt_sendEmail{
+    height: 32px;
+    width: 82px;
+}
+
+.mt-0{
+    font-weight: 700;
+    color: black;
+    height: 30px;
+    width: 40px;
+}
+
 /*----------------------------------------------------------------------------------------------------*/
 /*------------------------------------------> The End <-----------------------------------------------*/
 /*----------------------------------------------------------------------------------------------------*/
