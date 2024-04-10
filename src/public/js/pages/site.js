@@ -1,4 +1,4 @@
-
+var searchBox, suggestionBox;
 var icon, menuOption, log_out;
 $(document).ready(() => {
     log_out = document.querySelector(".log_out");
@@ -16,6 +16,22 @@ $(document).ready(() => {
         LoadName(id);
         
     }
+    searchBox = document.getElementById("searchInput");
+    suggestionBox = document.getElementById("suggestionBox");
+    document.querySelector('.li-btn').addEventListener("click", function (event) {
+        navigateShopPage(event);
+    });
+    searchBox.addEventListener("input", function () {
+        var inputValue = searchBox.value.trim();
+        if (inputValue === "") {
+            suggestionBox.innerHTML = "";
+            return;
+        }
+        loadSuggestion();
+    });
+    searchBox.addEventListener('keydown', function (event) {
+    navigateShopPage(event);
+    });
 })
 function LoadName(id) {
     return $.ajax({
@@ -25,7 +41,7 @@ function LoadName(id) {
         dataType: 'json',
         success: res => {     
             menuOption.innerHTML += "<ul id='user-menu' >" +
-                                        "<li><a >Đơn mua</a></li>" +
+                                        "<li><a href='index.php?ctrl=purchase_order'>Đơn mua</a></li>" +
                                         "<li><a class='log_out' onClick = 'Log_Out()'>Đăng xuất</a></li>" +
                                     "</ul>"
             icon = document.querySelector('#avatar');
@@ -71,4 +87,30 @@ function navigateShopPage(event) {
             window.location.href = "index.php?ctrl=shop&search=" + searchBox.value;
         }
     }
+}
+function loadSuggestion() {
+    stringFind = searchBox.value;
+    return $.ajax({
+        type: 'post',
+        url: 'index.php?ctrl=home&act=GetSuggestion',
+        data: { stringFind },
+        dataType: 'json',
+        success: res => {
+            suggestionBox.innerHTML = "";
+            res.suggest.forEach(item => {
+                var suggestionItem = document.createElement('div');
+                suggestionItem.textContent = item['name'];
+                suggestionItem.addEventListener('click', function () {
+                    searchBox.value = suggestionItem.textContent;
+                    suggestionBox.innerHTML = "";
+                    searchBox.focus();
+                });
+                suggestionBox.appendChild(suggestionItem);
+            });
+        },
+        error: err => {
+            console.log(err);
+        }
+
+    })
 }

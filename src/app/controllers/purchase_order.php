@@ -28,20 +28,23 @@ class purchase_order extends Controller
             $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
             $sortDate = isset($_GET['sort']) ? $_GET['sort'] : "";
             $Status =  isset($_GET['sl']) ? $_GET['sl'] : "All";
-            // if(isset($_SESSION['token']))
-            // {
-                // $id = $_SESSION['token'];
-                $id = 1;
+            if(isset($_SESSION['token']))
+            {
+                $id = $_SESSION['token'];
                 $listOrder = $this->purchaseOrder_model -> getOrdersByUserIDAndPage($id, $Status, $currentPage, $itemsPerPage, $sortDate);
                 foreach ($listOrder as &$Order) {
                     $Order['listProduct'] = $this->purchaseOrder_model ->  getListOrderProduct($Order["id"]);
                 }
                 unset($Order);
                 return $this->view('main_layout', ['page' => 'purchase_order','listOrder' => $listOrder]);
-            // }
+            }
+            else
+            {
+                return $this->view('main_layout', ['page' => 'purchase_order']);
+            }
         }
 
-        // return $this->view('main_layout', ['page' => 'purchase_order']);
+        
     }
 
     public function cancelOrder()
