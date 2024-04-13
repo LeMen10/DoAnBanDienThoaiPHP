@@ -291,7 +291,6 @@
     background-color: #fff;
 }
 
-/* ẩn hiện menu */
 .nav-item {
     position: relative;
 }
@@ -441,4 +440,13 @@ input:checked+.slider:before {
     width: 300px;
     margin-right: 20px;
     height: 30px;
+}
+
+/* trash user */
+.button-restore{
+    text-decoration: underline;
+}
+
+.button-restore:hover{
+    cursor: pointer;
 }

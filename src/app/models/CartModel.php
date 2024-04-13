@@ -8,9 +8,9 @@ class CartModel extends connect
     {
         $sql =
             'SELECT p.name, v.price, c.quantity, c.id, i.image FROM cart c ' .
-            'JOIN variant v ON c.phoneID = v.phoneID ' .
-            'JOIN image i ON c.phoneID = i.phoneID ' .
-            'JOIN phone p ON c.phoneID = p.id WHERE c.customerID = 1 GROUP BY c.id;';
+            'JOIN variant v ON c.variantID = v.id ' .
+            'JOIN image i ON v.phoneID = i.phoneID ' .
+            'JOIN phone p ON v.phoneID = p.id WHERE c.customerID = 1 AND i.colorID = v.colorID GROUP BY c.id;';
         $result = mysqli_query($this->con, $sql);
         $rows = [];
         while ($row = mysqli_fetch_assoc($result)) {
