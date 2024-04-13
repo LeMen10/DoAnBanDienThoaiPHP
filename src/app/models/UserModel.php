@@ -104,4 +104,26 @@ class UserModel extends connect
             return false;
         }
     }
+
+    public function getAllCustomerDeleted(){
+        $sql = "SELECT * FROM `customer` WHERE visible = 0";
+        $result = mysqli_query($this->con, $sql);
+        $rows = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $rows[] = $row;
+        }
+        return $rows;
+    }
+
+    public function restore_customer($id){
+        $sql = 'UPDATE customer SET visible = 1 WHERE id = ' . $id;
+        mysqli_query($this->con, $sql);
+    }
+
+    public function restore_multiple_customer($arrID){
+        $intArray = array_map('intval', $arrID);
+        $resultString = '(' . implode(', ', $intArray) . ')';
+        $sql = 'UPDATE customer SET visible = 1 WHERE id IN ' . $resultString;
+        mysqli_query($this->con, $sql);
+    }
 }

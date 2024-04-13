@@ -32,7 +32,7 @@
                                     echo "
                                         <tr class='wrap-product-item' data-id='". $item['id'] ."'>
                                             <td class='li-product-remove'>
-                                                <input type='checkbox' class='checkbox-cart'>
+                                                <input type='checkbox' class='checkbox-cart' value='". $item['id'] ."'>
                                             </td>
                                             <td class='li-product-thumbnail'><a href='#'><img src='public/img/phone_image/". $item['image'] ."' alt='Li's Product Image'></a></td>
                                             <td class='li-product-name'><a href='#'>". $item['name'] ."</a></td>
@@ -64,7 +64,7 @@
                                             </span>
                                         </li>
                                     </ul>
-                                    <a href="index.php?ctrl=checkout">Checkout</a>
+                                    <p class="btn-checkout">Checkout</p>
                                 </div>
                                 
                             </div>

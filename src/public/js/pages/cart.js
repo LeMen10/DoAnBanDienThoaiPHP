@@ -1,4 +1,12 @@
 $(document).ready(() => {
+    // const toast = require('../toast');
+    toast({
+        title: 'Thành công!',
+        message: 'Bạn đã đăng ký thành công &#128526',
+        type: 'success',
+        duration: 3000,
+    });
+    let dataID = [];
     const qtyButtonAdds = document.querySelectorAll('.qtybutton-add');
     qtyButtonAdds.forEach(element => {
         element.addEventListener('click', () => {
@@ -26,21 +34,87 @@ $(document).ready(() => {
     });
 
     const onChangeCheckbox = document.querySelectorAll('.checkbox-cart');
-    onChangeCheckbox.forEach(element => {
+
+    onChangeCheckbox.forEach((element, index) => {
         element.addEventListener('change', () => {
+            if (element.checked == true) dataID.push(Number(element.value));
+            else if (element.checked == false) dataID.splice(index, 1);
+            checkAll(dataID, onChangeCheckbox.length);
             updateTotalCart();
         });
     });
 
     const checkall = document.querySelector('.checkall');
-    checkall.addEventListener('change', ()=>{
-        onChangeCheckbox.forEach(element => {
-            if (element.checked == true) element.checked = false;
-            else if(element.checked == false) element.checked = true;
-        });
+    checkall.addEventListener('change', () => {
+        if (checkall.checked == false) {
+            onChangeCheckbox.forEach(element => {
+                if (element.checked == true) element.checked = false;
+            });
+            dataID = [];
+        } else {
+            dataID = [];
+            onChangeCheckbox.forEach(element => {
+                if (element.checked == false) element.checked = true;
+                dataID.push(Number(element.value));
+            });
+        }
         updateTotalCart();
-    })
+    });
+
+    const btnCheckout = document.querySelector('.btn-checkout');
+    btnCheckout.addEventListener('click', () => checkout(dataID));
 });
+
+const toast = ({ title = '', message = '', type = 'info', duration = 2000 }) => {
+    const main = document.getElementById('toast');
+    if (main) {
+        const toast = document.createElement('div');
+
+        const autoRemove = setTimeout(function () {
+            main.removeChild(toast);
+        }, duration + 1000);
+
+        toast.onclick = function (e) {
+            if (e.target.closest('.toast__close')) {
+                main.removeChild(toast);
+                clearTimeout(autoRemove);
+            }
+        };
+        const icons = {
+            success: 'fa-solid fa-circle-check',
+            info: 'fa-solid fa-circle-info',
+            warning: 'fa-solid fa-circle-exclamation',
+        };
+        const icon = icons[type];
+        const delay = (duration / 1000).toFixed(2);
+        toast.classList.add('toast', `toast--${type}`);
+        toast.style.animation = `slideInleft ease .6s, fadeOut linear 1s ${delay}s forwards`;
+
+        toast.innerHTML = `
+                <div class="toast__icon">
+                    <i class="${icon}"></i>
+                </div>
+                <div class="toast__body">
+                    <h3 class="toast__title">${title}</h3>
+                    <p class="toast__msg">${message}</p>
+                </div>
+                <div class="toast__close">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+            `;
+        main.appendChild(toast);
+    }
+};
+
+const checkAll = (dataID, quantityItem) => {
+    const checkall = document.querySelector('.checkall');
+    dataID.length === quantityItem ? (checkall.checked = true) : (checkall.checked = false);
+};
+
+const checkout = dataID => {
+    // let currentURL = window.location.href.split('?')[0];
+    window.location.href = 'index.php?ctrl=checkout&data_id=' + encodeURIComponent(dataID);
+};
 
 const removeItemCart = id => {
     return $.ajax({
@@ -110,10 +184,8 @@ const updateTotalCart = () => {
         if (e.checked) {
             temp += totalItem;
             checkedNumber += 1;
-            console.log(checkedNumber);
         }
     });
-    console.log(checkboxCarts.length, checkedNumber);
-    checkboxCarts.length === checkedNumber ? checkedArr.checked = true : checkedArr.checked = false;
+    checkboxCarts.length === checkedNumber ? (checkedArr.checked = true) : (checkedArr.checked = false);
     totalPrice.textContent = temp;
 };
