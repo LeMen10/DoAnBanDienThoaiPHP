@@ -41,7 +41,7 @@ function LoadName(id) {
         dataType: 'json',
         success: res => {     
             menuOption.innerHTML += "<ul id='user-menu' >" +
-                                        "<li><a href='index.php?ctrl=purchase_order'>Đơn mua</a></li>" +
+                                        "<li><a href='index.php?ctrl=purchase_order&userID="+id+"'>Đơn mua</a></li>" +
                                         "<li><a class='log_out' onClick = 'Log_Out()'>Đăng xuất</a></li>" +
                                     "</ul>"
             icon = document.querySelector('#avatar');

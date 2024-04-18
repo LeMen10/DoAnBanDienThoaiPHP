@@ -29,7 +29,6 @@ function openCancelForm(id) {
     var overlay = document.querySelector(".cancel-overlay");
     cancelForm.classList.add("cancel-form-active");
     overlay.classList.add("cancel-form-active");
-    console.log(id);
     cancelForm.setAttribute("order-id", id);
 }
 function handleDeleteOrder() {
@@ -43,8 +42,10 @@ function cancelOrder(orderID) {
         data: { orderID },
         dataType: 'json',
         success: res => {
+            console.log(res)
             if(res.result)
             {
+                console.log(1);
                 location.reload();
             }
         },
@@ -62,9 +63,6 @@ function CreateOrderStatus(orderStatus) {
 }
 function handleChangeInfo(orderID) {
     console.log(orderID);
-}
-function handleCancelOrder(orderID) {
-
 }
 function handleOnClickItemOrderList(orderID) {
     window.location.href += '&orderID=' + orderID;

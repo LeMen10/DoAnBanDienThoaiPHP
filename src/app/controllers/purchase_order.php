@@ -11,7 +11,6 @@ class purchase_order extends Controller
     }
     public function index()
     {
-        session_start();
         $orderID = 0;
         if(isset($_GET['orderID']))
         {
@@ -28,9 +27,9 @@ class purchase_order extends Controller
             $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
             $sortDate = isset($_GET['sort']) ? $_GET['sort'] : "";
             $Status =  isset($_GET['sl']) ? $_GET['sl'] : "All";
-            if(isset($_SESSION['token']))
+            if(isset($_GET["userID"]))
             {
-                $id = $_SESSION['token'];
+                $id = $_GET["userID"];
                 $listOrder = $this->purchaseOrder_model -> getOrdersByUserIDAndPage($id, $Status, $currentPage, $itemsPerPage, $sortDate);
                 foreach ($listOrder as &$Order) {
                     $Order['listProduct'] = $this->purchaseOrder_model ->  getListOrderProduct($Order["id"]);
