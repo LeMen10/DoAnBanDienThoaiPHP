@@ -72,6 +72,7 @@ class PurchaseOrderModel extends Connect{
         $sql = "UPDATE `order` SET `orderStatus`='Canceled' WHERE id = ?";
         $stmt = mysqli_prepare($this->con, $sql);
         mysqli_stmt_bind_param($stmt, "i", $orderID);
+        mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         return $result;
     }

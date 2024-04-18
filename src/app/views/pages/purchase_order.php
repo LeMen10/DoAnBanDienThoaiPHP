@@ -145,7 +145,7 @@
     <div class="cancel-body">
         <i class="fas fa-sad-tear"></i> 
         <span>Confirm order deletion</span>
-        <button class="close-btn" onclick="handleDeleteOrder()">&times;</button>
+        <button class="close-btn" onclick="closeCancelForm()">&times;</button>
     </div>
     <div class="cancel-footer">
         <button class="confirm-btn" onclick="handleDeleteOrder()">Confirm</button>
