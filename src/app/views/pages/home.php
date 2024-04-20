@@ -1,3 +1,6 @@
+<?php
+    require './app/includes/formatMoney.php';
+?>
 <div class="home-wrap mb-60">
     <div class="slider-with-banner">
         <div class="container">
@@ -42,10 +45,9 @@
                 <div class="col-lg-12">
                     <div class="li-product-tab">
                         <ul class="nav li-product-menu">
-                            <li><a class="active" data-toggle="tab" href="#li-new-product"><span>New Arrival</span></a>
-                            </li>
-                            <li><a data-toggle="tab" href="#li-bestseller-product"><span>Bestseller</span></a></li>
-                            <li><a data-toggle="tab" href="#li-featured-product"><span>Featured Products</span></a></li>
+                            <li><a class="active" data-toggle="tab" href="/src/index.php?ctrl=shop"><span>All Product</span></a></li>
+                            <!-- <li><a data-toggle="tab" href="#li-new-product"><span>New Arrival</span></a></li> -->
+                            <!-- <li><a data-toggle="tab" href="#li-featured-product"><span>Featured Products</span></a></li> -->
                         </ul>
                     </div>
                 </div>
@@ -53,39 +55,33 @@
             <div class="tab-content">
                 <div id="li-new-product" class="tab-pane active show" role="tabpanel">
                     <div class="row">
-                        <div class="col-lg-3 col-md-4 col-sm-6 mt-40">
-                            <!-- single-product-wrap start -->
-                            <div class="single-product-wrap">
-                                <div class="product-image">
-                                    <a href="index.php?ctrl=detail">
-                                        <img src="public/img/product/10.jpg" alt="Li's Product Image">
-                                    </a>
-                                </div>
-                                <div class="product_desc">
-                                    <div class="product_desc_info">
-                                        <div class="product-review">
-                                            <h5 class="manufacturer">
-                                                <a href="shop-left-sidebar.html">Graphic Corner</a>
-                                            </h5>
-                                            <div class="rating-box">
-                                                <ul class="rating">
-                                                    <li><i class="fa-regular fa-star"></i></i></li>
-                                                    <li><i class="fa-regular fa-star"></i></i></li>
-                                                    <li><i class="fa-regular fa-star"></i></i></li>
-                                                    <li><i class="fa-regular fa-star"></i></i></li>
-                                                    <li class="no-star"><i class="fa-regular fa-star"></i></i></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <h4><a class="product_name" href="">Accusantium dolorem1</a></h4>
-                                        <div class="price-box">
-                                            <span class="new-price">$46.80</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <?php  
+                            if (count($products) > 0) {
+                                for ($i = 0; $i < count($products); $i++) {
+                                    echo " <div class='col-lg-3 col-md-4 col-sm-6 mt-40'> ";
+                                    echo " <div class='single-product-wrap' onClick='showDetail(".$products[$i]["PhoneId"].")'> ";
+                                    echo " <div class='product-image'> ";
+                                    echo " <a> ";
+                                    echo " <img src='public/img/phone_image/".$products[$i]["PhoneImage"]."' alt='".$products[$i]["PhoneImage"]."'> ";
+                                    echo " </a> ";
+                                    echo " </div> ";
+                                    echo " <div class='product_desc'> ";
+                                    echo " <div class='product_desc_info'> ";
+                                    echo " <h4><a class='product_name' href='single-product.html'>".$products[$i]["PhoneName"]."</a></h4>";
+                                    echo " <div class='price-box'> ";
+                                    echo " <span class='new-price'>".format_money($products[$i]["PhonePrice"])." VNĐ</span> ";
+                                    echo " </div> ";
+                                    echo " </div> ";
+                                    echo " </div> ";
+                                    echo " </div> ";
+                                    echo " </div> ";
+                                }
+                            } else {
+                                echo "<p class='w-100 h3 font-weight-normal text-center mt-40'>Hiện tại shop chưa có sản phẩm !</p>";
+                            }
+                        ?>
                     </div>
+                    <div class="d-flex justify-content-center"><a href="/src/index.php?ctrl=shop" class='btn btn-primary h4 font-weight-normal text-center mt-40'>Xem thêm</a></div>
                 </div>
             </div>
         </div>
@@ -119,8 +115,9 @@
         </div>
     </div>
 
-    <section class="product-area li-laptop-product pt-60 pb-45">
-        <div class="container">
+    <!-- pt-60 pb-45 -->
+    <section class="product-area li-laptop-product pt-25 pb-25">
+        <!-- <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="li-section-title">
@@ -170,7 +167,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </section>
 
     <div class="li-static-home">
