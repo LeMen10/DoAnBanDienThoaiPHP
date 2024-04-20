@@ -2,6 +2,8 @@
     require './app/includes/addOrUpdateQueryParam.php';
     require './app/includes/formatMoney.php';
 
+
+
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
     $trash_products_per_page = isset($trash_products_per_page) ? $trash_products_per_page : [];
     

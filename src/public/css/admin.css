@@ -28,6 +28,47 @@
     opacity: 1;
 }
 
+.prdmng-icon-edit,
+.prdmng-icon-trash {
+    font-size: 32px;
+    color: linear-gradient(to right, rgb(1, 114, 175), rgb(116, 254, 189));
+}
+
+
+
+.td-img-product {
+    width: 10%;
+}
+
+.img-product {
+    width: 120%;
+}
+
+.td-action {
+    width: 10%;
+}
+
+.delete-product .prdmng-icon-trash {
+    color: #E76B6B;
+    transition: 0.3s ease-in-out;
+}
+
+.delete-product .prdmng-icon-trash:hover {
+    color: #E51A1A;
+    cursor: pointer;
+}
+
+.edit-product .prdmng-icon-edit {
+    color: #97ACE5;
+    transition: 0.3s ease-in-out;
+}
+
+.edit-product .prdmng-icon-edit:hover {
+    color: #2659E2;
+    cursor: pointer;
+}
+
+
 .icon-trash {
     font-size: 32px;
 }
@@ -285,6 +326,12 @@
 /* product */
 .image_product {
     width: 18%;
+    margin-left: 15px;
+    width: 100px;
+    height: 100px;
+    border: 1px dashed #dbdbdb;
+    position: relative;
+    padding: 5px;
 }
 
 .product-item {
@@ -449,4 +496,206 @@ input:checked+.slider:before {
 
 .button-restore:hover{
     cursor: pointer;
+    text-align: center;
+}
+
+.tr-title-table {
+    text-align: center;
+}
+
+.disable-vertical {
+    vertical-align: unset !important;
+}
+
+.form-edit-product {
+    position: relative;
+    width: 800px;
+    padding: 5px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    height: 550px;
+}
+
+.form-add-product {
+    position: relative;
+    width: 480px;
+    padding: 5px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    height: 530px;
+}
+
+.lb,
+.iput {
+    display: block;
+    /* margin-bottom: 5px; */
+}
+
+.btn-update {
+    height: 34px;
+    width: 118px;
+    background-color: #a96af2;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.complete {
+    width: 100%;
+}
+
+.btn-update:hover {
+    background-color: #8b34ee;
+}
+
+.btn-update-close {
+    position: absolute;
+    top: 5px;
+    right: 20px;
+    font-size: 20px;
+    transition: 0.3s ease-in-out;
+}
+
+.btn-update-close:hover {
+    color: #E51A1A;
+    cursor: pointer;
+}
+
+.update-product-overlay,
+.add-product-overlay {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    /* pointer-events: none; */
+    z-index: 2100;
+}
+
+.update-product-overlay.active,
+.add-product-overlay.active {
+    display: flex;
+}
+
+.iput {
+    height: 17px;
+    width: 100%;
+}
+
+.textarea {
+    color: #626262;
+}
+
+.update-wapper {
+    display: flex;
+}
+
+
+.update-right {
+    width: 60%;
+    padding-top: 9px;
+    padding-bottom: 5px;
+}
+
+.update-left {
+    width: 40%;
+}
+
+.update-left .iput {
+    height: 17px;
+    width: 287px;
+}
+
+.update-right .iput1 {
+    height: 17px;
+    width: 462px;
+}
+
+.update-img {
+    display: flex;
+    align-items: center;
+}
+
+.update_image {
+    height: auto;
+}
+
+.update-left option {
+    font-size: 12px;
+}
+
+.update-left .category {
+    font-size: 12px;
+    border-top: 0.667px;
+}
+
+.iput.quantity {
+    pointer-events: none;
+}
+
+.add-left .iput {
+    height: 28px;
+}
+
+.add-wapper .btn-add {
+    width: 100%;
+    margin-top: 42px;
+    height: 34px;
+    background-color: #a96af2;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.btn-add:hover {
+    background-color: #8b34ee;
+}
+
+.btn-add-img:hover {
+    background-color: #8b34ee;
+}
+
+.btn-add-img {
+    width: 20%;
+    height: 34px;
+    background-color: #a96af2;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.add-img {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.add-left label {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.iput1 {
+    height: 27px;
+}
+
+.priceandquantity {
+    display: flex;
+    margin-top: 22px
 }
