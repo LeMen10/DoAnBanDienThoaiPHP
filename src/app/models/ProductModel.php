@@ -71,8 +71,179 @@ class ProductModel extends connect {
         }
         return $rows;
     }
-    
-    public function getAllPhoneAndDetails($brand = "", $weight = "", $search = "") {
+    //========================================================ProductManager==============================
+    public function CheckColorOfPhone($phoneid,$color){
+        $sql = "SELECT COUNT(*) AS COUNT FROM `color` WHERE phoneiD = $phoneid AND color like '$color'";
+        $result = mysqli_query($this->con, $sql);
+        $rows = [];
+        if($row = mysqli_fetch_assoc($result)) {
+            $rows = $row;
+        }
+        return $rows;
+    }
+    public function UpdateColorOfPhone($phoneid,$color,$colorid){
+        $sql = "UPDATE color SET color = '$color' WHERE colorID = $colorid AND phoneID = $phoneid";
+        $result = mysqli_query($this->con, $sql); 
+        return $result;
+    }
+    // public function UpdateColorOfPhone($phoneid,$color){
+    //     $sql = "SELECT COUNT(*) `color` WHERE phoneiD = $phoneid AND color = '$color'";
+    //     $result = mysqli_query($this->con, $sql);
+    //     while ($row = mysqli_fetch_assoc($result)) {
+    //         $rows[] = $row;
+    //     }
+    //     return $rows;
+    // }
+    public function updateImagePhone($phoneid,$colorid,$image ){
+        $sql = "UPDATE `image` SET `image` = '$image' WHERE colorID = $colorid AND phoneID = $phoneid
+        ";
+        $result = mysqli_query($this->con, $sql);
+        return $result;
+    }
+    public function getCategory(){
+        $sql = "SELECT * FROM category
+        ";
+        $result = mysqli_query($this->con, $sql);
+        $rows = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $rows[] = $row;
+        }
+        return $rows;
+    }
+    public function getProductByVariantID($phoneid,$colorid,$color){
+        $sql = "UPDATE color SET color = '$color' WHERE colorID = $colorid AND phoneID = $phoneid
+        ";
+        $result = mysqli_query($this->con, $sql);
+        return $result;
+    }
+    public function updateColor($phoneid,$colorid,$color){
+        $sql = "UPDATE color SET color = '$color' WHERE colorID = $colorid AND phoneID = $phoneid";
+        $result = mysqli_query($this->con, $sql);
+        return $result;
+    }
+    public function updateNamePhone($phoneid,$namephone,$category){
+        $sql = "UPDATE phone SET ".($namephone == "" ? "" : ("`name` = '$namephone'")).
+        ",".($category == "" ? "" : ("category = $category"))." WHERE id = $phoneid";
+        
+        $result = mysqli_query($this->con, $sql);
+        return $sql;
+    }
+    public function updateVariant($variantid,$price, $quantity, $size){
+        $sql = "UPDATE variant 
+        SET ".($price == "" ? "" : ("price = $price")).", 
+        ".($quantity == "" ? "" : ("quantity = $quantity")).",
+        ".($size == "" ? "" : ("`size` = '$size'"))."
+        WHERE id = $variantid";
+        $result = mysqli_query($this->con, $sql);
+    }
+    public function updateDetailSpec($phoneID,$chipset, $cpuType, $bodySize, 
+    $bodyWeight, $screenFeature, $screenResolution, $screenSize, $screenTech, 
+    $os,$videoCapture,$cameraFront, $cameraBack,$cameraFeature, $battery, $sim, 
+    $networkSupport, $wifi, $misc){
+        $sql = "UPDATE spec 
+        SET ".($chipset == "" ? "" : ("chipset = '$chipset',"))."
+            ".($cpuType == "" ? "" : ("cpuType = '$cpuType',"))."
+            ".($bodySize == "" ? "" : ("bodySize = '$bodySize',"))."
+            ".($bodyWeight == "" ? "" : ("bodyWeight = '$bodyWeight',"))."
+            ".($screenFeature == "" ? "" : ("screenFeature = '$screenFeature',"))."
+            ".($screenResolution == "" ? "" : ("screenResolution = '$screenResolution',"))."
+            ".($screenSize == "" ? "" : ("screenSize = '$screenSize',"))."
+            ".($screenTech == "" ? "" : ("screenTech = '$screenTech',"))."
+            ".($os == "" ? "" : ("os = '$os',"))."
+            ".($videoCapture == "" ? "" : ("videoCapture = '$videoCapture',"))."
+            ".($cameraFront == "" ? "" : ("cameraFront = '$cameraFront',"))."
+            ".($cameraBack == "" ? "" : ("cameraBack = '$cameraBack',"))."
+            ".($cameraFeature == "" ? "" : ("cameraFeature = '$cameraFeature',"))."
+            ".($battery == "" ? "" : ("battery = '$battery',"))."
+            ".($sim == "" ? "" : ("sim = '$sim',"))."
+            ".($networkSupport == "" ? "" : ("networkSupport = '$networkSupport',"))."
+            ".($wifi == "" ? "" : ("wifi = '$wifi',"))."
+            ".($misc == "" ? "" : ("misc = '$misc' "))."
+        WHERE phoneID = $phoneID";
+        $result = mysqli_query($this->con, $sql);
+        return $sql;
+    }
+    public function getAllPhoneForUpdate($id){
+        $sql = "SELECT v.id AS variantid, img.image, v.phoneID, v.colorID, p.name AS phonename, p.category AS categoryid,  
+        v.size, cl.color,
+        v.price, v.quantity AS quantity,sp.chipset, sp.cpuType, sp.bodySize, sp.bodyWeight, sp.screenTech,
+        sp.screenSize, sp.screenResolution, sp.screenFeature, sp.cameraBack, sp.cameraFront, 
+        sp.cameraFeature, sp.videoCapture,sp.battery, sp.sim, sp.networkSupport, 
+        sp.wifi, sp.os, sp.misc
+        FROM phone p LEFT JOIN category c ON p.category = c.id LEFT JOIN variant v ON p.id = v.phoneID 
+        LEFT JOIN color cl ON p.id = cl.phoneID LEFT JOIN spec sp ON p.id = sp.phoneID 
+        LEFT JOIN (SELECT * FROM image ig GROUP BY ig.phoneID, ig.colorID) AS img ON p.id = img.phoneID 
+        WHERE p.visible = 1 AND cl.colorID = v.colorID AND img.colorID = v.colorID AND v.visible = 1 
+        AND v.id=$id;";
+        $result = mysqli_query($this->con, $sql);
+        $products = [];
+        if ($row = mysqli_fetch_assoc($result)) {
+            $products = $row;
+        }
+        return $products;
+    }
+    public function addPhone($phone){
+        $sql = "INSERT INTO variant (`id`, `phoneID`, `sizeID`, `size`, `colorID`, `price`, `quantity`,
+         `visible`) VALUES ($phone[0],$phone[1],$phone[2],$phone[3],$phone[4],$phone[5],$phone[6],$phone[7]);
+        ";
+        $result = mysqli_query($this->con, $sql);
+        $products = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $products[] = $row;
+        }
+        return $products;
+    }
+    public function getAllPhone(){
+        $sql = "SELECT p.name AS phonename, c.name AS category, cl.color, v.price, v.size, img.image
+        FROM phone p JOIN category c ON p.category = c.id JOIN variant v ON p.id = v.phoneID JOIN color cl ON p.id = cl.phoneID JOIN (SELECT * FROM image ig GROUP BY ig.phoneID, ig.colorID) AS img ON p.id = img.phoneID 
+        WHERE p.visible = 1 AND cl.colorID = v.colorID AND img.colorID = v.colorID;
+        ";
+        $result = mysqli_query($this->con, $sql);
+        $products = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $products[] = $row;
+        }
+        return $products;
+    }
+    public function DeletePhone($id){
+        $sql = "UPDATE variant SET visible = 0 WHERE id = $id;";
+        $result = mysqli_query($this->con, $sql);
+        
+    }
+    public function DeletePhoneByCheckbox($id)
+    {
+        $temp = explode(',', $id);
+        $resultString = '(' . implode(', ', $temp) . ')'; // (12,32,13,32)
+        $sql = "UPDATE variant SET visible = 0 WHERE id IN $resultString;";
+        $result = mysqli_query($this->con, $sql);
+        return $result;
+    }
+    public function getAllPhoneByPage($page){
+        $begin = ($page * 5) - 5;
+        $sql = "SELECT v.id AS variantid, v.quantity AS quantity, p.name AS phonename, c.name AS category, cl.color, v.price, v.size, img.image, v.phoneID, v.colorID
+        FROM phone p LEFT JOIN category c ON p.category = c.id LEFT JOIN variant v ON p.id = v.phoneID LEFT JOIN color cl ON p.id = cl.phoneID LEFT JOIN (SELECT * FROM image ig GROUP BY ig.phoneID, ig.colorID) AS img ON p.id = img.phoneID 
+        WHERE p.visible = 1 AND cl.colorID = v.colorID AND img.colorID = v.colorID AND v.visible = 1
+        LIMIT $begin, 5;";
+        $result = mysqli_query($this->con, $sql);   
+        $products = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $products[] = $row;
+        }
+        return $products;
+    }
+    public function getQuantityPhone(){
+        $sql = "SELECT COUNT(p.name) AS quantity
+        FROM phone p JOIN category c ON p.category = c.id JOIN variant v ON p.id = v.phoneID JOIN color cl ON p.id = cl.phoneID JOIN (SELECT * FROM image ig GROUP BY ig.phoneID, ig.colorID) AS img ON p.id = img.phoneID 
+        WHERE p.visible = 1 AND cl.colorID = v.colorID AND img.colorID = v.colorID;";
+        $quantity = 0;
+        $result = mysqli_query($this->con, $sql);
+        if ($row = mysqli_fetch_assoc($result)) {
+            $quantity = $row['quantity'];
+        }      
+        return $quantity;
+    }
+
+    public function getAllPhoneAndDetails($brand = "", $weight = "") {
         // nếu có brand
         if($brand != "") {
             // nếu có hơn 1 value trong brand
