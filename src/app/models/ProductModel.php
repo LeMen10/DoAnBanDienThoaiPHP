@@ -284,7 +284,7 @@ class ProductModel extends connect {
         return $rows;
     }
     
-    public function getPhonesByPageNumber($productsPerPage, $page, $sort, $brand, $weight = "", $search = ""){
+    public function getPhonesByPageNumber($productsPerPage, $page, $sort= "", $brand= "", $weight = "", $search = ""){
         // nếu có brand
         if($brand != "") {
             // nếu có hơn 1 value trong brand
@@ -308,7 +308,7 @@ class ProductModel extends connect {
             $query_weight = $weight;
         }
 
-        $begin = ($page * 6) - 6;
+        $begin = ($page * $productsPerPage) - $productsPerPage;
 
         $sql = "SELECT p.`id` as PhoneId, p.`name` as PhoneName, i.`image` as PhoneImage, v.`price` as PhonePrice FROM `phone` p 
                 LEFT JOIN image i ON p.`id` = i.`phoneID` 

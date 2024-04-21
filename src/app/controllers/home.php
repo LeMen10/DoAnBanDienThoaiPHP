@@ -4,6 +4,7 @@ require './app/core/Controller.php';
 class home extends Controller
 {
     private $home_model;
+
     public function __construct()
     {
         $this->loadModel('HomeModel');
@@ -11,9 +12,11 @@ class home extends Controller
     }
     public function index()
     {
-        // $products = $this->product_model->getAll();
+        $productsPerPage = 8;
+        $page = 1;
+        $products = $this->home_model->getPhones($productsPerPage, $page);
         
-        return $this->view('main_layout', ['page' => 'home']);
+        return $this->view('main_layout', ['page' => 'home', 'products' => $products]);
 
     }
     public function show()
