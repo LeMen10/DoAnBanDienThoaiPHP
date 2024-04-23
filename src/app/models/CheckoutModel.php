@@ -1,7 +1,5 @@
 <?php
-
-require './app/database/connect.php';
-
+include_once './app/database/connect.php';
 class CheckoutModel extends connect
 {
     public function getCheckout($data, $customerID)

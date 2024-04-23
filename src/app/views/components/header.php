@@ -20,53 +20,57 @@
                             <li class="hm-minicart">
                                 <a href="index.php?ctrl=cart" class="hm-minicart-trigger">
                                     <span class="item-icon"></span>
-                                    <span class="item-text">£80.00
+                                    <span class="item-text">
                                         <span class="cart-item-count">2</span>
                                     </span>
                                 </a>
                             </li>
                             <li class="hm-wishlist user-container">
-                                    <a id='avatar' >
-                                        <i  class='fa-regular fa-user icon'></i>
-                                    </a>
-                                    
+                                <a id='avatar' href="index.php?ctrl=login">
+                                    <i  class='fa-regular fa-user icon'></i>
+                                </a>
+                                <div class="header-action-logged">
+
+                                </div>
                             </li>
                     </div>
                 </div>
             </div>
-            <div class="header-bottom header-sticky d-none d-lg-block d-xl-block">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="hb-menu">
-                                <nav>
-                                    <ul class="header-menu-wrap">
-                                        <li class="dropdown-holder">
-                                            <a href="index.php?">Home</a>
-                                        </li>
-                                        <li class="megamenu-holder">
-                                            <a href="index.php?ctrl=shop">Shop</a>
-                                        </li>
-                                        <li>
-                                            <a href="index.php?ctrl=about">About Us</a>
-                                        </li>
-                                        <li>
-                                            <a href="index.php?ctrl=contact">Contact</a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-
-                        </div>
+            
+        </div>
+    </div>
+    <div class="header-bottom header-sticky d-none d-lg-block d-xl-block">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="hb-menu">
+                        <nav>
+                            <ul class="header-menu-wrap">
+                                <li class="dropdown-holder">
+                                    <a href="index.php?">Home</a>
+                                </li>
+                                <li class="megamenu-holder">
+                                    <a href="index.php?ctrl=shop">Shop</a>
+                                </li>
+                                <li>
+                                    <a href="index.php?ctrl=about">About Us</a>
+                                </li>
+                                <li>
+                                    <a href="index.php?ctrl=contact">Contact</a>
+                                </li>
+                            </ul>
+                         </nav>
                     </div>
                 </div>
             </div>
-            <div class="mobile-menu-area d-lg-none d-xl-none col-12">
-                <div class="container">
-                    <div class="row">
-                        <div class="mobile-menu">
-                        </div>
-                    </div>
+        </div>
+    </div>
+    <div class="mobile-menu-area d-lg-none d-xl-none col-12">
+        <div class="container">
+            <div class="row">
+                <div class="mobile-menu">
                 </div>
             </div>
+        </div>
+    </div>
 </header>

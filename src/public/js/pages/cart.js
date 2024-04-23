@@ -1,11 +1,5 @@
+let btnCheckout;
 $(document).ready(() => {
-    // const toast = require('../toast');
-    toast({
-        title: 'Thành công!',
-        message: 'Bạn đã đăng ký thành công &#128526',
-        type: 'success',
-        duration: 3000,
-    });
     let dataID = [];
     const qtyButtonAdds = document.querySelectorAll('.qtybutton-add');
     qtyButtonAdds.forEach(element => {
@@ -34,15 +28,29 @@ $(document).ready(() => {
     });
 
     const onChangeCheckbox = document.querySelectorAll('.checkbox-cart');
-
-    onChangeCheckbox.forEach((element, index) => {
-        element.addEventListener('change', () => {
-            if (element.checked == true) dataID.push(Number(element.value));
-            else if (element.checked == false) dataID.splice(index, 1);
+    onChangeCheckbox.forEach((e, index) => {
+        e.addEventListener('change', () => {
+            if (e.checked == true) dataID.push(Number(e.value));
+            else if (e.checked == false) {
+                dataID.splice(index, 1);
+                const cartID = localStorage.getItem('cartID');
+                if (cartID != null && Number(e.value) === Number(cartID)) {
+                    localStorage.removeItem('cartID');
+                }
+            }
             checkAll(dataID, onChangeCheckbox.length);
             updateTotalCart();
         });
     });
+
+    const cartID = localStorage.getItem('cartID');
+    if (cartID != null) {
+        const input = document.querySelector(`.checkbox-cart[value="${cartID}"]`);
+        input.checked = true;
+        dataID.push(Number(input.value));
+        checkAll(dataID, onChangeCheckbox.length);
+        updateTotalCart();
+    }
 
     const checkall = document.querySelector('.checkall');
     checkall.addEventListener('change', () => {
@@ -61,8 +69,13 @@ $(document).ready(() => {
         updateTotalCart();
     });
 
-    const btnCheckout = document.querySelector('.btn-checkout');
+    btnCheckout = document.querySelector('.btn-checkout');
     btnCheckout.addEventListener('click', () => checkout(dataID));
+
+    window.addEventListener('load', () => {
+        localStorage.removeItem('cartID');
+        dataID = [];
+    })
 });
 
 const toast = ({ title = '', message = '', type = 'info', duration = 2000 }) => {
@@ -109,11 +122,20 @@ const toast = ({ title = '', message = '', type = 'info', duration = 2000 }) => 
 const checkAll = (dataID, quantityItem) => {
     const checkall = document.querySelector('.checkall');
     dataID.length === quantityItem ? (checkall.checked = true) : (checkall.checked = false);
+    const cartID = localStorage.getItem('cartID');
+    if (cartID != null) localStorage.removeItem('cartID');
 };
 
 const checkout = dataID => {
-    // let currentURL = window.location.href.split('?')[0];
-    window.location.href = 'index.php?ctrl=checkout&data_id=' + encodeURIComponent(dataID);
+    if (dataID.length > 0) window.location.href = 'index.php?ctrl=checkout&data_id=' + encodeURIComponent(dataID);
+    else {
+        toast({
+            title: 'Thông báo!',
+            message: 'Bạn chưa chọn sản phẩm 😐',
+            type: 'warning',
+            duration: 2000,
+        });
+    }
 };
 
 const removeItemCart = id => {
@@ -141,23 +163,30 @@ const decreaseQuantity = (id, quantity) => {
             updateTotalItem(id, quantity);
         },
         error: err => {
-            console.log('Error Status:', err.status);
+            console.log('Error Status:', err);
         },
     });
 };
 
 const increaseQuantity = (id, quantity) => {
+    console.log(id);
     return $.ajax({
         type: 'post',
         url: 'index.php?ctrl=cart&act=update_quantity',
         data: { id, quantity },
         dataType: 'json',
         success: res => {
-            if (res.message === 'Exceed the scope') return alert('Hết hàng');
+            if (res.message === 'Exceed the scope')
+                toast({
+                    title: 'Thông báo!',
+                    message: 'Hàng trong kho đã hết 😐',
+                    type: 'warning',
+                    duration: 2000,
+                });
             updateTotalItem(id, quantity);
         },
         error: err => {
-            console.log('Error Status:', err.status);
+            console.log('Error Status:', err);
         },
     });
 };

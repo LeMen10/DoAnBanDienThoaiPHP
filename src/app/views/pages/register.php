@@ -1,13 +1,11 @@
 <div class="modal-cus">
-<div class='modal-overlay'>
-        <img src="public/img/banner/register.jpg" alt="" class="w-100">
-    </div>
     <div class="modal-body col-sm-12 col-md-12 col-xs-12 col-lg-6">
-
         <div class="login-form">
             <div class="d-flex justify-content-between">
                 <h4 class="login-title">Register</h4>
-                <i id="icon_close" class="fa-solid fa-xmark"></i>
+                <span>
+                    <i id="close-icon" class="fa-solid fa-xmark close-icon"></i>
+                </span>
             </div>
             <div class="row">
                 <div class="col-md-6 col-12 mb-20">
@@ -44,7 +42,7 @@
                     <div class="error" id="error_confirmPassword">Không trùng khớp với Passwword.</div>
                 </div>
 
-                <div class="col-12">
+                <div class="col-12 group-button">
                     <button id="btn_register" class="register-button mt-0">Register</button>
                 </div>
             </div>

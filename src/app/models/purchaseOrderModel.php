@@ -1,5 +1,5 @@
 <?php
-require './app/database/connect.php';
+include_once './app/database/connect.php';
 class PurchaseOrderModel extends Connect{
     public function getOrdersByUserIDAndPage($userID, $Status, $pageIndex, $itemsPerPage, $sortDate = ""){
         $sql = "SELECT * FROM `order` 

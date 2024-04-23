@@ -8,13 +8,23 @@ class checkout extends Controller
     {
         $this->loadModel('CheckoutModel');
         $this->checkout_model = new CheckoutModel();
+        require_once './app/middlewares/jwt.php';
     }
     public function index()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $data = $_GET['data_id'];
-            $customerID = 1;
-            $rs = $this->checkout_model->getCheckout($data, $customerID);
+            if (!isset($_COOKIE['token'])) {
+                return $this->view('null_layout', ['page' => 'login']);
+            }
+            $token = $_COOKIE['token'];
+            $jwt = new jwt();
+            $data = $jwt->decodeToken($token);
+            if (!$data) {
+                return $this->view('null_layout', ['page' => 'login']);
+            }
+
+            $dataID = $_GET['data_id'];
+            $rs = $this->checkout_model->getCheckout($dataID, $data['id']);
             $address = $this->checkout_model->getActiveAddress();
             return $this->view('main_layout', ['page' => 'checkout', 'checkout' => $rs, 'address' => $address]);
         }
@@ -67,7 +77,7 @@ class checkout extends Controller
                 $recipientPhone,
                 $detail
             );
-            echo json_encode(['success' => true, '1'=> $recipientName]);
+            echo json_encode(['success' => true, '1' => $recipientName]);
         }
     }
 
@@ -127,12 +137,22 @@ class checkout extends Controller
     public function save_order()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (!isset($_COOKIE['token'])) {
+                header("Location: index.php?ctrl=login");
+                exit();
+            }
+            $token = $_COOKIE['token'];
+            $jwt = new jwt();
+            $customer = $jwt->decodeToken($token);
+            if (!$customer) {
+                return $this->view('null_layout', ['page' => 'login']);
+            }
+
             $addressID = $_POST['addressId'];
             $dataID = $_POST['dataID'];
             $totalPayment = $_POST['totalPayment'];
             $orderStatus = $_POST['orderStatus'];
-            $userID = 1;
-            $orderID = $this->checkout_model->saveOrder($addressID, $totalPayment, $orderStatus, $userID);
+            $orderID = $this->checkout_model->saveOrder($addressID, $totalPayment, $orderStatus, $customer['id']);
             $this->checkout_model->saveOrderDetail($dataID, $orderID);
             echo json_encode(['success' => true]);
         }
@@ -141,9 +161,18 @@ class checkout extends Controller
     public function get_checkout_data()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            if (!isset($_COOKIE['token'])) {
+                header("Location: index.php?ctrl=login");
+                exit();
+            }
+            $token = $_COOKIE['token'];
+            $jwt = new jwt();
+            $customer = $jwt->decodeToken($token);
+            if (!$customer) {
+                return $this->view('null_layout', ['page' => 'login']);
+            }
             $data = $_GET['dataID'];
-            $customerID = 1;
-            $rs = $this->checkout_model->getCheckout($data, $customerID);
+            $rs = $this->checkout_model->getCheckout($data, $customer['id']);
             echo json_encode(['success' => true, 'data' => $rs]);
         }
     }

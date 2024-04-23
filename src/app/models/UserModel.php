@@ -1,7 +1,7 @@
 <?php
-require './app/database/connect.php';
+include_once './app/database/connect.php';
 
-class UserModel extends connect
+class UserModel extends Connect
 {
     public function create($id, $email, $fullname, $password, $ngaysinh, $gioitinh, $role, $trangthai)
     {
@@ -125,5 +125,24 @@ class UserModel extends connect
         $resultString = '(' . implode(', ', $intArray) . ')';
         $sql = 'UPDATE customer SET visible = 1 WHERE id IN ' . $resultString;
         mysqli_query($this->con, $sql);
+    }
+
+    // public function getUserByID($id)
+    // {
+    //     $sql = "SELECT * FROM `customer` WHERE `id` = '$id'";
+    //     $result = mysqli_query($this->con, $sql);
+    //     return mysqli_fetch_assoc($result);
+    // }
+
+    public function getUserByID($userID)
+    {
+        $query = "SELECT * FROM customer WHERE id = $userID";
+        $result = mysqli_query($this->con, $query);
+        // $check = false;
+        $user = null;
+        if ($result->num_rows) {
+            $user = mysqli_fetch_array($result);
+        }
+        return $user;
     }
 }

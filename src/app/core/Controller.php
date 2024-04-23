@@ -3,7 +3,6 @@ class Controller
 {
     const VIEW_FOLDER_NAME = 'views';
     const MODEL_FOLDER_NAME = 'models';
-
     protected function view($view_path, array $data = [])
     {
         foreach ($data as $key => $value) {
@@ -14,6 +13,6 @@ class Controller
     }
     protected function loadModel($model_path)
     {
-        require_once './app/' . self::MODEL_FOLDER_NAME . '/' . $model_path . '.php';
+        include_once './app/' . self::MODEL_FOLDER_NAME . '/' . $model_path . '.php';
     }
 }

@@ -27,21 +27,5 @@ class HomeModel extends connect{
             return $suggestions;
         }
 
-        public function getPhones($productsPerPage, $page){
-            $begin = ($page * $productsPerPage) - $productsPerPage;
-    
-            $sql = "SELECT p.`id` as PhoneId, p.`name` as PhoneName, i.`image` as PhoneImage, v.`price` as PhonePrice FROM `phone` p 
-                    LEFT JOIN image i ON p.`id` = i.`phoneID` 
-                    LEFT JOIN variant v ON p.`id` = v.`phoneID` 
-                    LEFT JOIN spec s ON p.`id` = s.`phoneID`
-                    GROUP BY p.`id` 
-                    LIMIT $begin, $productsPerPage";
-                    
-            $result = mysqli_query($this->con, $sql);
-            $rows = [];
-            while ($row = mysqli_fetch_assoc($result)) {
-                $rows[] = $row;
-            }
-            return $rows;
-        }
+        
 }

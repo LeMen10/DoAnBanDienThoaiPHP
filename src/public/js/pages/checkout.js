@@ -49,6 +49,7 @@ const getCheckoutData = dataID => {
             dataType: 'json',
             success: res => {
                 resolve(res.data);
+                console.log(res)
             },
             error: err => {
                 console.log('Error Status:', err.status);
@@ -72,7 +73,7 @@ const checkout = async () => {
             url: 'index.php?ctrl=checkout&act=save_order',
             data: { addressId, dataID: checkoutData, totalPayment, orderStatus },
             success: res => {
-                window.location.href = 'index.php?ctr=purchase_order'
+                window.location.href = 'index.php?ctrl=purchase_order'
                 console.log(res);
             },
             error: err => {
