@@ -241,7 +241,7 @@ class ProductModel extends connect {
         return $quantity;
     }
 
-    public function getAllPhoneAndDetails($brand = "", $weight = "") {
+    public function getAllPhoneAndDetails($brand = "", $weight = "", $search = "") {
         // nếu có brand
         if($brand != "") {
             // nếu có hơn 1 value trong brand
@@ -265,15 +265,14 @@ class ProductModel extends connect {
             $query_weight = $weight;
         }
 
-        // $sql = "SELECT * FROM `phone` p 
-        //         LEFT JOIN image i ON p.`id` = i.`phoneID` 
-        //         LEFT JOIN variant v ON p.`id` = v.`phoneID` 
-        //         LEFT JOIN spec s ON p.`id` = s.`phoneID`
-        //         ". $query_brand ."
-        //         ".$query_weight."
-        //         ".($search != "" ? ("WHERE p.`name` LIKE N'%".$search."%'"): "")."
-        //         GROUP BY p.`id`";
-        $sql = '';
+        $sql = "SELECT * FROM `phone` p 
+                LEFT JOIN image i ON p.`id` = i.`phoneID` 
+                LEFT JOIN variant v ON p.`id` = v.`phoneID` 
+                LEFT JOIN spec s ON p.`id` = s.`phoneID`
+                ". $query_brand ."
+                ".$query_weight."
+                ".($search != "" ? ("WHERE p.`name` LIKE N'%".$search."%'"): "")."
+                GROUP BY p.`id`";
 
         $result = mysqli_query($this->con, $sql);
         $rows = [];

@@ -81,7 +81,7 @@
                             }
                         ?>
                     </div>
-                    <div class="d-flex justify-content-center"><a href="/src/index.php?ctrl=shop" class='btn btn-primary h4 font-weight-normal text-center mt-40'>Xem thêm</a></div>
+                    <div class="d-flex justify-content-center"><a href="index.php?ctrl=shop" class='btn btn-primary h4 font-weight-normal text-center mt-40'>Xem thêm</a></div>
                 </div>
             </div>
         </div>

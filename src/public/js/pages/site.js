@@ -10,7 +10,11 @@ $(document).ready(() => {
     searchBox = document.getElementById('searchInput');
     suggestionBox = document.getElementById('suggestionBox');
     document.querySelector('.li-btn').addEventListener('click', function (event) {
-        navigateShopPage(event);
+        event.preventDefault()
+        var inputValue = searchBox.value.trim();
+        if (inputValue != '') {
+            window.location.href = 'index.php?ctrl=shop&search=' + searchBox.value;
+        }
     });
     searchBox.addEventListener('input', function () {
         var inputValue = searchBox.value.trim();
@@ -98,7 +102,7 @@ function changeParamInUrl(param, paramValue, url) {
 }
 function navigateShopPage(event) {
     if (event.key === 'Enter') {
-        event.preventDefault();
+        event.preventDefault()
         var inputValue = searchBox.value.trim();
         if (inputValue != '') {
             window.location.href = 'index.php?ctrl=shop&search=' + searchBox.value;

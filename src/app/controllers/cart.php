@@ -21,7 +21,7 @@ class cart extends Controller
             $jwt = new jwt();
             $data = $jwt->decodeToken($token);
             if (!$data) {
-                return $this->view('null_layout', ['page' => 'login']);
+                return $this->view('null_layout', ['page' => 'error/400']);
             }
             $cart = $this->cart_model->getCart($data['id']);
             return $this->view('main_layout', ['page' => 'cart', 'cart' => $cart]);
@@ -32,7 +32,7 @@ class cart extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (!isset($_COOKIE['token'])) {
-                return $this->view('null_layout', ['page' => 'login']);
+                return $this->view('null_layout', ['page' => 'error/400']);
             }
             $id = $_POST['id'];
             $quantity = $_POST['quantity'];
