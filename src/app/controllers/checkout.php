@@ -14,13 +14,13 @@ class checkout extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             if (!isset($_COOKIE['token'])) {
-                return $this->view('null_layout', ['page' => 'login']);
+                return $this->view('null_layout', ['page' => 'error/400']);
             }
             $token = $_COOKIE['token'];
             $jwt = new jwt();
             $data = $jwt->decodeToken($token);
             if (!$data) {
-                return $this->view('null_layout', ['page' => 'login']);
+                return $this->view('null_layout', ['page' => 'error/400']);
             }
 
             $dataID = $_GET['data_id'];
@@ -145,7 +145,7 @@ class checkout extends Controller
             $jwt = new jwt();
             $customer = $jwt->decodeToken($token);
             if (!$customer) {
-                return $this->view('null_layout', ['page' => 'login']);
+                return $this->view('null_layout', ['page' => 'error/400']);
             }
 
             $addressID = $_POST['addressId'];
@@ -169,7 +169,7 @@ class checkout extends Controller
             $jwt = new jwt();
             $customer = $jwt->decodeToken($token);
             if (!$customer) {
-                return $this->view('null_layout', ['page' => 'login']);
+                return $this->view('null_layout', ['page' => 'error/400']);
             }
             $data = $_GET['dataID'];
             $rs = $this->checkout_model->getCheckout($data, $customer['id']);

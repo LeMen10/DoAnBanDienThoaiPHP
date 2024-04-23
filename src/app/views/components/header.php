@@ -10,10 +10,10 @@
                     </div>
                 </div>
                 <div class="col-lg-9 pl-0 ml-sm-15 ml-xs-15">
-                    <form action="#" class="hm-searchbox">
+                    <form action="" class="hm-searchbox">
                         <input type="text" placeholder="Enter your search key ..." id='searchInput'>
                         <div id="suggestionBox"></div>
-                        <button class="li-btn" type="submit"><i class="fa fa-search"></i></button>
+                        <button class="li-btn" type=""><i class="fa fa-search"></i></button>
                     </form>
                     <div class="header-middle-right">
                         <ul class="hm-menu">
