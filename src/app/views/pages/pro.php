@@ -33,7 +33,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->Body = 'Ấn vào link để đổi mật khẩu <a href="' . $link . '">' . $link . '</a>';
 
         $mail->send();
-        echo 'Email sent successfully!';
     } catch (Exception $e) {
         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }

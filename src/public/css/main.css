@@ -491,7 +491,7 @@ input {
 
 select {
     width: 138px;
-    
+
     background: #eceff8;
     border: 2px solid #eceff8;
     height: 45px;
@@ -1775,6 +1775,12 @@ html *::-webkit-scrollbar-track {
 .product-details-thumbs .sm-image img {
     width: 100%;
 }
+
+.group-button {
+    display: flex;
+    justify-content: flex-end;
+}
+
 /* detail product slide image */
 .product-details-images .lg-image {
     display: none;
@@ -1987,7 +1993,7 @@ html *::-webkit-scrollbar-track {
     cursor: pointer;
     font-weight: 500;
     text-transform: capitalize;
-    padding: 13px 70px;
+    padding: 15px 70px;
     border-radius: 2px;
     transition: all 0.3s ease-in-out;
 }
@@ -2331,13 +2337,16 @@ html *::-webkit-scrollbar-track {
 
 #suggestionBox {
     position: absolute;
-    top: 100%;
+    top: 108%;
     left: 0;
-    width: 100%;
+    width: 93%;
     background-color: #fff;
-    border: 1px solid #ccc;
-    border-top: none;
     z-index: 1;
+    border-radius: 4px;
+}
+
+.border-1px-solid {
+    border: 1px solid #e1e1e1;
 }
 
 #suggestionBox div {
@@ -2409,7 +2418,7 @@ html *::-webkit-scrollbar-track {
 .hm-wishlist {
     float: right;
     position: relative;
-   
+
 }
 
 .hm-wishlist>a {
@@ -2427,48 +2436,74 @@ html *::-webkit-scrollbar-track {
 .hm-wishlist>a:hover {
     cursor: pointer;
 }
+
 /* lớp giả */
 .hm-wishlist::after {
     content: "";
     position: absolute;
     display: block;
-    top: 30px;
+    top: 22px;
     left: 0px;
     width: 60px;
-    height: 30px;
-    background-color: transparent; 
+    height: 60px;
+    background-color: transparent;
 }
 
 
-/* Ẩn user-menu mặc định */
-#user-menu {
-    display: none;
+
+.user-container:hover .logged-dropdown-wrap{
+    display: block;
+}
+
+
+.logged-dropdown-wrap {
     position: absolute;
-    /* display: flex;  */
-    flex-direction: column;  
-    right: 0;
-    width: 75px;
-    background-color: #000;
-    color: wheat;
-    cursor: pointer;
-    font-size: 18px;
-    z-index: 20;
-
-    
+    width: 160px;
+    top: calc(100% + 15px);
+    right: -20px;
+    z-index: 1;
+    display: none;
+    animation: bottomUp ease-in-out .3s;
+    background-color: #fff;
+    border: 1px solid #eee;
+    padding: 10px 0 10px 0;
+    border-radius: 4px;
 }
 
-#user-menu li a:hover {
-    text-decoration: underline;
-    color: white;
-
+.logged-dropdown-item:not(:last-child) {
+    margin-bottom: 8px;
 }
+
+.logged-dropdown-item-content {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    padding: 8px 20px;
+    transition: all .1s linear;
+}
+
+.logged-dropdown-item:hover .logged-dropdown-item-content {
+    background-color: var(--border-color);
+}
+
+.logged-dropdown-wrap .logged-dropdown-item-content p {
+    font-weight: 500;
+}
+
+.logged-dropdown-item-content i {
+    margin-right: 10px;
+}
+
+.close-icon-admin .logged-dropdown-item-content {
+    display: none;
+}
+
 /* Hiển thị user-menu khi di chuột vào user-container */
 .user-container:hover #user-menu {
     display: flex;
     width: 102px;
-    background-color: gray;
-    border: 1px solid black;
-    border-radius: 14px;
+    border: 1px solid #eee;
+    border-radius: 6px;
     box-sizing: border-box;
     text-align: center;
 }
@@ -2521,7 +2556,7 @@ html *::-webkit-scrollbar-track {
 .cart-item-count {
     position: absolute;
     top: -26px;
-    left: 68px;
+    left: 100%;
     display: block;
     overflow: hidden;
     min-width: 26px;
@@ -5324,8 +5359,10 @@ thead {
 .login-form {
     background-color: #ffffff;
     padding: 30px;
-    -webkit-box-shadow: 0px 5px 4px 0px rgba(0, 0, 0, 0.1);
-    box-shadow: 0px 5px 4px 0px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 6px;
+    box-shadow: 0px 6px 9px 2px rgba(0, 0, 0, 0.3);
 }
 
 .login-form label {
@@ -5369,9 +5406,10 @@ thead {
 
 .login-form input {
     width: 100%;
+    height: 40px;
     background-color: transparent;
     border: 1px solid #999999;
-    border-radius: 0;
+    border-radius: 4px;
     line-height: 23px;
     padding: 10px 20px;
     font-size: 14px;
@@ -5451,6 +5489,12 @@ thead {
     color: red;
 }
 
+.close-icon {
+    font-size: 18px;
+    padding: 2px 6px;
+    border: 1px solid #eee;
+}
+
 /* thông báo lỗi bên trang login */
 .login-form .error_login {
     display: none;
@@ -5460,41 +5504,32 @@ thead {
 .fa-solid.fa-xmark {
     cursor: pointer;
 }
-#btn_register{
+
+#btn_register {
     width: 106px;
     line-height: 100%;
     padding-top: 8px;
 }
-.process{
+
+.process {
     width: 100%;
 }
-.process-register{
+
+.process-register {
     display: flex;
     justify-content: space-between;
 }
-.dang-Ky{
-    font-weight: 600;
-    color: #000;
+.link-register{
+    font-size: 13px;
+    margin: 0 auto;
 }
 
-/*-- Place Order --*/
-.register-button {
-    display: block;
-    margin-top: 40px;
-    width: 140px;
-    border-radius: 0;
-    height: 36px;
-    border: none;
-    line-height: 24px;
-    padding: 6px 20px;
-    float: left;
-    font-weight: 400;
-    text-transform: uppercase;
-    color: #ffffff;
-    background-color: #b194ac;
-    border-radius: 3px;
-    transition: all 0.3s ease-in-out;
+.dang-Ky {
+    font-weight: 600;
+    color: #111;
 }
+
+
 
 .register-button:hover {
     background: #fed700;
@@ -5630,20 +5665,25 @@ thead {
 }
 
 .cart-page-content>.btn-checkout,
-.cart-page-content>.btn-payment {
+.cart-page-content>.btn-payment,
+.login-button,
+#bt_sendEmail,
+.register-button {
     background-color: #333;
     border: 1px solid #333;
     color: #fff;
     display: inline-block;
     padding: 10px 20px;
     text-transform: capitalize;
-    -webkit-transition: all 0.3s ease 0s;
     transition: all 0.3s ease 0s;
     margin-bottom: 0;
 }
 
 .cart-page-content>.btn-checkout:hover,
-.cart-page-content>.btn-payment:hover {
+.cart-page-content>.btn-payment:hover,
+.login-button:hover,
+#bt_sendEmail:hover,
+.register-button:hover {
     background: #fed700;
     cursor: pointer;
     border-color: #fed700;
@@ -7284,10 +7324,6 @@ span.required {
     width: 560px;
 }
 
-.login-form {
-    border-radius: 6px;
-}
-
 .modal-overlay {
     position: absolute;
     width: 100%;
@@ -7295,37 +7331,20 @@ span.required {
     background-color: rgba(0, 0, 0, 0.3);
 }
 
-#btn_Login{
-    width: 54px;
-    border-radius: 20px
-}
-
 /* cart */
 .li-product-thumbnail a img {
     width: 68px;
 }
-/* forgotten password */
-.ok-forgotPass-button{
-    border-radius: 15px;
-}
+
 
 /* forgot password trang reseet password */
-.processing{
+.processing {
     display: flex;
     width: 100%;
     align-items: center;
 }
-#bt_sendEmail{
-    height: 32px;
-    width: 82px;
-}
 
-.mt-0{
-    font-weight: 700;
-    color: black;
-    height: 30px;
-    width: 40px;
-}
+
 /* Purchase order */
 .container {
     max-width: 1200px;
@@ -7365,6 +7384,7 @@ span.required {
     color: red;
     font-weight: 600;
 }
+
 .search-purchase-order {
     margin-top: 10px;
     position: relative;
@@ -7517,23 +7537,23 @@ span.required {
     text-shadow: 0 0 10px rgba(255, 20, 20, 0.9), 0 0 10px rgba(255, 46, 46, 0.8), 0 0 10px rgba(237, 7, 7, 0.8);
 }
 
-.purchase-order-pagination
-{
+.purchase-order-pagination {
     text-align: center;
 }
-.purchase-order-pagination .page-Index
-{
+
+.purchase-order-pagination .page-Index {
     font-size: 20px;
     margin: 10px;
 }
-.empty-list-order
-{
+
+.empty-list-order {
     text-align: center;
     font-size: 30px;
     margin: 20px;
     color: #888;
     font-weight: 700;
 }
+
 .container .form-container {
     background-color: white;
     padding: 20px;
@@ -7554,8 +7574,8 @@ span.required {
     background-color: #f7f7f7;
     margin-bottom: 30px;
 }
-.title-order
-{
+
+.title-order {
     display: flex;
 }
 
@@ -7567,7 +7587,7 @@ span.required {
 }
 
 .detail-purchase-order .title-order h1 {
-     text-align: left;
+    text-align: left;
     width: 50%;
     font-size: 20px;
     font-weight: bold;
@@ -7579,12 +7599,13 @@ span.required {
     font-size: 16px;
     font-weight: normal;
 }
-.status-order-map
-{
+
+.status-order-map {
     text-align: center;
 }
+
 .status-order-map .item-map {
-    width:20%;
+    width: 20%;
     position: relative;
     display: inline-block;
     text-align: center;
@@ -7601,12 +7622,14 @@ span.required {
     height: 40px;
     border-radius: 50%;
     border: 5px solid gray;
-    background-color: white; 
+    background-color: white;
     transform: translate(-50%, 0);
 }
+
 .status-order-map .item-map .circle.active {
     border: 5px solid green;
 }
+
 .status-order-map .item-map .circle.red-active {
     border: 5px solid red;
 }
@@ -7621,9 +7644,11 @@ span.required {
     background-color: gray;
     transform: translate(0, -25%);
 }
+
 .status-order-map .item-map .line-map.active {
     background-color: green;
 }
+
 .status-order-map .item-map .line-map.red-active {
     background-color: red;
 }
@@ -7632,6 +7657,7 @@ span.required {
     margin-top: 5px;
     line-height: 20px;
 }
+
 .cancel-overlay {
     display: none;
     position: fixed;
@@ -7642,6 +7668,7 @@ span.required {
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 999;
 }
+
 .cancel-form {
     display: none;
     position: fixed;
@@ -7653,11 +7680,12 @@ span.required {
     padding: 20px;
     z-index: 1000;
 }
+
 .cancel-form.cancel-form-active,
-.cancel-overlay.cancel-form-active
-{
+.cancel-overlay.cancel-form-active {
     display: block;
 }
+
 .cancel-body {
     display: flex;
     align-items: center;
@@ -7665,24 +7693,25 @@ span.required {
 }
 
 .cancel-body i {
-    color:black;
+    color: black;
     margin-right: 10px;
     font-size: -webkit-xxx-large;
 }
+
 .cancel-body span {
     font-size: 24px;
     color: red;
     font-weight: 600;
 }
-.cancel-form .cancel-footer .confirm-btn
-{
+
+.cancel-form .cancel-footer .confirm-btn {
     background-color: #fed700;
     border: none;
     color: black;
     font-weight: 500;
 }
-.cancel-form .cancel-footer .confirm-btn:hover
-{
+
+.cancel-form .cancel-footer .confirm-btn:hover {
     background-color: red;
     color: white;
 }
@@ -7697,8 +7726,8 @@ span.required {
     top: 5px;
     right: 5px;
 }
-.cancel-form .close-btn:hover
-{
+
+.cancel-form .close-btn:hover {
     color: red;
 }
 
@@ -7803,13 +7832,13 @@ span.required {
     font-size: 16px;
     font-weight: 600;
     color: #333;
-    padding: 10px 0;
+    padding: 10px 0 0 0;
 }
 
 .toast__msg {
     font-size: 14px;
     color: #888;
-    padding: 10px 0;
+    padding: 0 0 10px 0;
 }
 
 .toast__close {

@@ -8,6 +8,7 @@ class detail extends Controller
     {
         $this->loadModel('DetailProductModel');
         $this->product_model = new DetailProductModel();
+        require_once './app/middlewares/jwt.php';
     }
     public function index()
     {
@@ -65,7 +66,28 @@ class detail extends Controller
             echo json_encode(['success'=>true,'cart' => $Cart]);
         }
     }
-    public function show()
+    public function buyNow()
     {
+        if($_SERVER['REQUEST_METHOD'] == 'POST')
+        {
+            if (!isset($_COOKIE['token'])) {
+                header("Location: index.php?ctrl=login");
+                exit();
+            }
+            $token = $_COOKIE['token'];
+            $jwt = new jwt();
+            $data = $jwt->decodeToken($token);
+            if (!$data) {
+                return $this->view('null_layout', ['page' => 'login']);
+            }
+
+            $phoneID = $_POST['phoneID'];
+            $sizeID = $_POST['sizeID'];
+            $colorID = $_POST['colorID'];
+            $quantity = $_POST['quantity'];
+            $variant = $this->product_model -> getVariant($phoneID, $sizeID, $colorID);
+            $cartID = $this->product_model->addToCart($variant['id'], $quantity, $data['id']);
+            echo json_encode(['success'=>true, 'cartID' => $cartID]);
+        }
     }
 }

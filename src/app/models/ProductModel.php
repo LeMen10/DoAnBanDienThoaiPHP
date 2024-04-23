@@ -1,7 +1,5 @@
 <?php
-
-require './app/database/connect.php';
-
+include_once './app/database/connect.php';
 class ProductModel extends connect {
     public function getAll(){
         $sql = "SELECT * FROM phone";
@@ -267,14 +265,15 @@ class ProductModel extends connect {
             $query_weight = $weight;
         }
 
-        $sql = "SELECT * FROM `phone` p 
-                LEFT JOIN image i ON p.`id` = i.`phoneID` 
-                LEFT JOIN variant v ON p.`id` = v.`phoneID` 
-                LEFT JOIN spec s ON p.`id` = s.`phoneID`
-                ". $query_brand ."
-                ".$query_weight."
-                ".($search != "" ? ("WHERE p.`name` LIKE N'%".$search."%'"): "")."
-                GROUP BY p.`id`";
+        // $sql = "SELECT * FROM `phone` p 
+        //         LEFT JOIN image i ON p.`id` = i.`phoneID` 
+        //         LEFT JOIN variant v ON p.`id` = v.`phoneID` 
+        //         LEFT JOIN spec s ON p.`id` = s.`phoneID`
+        //         ". $query_brand ."
+        //         ".$query_weight."
+        //         ".($search != "" ? ("WHERE p.`name` LIKE N'%".$search."%'"): "")."
+        //         GROUP BY p.`id`";
+        $sql = '';
 
         $result = mysqli_query($this->con, $sql);
         $rows = [];
@@ -358,5 +357,34 @@ class ProductModel extends connect {
         }
         $row = mysqli_fetch_assoc($result);
         return $row['total_count'] ?? 0; 
+    }
+
+    public function GetSuggestion($stringFind)
+    {
+        $query = "SELECT name FROM phone WHERE name LIKE N'%" . $stringFind . "%'";
+        $result = mysqli_query($this->con, $query);
+        $suggestions = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $suggestions[] = $row;
+        }
+        return $suggestions;
+    }
+
+    public function getPhones($productsPerPage, $page){
+        $begin = ($page * $productsPerPage) - $productsPerPage;
+
+        $sql = "SELECT p.`id` as PhoneId, p.`name` as PhoneName, i.`image` as PhoneImage, v.`price` as PhonePrice FROM `phone` p 
+                LEFT JOIN image i ON p.`id` = i.`phoneID` 
+                LEFT JOIN variant v ON p.`id` = v.`phoneID` 
+                LEFT JOIN spec s ON p.`id` = s.`phoneID`
+                GROUP BY p.`id` 
+                LIMIT $begin, $productsPerPage";
+                
+        $result = mysqli_query($this->con, $sql);
+        $rows = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $rows[] = $row;
+        }
+        return $rows;
     }
 }

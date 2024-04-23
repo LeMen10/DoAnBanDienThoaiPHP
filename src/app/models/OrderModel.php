@@ -1,6 +1,5 @@
 <?php
-require './app/database/connect.php';
-
+include_once './app/database/connect.php';
 class OrderModel extends connect{
     public function GetAllOrder() {
         $query = "SELECT o.id, c.name, o.totalPayment, o.date , o.orderStatus 

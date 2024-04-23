@@ -2,7 +2,7 @@
     <div class="container">
         <div class="breadcrumb-content">
             <ul>
-                <li class="active"><?php echo ucfirst($data['page']); ?></li>
+                <li class="active"><?php echo ucfirst($data['page']);?></li>
             </ul>
         </div>
     </div>
@@ -64,7 +64,7 @@
                                             </span>
                                         </li>
                                     </ul>
-                                    <p class="btn-checkout">Checkout</p>
+                                    <p class="btn-checkout" >Checkout</p>
                                 </div>
                                 
                             </div>

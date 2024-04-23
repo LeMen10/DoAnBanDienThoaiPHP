@@ -1,7 +1,5 @@
 <?php
-
-require './app/database/connect.php';
-
+include_once './app/database/connect.php';
 class ForgotPasswordModel extends connect
 {
     public function CheckExistEmail($email) {
