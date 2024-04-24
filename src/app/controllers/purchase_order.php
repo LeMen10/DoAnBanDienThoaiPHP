@@ -8,6 +8,7 @@ class purchase_order extends Controller
     {
         $this->loadModel('purchaseOrderModel');
         $this->purchaseOrder_model = new purchaseOrderModel();
+        require_once './app/middlewares/jwt.php';
     }
     public function index()
     {
@@ -27,24 +28,25 @@ class purchase_order extends Controller
             $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
             $sortDate = isset($_GET['sort']) ? $_GET['sort'] : "";
             $Status =  isset($_GET['sl']) ? $_GET['sl'] : "All";
-            if(isset($_GET["userID"]))
-            {
-                $id = $_GET["userID"];
-                $listOrder = $this->purchaseOrder_model -> getOrdersByUserID($id, $Status, $sortDate);
-                $listOrderPerPage = $this->purchaseOrder_model -> getOrdersByUserIDAndPage($id, $Status, $currentPage, $itemsPerPage, $sortDate);
-                foreach ($listOrderPerPage as &$Order) {
-                    $Order['listProduct'] = $this->purchaseOrder_model ->  getListOrderProduct($Order["id"]);
-                }
-                unset($Order);
-                return $this->view('main_layout', ['page' => 'purchase_order','listOrder' => $listOrder, 'listOrderPerPage' => $listOrderPerPage]);
-            }
-            else
-            {
-                return $this->view('main_layout', ['page' => 'purchase_order']);
-            }
-        }
 
-        
+            if (!isset($_COOKIE['token'])) {
+                return $this->view('null_layout', ['page' => 'error/400']);
+            }
+
+            $token = $_COOKIE['token'];
+            $jwt = new jwt();
+            $data = $jwt->decodeToken($token);
+            if (!$data) {
+                return $this->view('null_layout', ['page' => 'error/400']);
+            }
+            $listOrder = $this->purchaseOrder_model -> getOrdersByUserID($data["id"], $Status, $sortDate);
+            $listOrderPerPage = $this->purchaseOrder_model -> getOrdersByUserIDAndPage($data["id"], $Status, $currentPage, $itemsPerPage, $sortDate);
+            foreach ($listOrderPerPage as &$Order) {
+                $Order['listProduct'] = $this->purchaseOrder_model ->  getListOrderProduct($Order["id"]);
+            }
+            unset($Order);
+            return $this->view('main_layout', ['page' => 'purchase_order','listOrder' => $listOrder, 'listOrderPerPage' => $listOrderPerPage]);
+        }     
     }
     public function getCustomerInfoByOrderID()
     {

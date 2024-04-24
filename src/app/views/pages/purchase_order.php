@@ -173,12 +173,12 @@
         <div class='change-customer-content'>
             <div class='customer-info info-content'>
                 <div class='customer-name'>
-                    <label>Tên người nhận:</label>
+                    <label>Recipient name:</label>
                     <input id="customer-name-input" type="text" value="" size="25" placeholder="Mảnh đẹp trai" />
                     <span class="err-span" id="err-name-span"></span>
                 </div>
                 <div class='customer-phone info-content'>
-                    <label>Số điện thoại người nhận:</label>
+                    <label>Recipient phone:</label>
                     <input id="customer-phone-input" type="text" value="" size="25" placeholder="khum một hai ..." />
                     <span class="err-span" id="err-phone-span"></span>
                 </div>
@@ -187,19 +187,19 @@
         <div class='change-address-content'>
             <div class='address-info'>
                 <div class='province-name address-content'>
-                    <label>Tỉnh / Thành phố:</label>
+                    <label>Province:</label>
                     <select name="select-address" id="province-select"></select>
                 </div>
                 <div class='district-name address-content'>
-                    <label>Quận / Huyện:</label>
+                    <label>District:</label>
                     <select name="select-address" id="district-select"></select>
                 </div>
                 <div class='wards-name address-content'>
-                    <label>Phường / Xã:</label>
+                    <label>Wards:</label>
                     <select name="select-address" id="wards-select"></select>
                 </div>
-                <div class='detail address-content'>
-                    <label>Mô tả chi tiết:</label>
+                <div class='detail-address info-content'>
+                    <label>Detail:</label>
                     <input id="detail-address-input" type="text" value="" size="25" placeholder="75/12 Nguyễn Văn Cừ ..." />
                 </div>
             </div>

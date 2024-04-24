@@ -79,7 +79,7 @@ class PurchaseOrderModel extends Connect{
         return $result;
     }
     public function getAllProvince(){
-        $sql = "SELECT * FROM province";
+        $sql = "SELECT * FROM province ORDER BY name ASC";
         $result = mysqli_query($this->con, $sql);
         $listProvince = [];
         while ($row = mysqli_fetch_assoc($result)) {
@@ -88,7 +88,7 @@ class PurchaseOrderModel extends Connect{
         return $listProvince;
     }
     public function getAllDistrict($provinceID){
-        $sql = "SELECT * FROM district WHERE provinceID = $provinceID";
+        $sql = "SELECT * FROM district WHERE provinceID = $provinceID ORDER BY name ASC";
         $result = mysqli_query($this->con, $sql);
         $listDistrict = [];
         while ($row = mysqli_fetch_assoc($result)) {
@@ -97,7 +97,7 @@ class PurchaseOrderModel extends Connect{
         return $listDistrict;
     }
     public function getAllWards($districtID){
-        $sql = "SELECT * FROM wards WHERE districtID = $districtID";
+        $sql = "SELECT * FROM wards WHERE districtID = $districtID ORDER BY name ASC";
         $result = mysqli_query($this->con, $sql);
         $listWards = [];
         while ($row = mysqli_fetch_assoc($result)) {

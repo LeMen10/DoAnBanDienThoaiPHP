@@ -1,5 +1,7 @@
 $(document).ready(() => {
     addEventPhoneInput();
+    addEventNameInput();
+    changeColorHover();
     var currentURL = new URL(window.location.href);
     if (currentURL.searchParams.get("orderID") == null) {
         var select = currentURL.searchParams.get("sl");
@@ -11,19 +13,49 @@ $(document).ready(() => {
 function addEventPhoneInput() {
     var phoneInput = document.getElementById("customer-phone-input");
     phoneInput.addEventListener('keydown', function (event) {
-        if(event.key === 'Enter')
-        {
+        if (event.key === 'Enter') {
             event.preventDefault();
-            if(!/^0\d{8,9}$/.test(phoneInput.value))
-            {
+            if (!/^0\d{8,9}$/.test(phoneInput.value)) {
                 var errPhone = document.getElementById("err-phone-span");
                 errPhone.innerHTML = "Số điện thoại khum hợp lệ!";
                 phoneInput.focus();
             }
-            else 
-            {
+            else {
+                var errPhone = document.getElementById("err-phone-span");
                 errPhone.innerHTML = "";
                 document.getElementById("province-select").focus();
+            }
+        }
+    });
+}
+function handleChangeProvince() {
+    var provinceID = document.getElementById("province-select").value;
+    loadAllDistrict(provinceID).then(success => {
+        handleChangeDistrict();
+    })
+        .catch(error => {
+            console.log(error);
+        });
+}
+function handleChangeDistrict() {
+    var districtID = document.getElementById("district-select").value;
+    loadAllWards(districtID);
+}
+function addEventNameInput() {
+    var nameInput = document.getElementById("customer-name-input");
+    nameInput.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            var regexName = /^[a-zA-Z\sàáảãạăắằẵặẳâấầẫẩậđèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳỹỷỵÀÁẢÃẠĂẮẰẴẶẲÂẤẦẪẨẬĐÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲỴỶỸỂ]{1, 50}$/;
+            if (!regexName.test(nameInput.value)) {
+                var errName = document.getElementById("err-name-span");
+                errName.innerHTML = "Tên khum hợp lệ!";
+                nameInput.focus();
+            }
+            else {
+                var errName = document.getElementById("err-name-span");
+                errName.innerHTML = "";
+                document.getElementById("customer-phone-input").focus();
             }
         }
     });
@@ -91,6 +123,8 @@ function handleChangeInfo(event) {
         });
 }
 function openChangeAddressForm(orderID) {
+    document.getElementById('province-select').addEventListener('change', handleChangeProvince);
+    document.getElementById('district-select').addEventListener('change', handleChangeDistrict);
     var changeForm = document.querySelector(".change-form");
     var overlay = document.querySelector(".cancel-overlay");
     changeForm.classList.add("change-form-active");
@@ -166,24 +200,27 @@ function loadAllProvince(provinceID) {
     })
 }
 function loadAllDistrict(provinceID) {
-    return $.ajax({
-        type: 'post',
-        url: 'index.php?ctrl=purchase_order&act=getAllDistrict',
-        data: { provinceID },
-        dataType: 'json',
-        success: res => {
-            if (res.listDistrict != null) {
-                var selectDistrict = document.getElementById("district-select");
-                selectDistrict.innerHTML = "";
-                res.listDistrict.forEach(District => {
-                    selectDistrict.innerHTML += `<option value='${District["id"]}'>${District["name"]}</option></option>`;
-                });
-            }
-        },
-        error: err => {
-            console.log(err);
-        }
-    })
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: 'post',
+            url: 'index.php?ctrl=purchase_order&act=getAllDistrict',
+            data: { provinceID },
+            dataType: 'json',
+            success: res => {
+                if (res.listDistrict != null) {
+                    var selectDistrict = document.getElementById("district-select");
+                    selectDistrict.innerHTML = "";
+                    res.listDistrict.forEach(District => {
+                        selectDistrict.innerHTML += `<option value='${District["id"]}'>${District["name"]}</option></option>`;
+                    });
+                }
+                resolve(res.success);
+            },
+            error: err => {
+                reject(err);
+            },
+        });
+    });
 }
 function loadAllWards(districtID) {
     return $.ajax({
@@ -222,10 +259,9 @@ const loadCustomerInfoByOrderID = (orderID) => {
         });
     });
 };
-function isValid(Name, Phone)
-{
+function isValid(Name, Phone) {
     var regexName = /^[a-zA-Z\sàáảãạăắằẵặẳâấầẫẩậđèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳỹỷỵÀÁẢÃẠĂẮẰẴẶẲÂẤẦẪẨẬĐÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲỴỶỸỂ]{1, 50}$/;
-    if(/^0\d{8,9}$/.test(Phone) && regexName.test(Name.trim())) return true;
+    if (/^0\d{8,9}$/.test(Phone) && regexName.test(Name.trim())) return true;
     return false;
 }
 const saveChange = (orderID, userID, Name, Phone, P, D, W, Detail) => {
@@ -242,3 +278,27 @@ const saveChange = (orderID, userID, Name, Phone, P, D, W, Detail) => {
         }
     });
 };
+function changeColorHover() {
+    var inputs = [document.getElementById('customer-name-input'),
+    document.getElementById('customer-phone-input'), document.getElementById('detail-address-input')];
+    var colors = ['black', 'blue', 'green', 'orange', 'purple'];
+
+    var intervalId;
+    inputs.forEach(input => {
+        input.addEventListener('mouseover', function () {
+            var i = 0;
+
+            intervalId = setInterval(function () {
+                input.style.backgroundColor = colors[i % colors.length];
+                input.style.color = "white";
+                i++;
+            }, 2000);
+        });
+
+        input.addEventListener('mouseout', function () {
+            clearInterval(intervalId);
+            input.style.backgroundColor = '';
+            input.style.color = "";
+        });
+    });
+}

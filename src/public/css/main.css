@@ -7352,6 +7352,7 @@ span.required {
 }
 
 .status-purchase-order {
+    margin-top: 20px;
     display: flex;
     justify-content: space-between;
     list-style-type: none;
@@ -7578,7 +7579,10 @@ span.required {
 .title-order {
     display: flex;
 }
-
+#purchase-order-list
+{
+    margin-top: 20px;
+}
 .detail-purchase-order .title-order a {
     text-align: left;
     width: 10%;
@@ -7797,15 +7801,31 @@ span.required {
 .change-address-content .address-content
 {
     display: flex;
-    margin-top: 10px;
+    margin-top: 20px;
 }
-
-.change-address-content label
+.change-form input
+{
+    height: 30px;
+}
+.change-form input:hover
+{
+    transition: background-color 1s ease;
+}
+.change-form label
+{
+    font-size: 14px;
+}
+.change-address-content .address-content label
 {
     width: 30%;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
 }
 .change-address-content select
 {
+    height: 30px;
     width: 70%;
 }
 .change-address-body .info-content
@@ -7816,7 +7836,8 @@ span.required {
 {
     display: block;
 }
-.change-form .customer-phone
+.change-form .customer-phone,
+.change-form .customer-name
 {
     position: relative;
 }
@@ -7824,7 +7845,7 @@ span.required {
 {
     position: absolute;
     right: 10px;
-    top: 10px;
+    top: 50%;
     color: red;
 
 /* cart */
