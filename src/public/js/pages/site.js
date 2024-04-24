@@ -10,11 +10,7 @@ $(document).ready(() => {
     searchBox = document.getElementById('searchInput');
     suggestionBox = document.getElementById('suggestionBox');
     document.querySelector('.li-btn').addEventListener('click', function (event) {
-        event.preventDefault()
-        var inputValue = searchBox.value.trim();
-        if (inputValue != '') {
-            window.location.href = 'index.php?ctrl=shop&search=' + searchBox.value;
-        }
+        navigateShopPage(event);
     });
     searchBox.addEventListener('input', function () {
         var inputValue = searchBox.value.trim();
@@ -26,7 +22,9 @@ $(document).ready(() => {
         loadSuggestion();
     });
     searchBox.addEventListener('keydown', function (event) {
-        navigateShopPage(event);
+        if (event.key === 'Enter') {
+            navigateShopPage(event);
+        }
     });
 
     loadName();
@@ -101,12 +99,10 @@ function changeParamInUrl(param, paramValue, url) {
     }
 }
 function navigateShopPage(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault()
-        var inputValue = searchBox.value.trim();
-        if (inputValue != '') {
-            window.location.href = 'index.php?ctrl=shop&search=' + searchBox.value;
-        }
+    event.preventDefault()
+    var inputValue = searchBox.value.trim();
+    if (inputValue != '') {
+        window.location.href = 'index.php?ctrl=shop&search=' + searchBox.value;
     }
 }
 function loadSuggestion() {
