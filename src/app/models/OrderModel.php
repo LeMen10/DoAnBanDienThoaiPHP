@@ -36,7 +36,7 @@ class OrderModel extends connect{
         return $order;
     }
     public function GetDetailOrderProduct($id) {
-        $query = "SELECT c.name as nameCustomer, o.address, c.phoneNumber, i.image, p.name as namePhone, o.totalPayment, od.quantity 
+        $query = "SELECT c.name as nameCustomer, o.addressID, i.image, p.name as namePhone, o.totalPayment, od.quantity 
         FROM `customer` c JOIN `order` o  on c.id = o.customerID 
         JOIN `orderdetail` od on o.id = od.orderID
         JOIN `variant` v on od.variantID = v.id
@@ -68,7 +68,8 @@ class OrderModel extends connect{
     }
 
     function Search($ten){
-        $sql = "SELECT c.name as nameCustomer, o.id, o.date, o.orderStatus, o.address, c.phoneNumber, i.image, p.name as namePhone, o.totalPayment, od.quantity 
+        $sql = "SELECT c.name as nameCustomer, o.id, o.date, o.orderStatus, o.addressID, 
+        i.image, p.name as namePhone, o.totalPayment, od.quantity 
         FROM `customer` c JOIN `order` o  on c.id = o.customerID 
         JOIN `orderdetail` od on o.id = od.orderID
         JOIN `variant` v on od.variantID = v.id

@@ -1912,6 +1912,7 @@ html *::-webkit-scrollbar-track {
     display: block;
     font-size: 14px;
     font-weight: 400;
+    margin-bottom: 2px;
 }
 
 .product-variants .produt-variants-size .form-control-select {
@@ -1925,6 +1926,7 @@ html *::-webkit-scrollbar-track {
     display: block;
     font-size: 16px;
     font-weight: 600;
+    margin-bottom: 2px;
 }
 
 .product-variants .produt-variants-color .color-list li {
@@ -1968,6 +1970,7 @@ html *::-webkit-scrollbar-track {
     display: block;
     font-size: 16px;
     font-weight: 600;
+    margin-bottom: 2px;
 }
 
 .cart-quantity .add-to-cart {
