@@ -12,14 +12,16 @@ class login extends Controller
     {
         return $this->view('null_layout', ['page' => 'login']);
     }
-    public function Login(){
+    public function Login()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'];
             $password = $_POST['password'];
-            $user = $this->acc_model->CheckLogin($email,$password);
-            
-            echo json_encode(['success'=>true, 'user'=> $user]);
+            $user = $this->acc_model->CheckLogin($email);
+            $passworddb = $this->acc_model->checkPassword($user['password'], $password);
+            if(!$passworddb) echo json_encode(['success' => false]);
+            $token = $this->acc_model->login($user);
+            echo json_encode(['success' => true, 'user' => $user['authorName'], 'token' => $token]);
         }
     }
-
 }

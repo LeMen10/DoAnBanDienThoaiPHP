@@ -1,20 +1,21 @@
 var elementPhoneID, elementSizeID, elementColorID, quantityInput;
 var slides, images;
-var currentSlide = 0, totalSlides = 0;
+var currentSlide = 0,
+    totalSlides = 0;
 $(document).ready(() => {
     elementPhoneID = document.querySelector(`.product-desc`);
-    elementSizeID = document.getElementById("sizeSelect");
-    elementColorID = document.getElementById("colorSelect");
-    quantityInput = document.querySelector(".cart-plus-minus-box");
+    elementSizeID = document.getElementById('sizeSelect');
+    elementColorID = document.getElementById('colorSelect');
+    quantityInput = document.querySelector('.cart-plus-minus-box');
     slides = document.querySelectorAll('.lg-image');
     images = document.querySelectorAll('.sm-image');
     totalSlides = slides.length;
-    document.getElementById("sizeSelect").addEventListener("change", handleSizeChange);
-    document.getElementById("colorSelect").addEventListener("change", handleColorChange);
-    document.getElementById("moreInfoBtn").addEventListener('click', handleMoreInformation);
-    document.querySelector(".dec").addEventListener('click', handleDecreaseQuantity);
-    document.querySelector(".inc").addEventListener('click', handleIncreaseQuantity);
-    document.querySelector(".add-to-cart").addEventListener('click', function (event) {
+    document.getElementById('sizeSelect').addEventListener('change', handleSizeChange);
+    document.getElementById('colorSelect').addEventListener('change', handleColorChange);
+    document.getElementById('moreInfoBtn').addEventListener('click', handleMoreInformation);
+    document.querySelector('.dec').addEventListener('click', handleDecreaseQuantity);
+    document.querySelector('.inc').addEventListener('click', handleIncreaseQuantity);
+    document.querySelector('.add-to-cart').addEventListener('click', function (event) {
         event.preventDefault();
         handleAddCart();
     });
@@ -23,15 +24,16 @@ $(document).ready(() => {
     slides[currentSlide].classList.add('active');
     setInterval(nextSlide, 10000);
     const overlay = document.querySelector('.overlay');
-    overlay.style.width = (100/totalSlides)+'%';
+    overlay.style.width = 100 / totalSlides + '%';
     document.getElementById('prevBtn').addEventListener('click', function () {
         prevSlide();
     });
     document.getElementById('nextBtn').addEventListener('click', function () {
-
         nextSlide();
     });
-})
+
+    document.querySelector('.buy-now').addEventListener('click', () => buyNow());
+});
 
 function addEventQuantityInput() {
     quantityInput.addEventListener('keydown', function (event) {
@@ -72,14 +74,14 @@ function handleEnterKeyPress() {
     loadQuantityProduct()
         .then(quantity => {
             if (isNaN(quantityInput.value) || quantityInput.value.trim() === '') {
-                quantityInput.value = (quantity == 0 ? 0 : 1);
+                quantityInput.value = quantity == 0 ? 0 : 1;
                 return;
             }
             if (parseInt(quantityInput.value) > quantity) {
                 quantityInput.value = quantity;
             }
             if (parseInt(quantityInput.value) <= 0) {
-                quantityInput.value = (quantity == 0 ? 0 : 1);
+                quantityInput.value = quantity == 0 ? 0 : 1;
             }
         })
         .catch(error => {
@@ -101,9 +103,9 @@ const handleSizeChange = () => {
         },
         error: err => {
             console.log(err);
-        }
-    })
-}
+        },
+    });
+};
 const handleColorChange = () => {
     phoneID = elementPhoneID.getAttribute('data-id');
     sizeID = elementSizeID.value;
@@ -118,9 +120,9 @@ const handleColorChange = () => {
         },
         error: err => {
             console.log(err);
-        }
-    })
-}
+        },
+    });
+};
 const loadQuantityProduct = () => {
     return new Promise((resolve, reject) => {
         let phoneID = elementPhoneID.getAttribute('data-id');
@@ -132,34 +134,33 @@ const loadQuantityProduct = () => {
             data: { phoneID, sizeID, colorID },
             dataType: 'json',
             success: res => {
-                resolve(res.variant["quantity"]);
-
+                resolve(res.variant['quantity']);
             },
             error: err => {
                 reject(err);
-            }
+            },
         });
     });
 };
-const changeColorSelect = (Colors) => {
+const changeColorSelect = Colors => {
     var colorSelect = document.getElementById('colorSelect');
     if (colorSelect != null) {
         clearSelect(colorSelect);
         Colors.forEach(color => {
             var option = document.createElement('option');
-            option.text = color["color"];
-            option.value = color["colorID"];
+            option.text = color['color'];
+            option.value = color['colorID'];
             colorSelect.appendChild(option);
         });
     }
-}
+};
 
-const changeVariant = (Variant) => {
+const changeVariant = Variant => {
     const priceElement = document.getElementById('price-value');
     const quantityElement = document.getElementById('quantity-value');
-    if (priceElement != null) priceElement.innerHTML = "<span>đ</span>" + Variant["price"];
-    if (quantityElement != null) quantityElement.innerHTML = "Quantity: " + Variant["quantity"];
-}
+    if (priceElement != null) priceElement.innerHTML = '<span>đ</span>' + Variant['price'];
+    if (quantityElement != null) quantityElement.innerHTML = 'Quantity: ' + Variant['quantity'];
+};
 
 function clearSelect(selectElement) {
     while (selectElement.options.length > 0) {
@@ -167,13 +168,13 @@ function clearSelect(selectElement) {
     }
 }
 function handleAddCart() {
-    const priceCart = document.querySelector(".item-text");
+    const priceCart = document.querySelector('.item-text');
     const phoneID = elementPhoneID.getAttribute('data-id');
     const sizeID = elementSizeID.value;
     const colorID = elementColorID.value;
     const quantity = quantityInput.value;
     if (quantity == 0) {
-        alert("Đã hết hàng!");
+        alert('Đã hết hàng!');
         return;
     }
     var tokenString = sessionStorage.getItem('token');
@@ -181,7 +182,7 @@ function handleAddCart() {
         var userID = JSON.parse(tokenString);
         console.log(userID);
     } else {
-        alert("Vui lòng đăng nhập để mua hàng!");
+        alert('Vui lòng đăng nhập để mua hàng!');
         return;
     }
     loadCart(userID, phoneID, sizeID, colorID, quantity)
@@ -206,10 +207,10 @@ const loadCart = (userID, phoneID, sizeID, colorID, quantity) => {
             },
             error: err => {
                 reject(err);
-            }
+            },
         });
     });
-}
+};
 
 function nextSlide() {
     slides[currentSlide].classList.remove('active');
@@ -225,5 +226,29 @@ function prevSlide() {
 }
 function moveOverlay() {
     const overlay = document.querySelector('.overlay');
-    overlay.style.left = (100/totalSlides)*currentSlide + '%';
+    overlay.style.left = (100 / totalSlides) * currentSlide + '%';
+}
+
+const buyNow = () => {
+    const phoneID = elementPhoneID.getAttribute('data-id');
+    const sizeID = elementSizeID.value;
+    const colorID = elementColorID.value;
+    const quantity = quantityInput.value;
+
+    console.log(phoneID, sizeID, colorID, quantity)
+
+    return $.ajax({
+        type: 'post',
+        url: 'index.php?ctrl=detail&act=buyNow',
+        data: { phoneID, sizeID, colorID, quantity },
+        dataType: 'json',
+        success: res => {
+            console.log(res.cartID)
+            localStorage.setItem('cartID', res.cartID);
+            window.location.href = 'index.php?ctrl=cart';
+        },
+        error: err => {
+            console.log('Error Status:', err.status);
+        },
+    });
 }

@@ -1,90 +1,111 @@
 var searchBox, suggestionBox;
-var icon, menuOption, log_out;
+var icon, menuOption, logged_dropdown;
 $(document).ready(() => {
-    log_out = document.querySelector(".log_out");
-    menuOption = document.querySelector(".hm-wishlist");
-    if(menuOption == null) {
+    logged_dropdown = document.querySelector('.logged-dropdown-wrap');
+    menuOption = document.querySelector('.hm-wishlist');
+    if (menuOption == null) {
         return;
     }
-    const token = sessionStorage.getItem('token');
-    if(token == null){
-        document.getElementById("avatar").addEventListener('click' ,formLogIn );
-        
-    }
-    else{
-        const id = parseInt(token.replace(/"/g, "")) ;
-        LoadName(id);
-        
-    }
-    searchBox = document.getElementById("searchInput");
-    suggestionBox = document.getElementById("suggestionBox");
-    document.querySelector('.li-btn').addEventListener("click", function (event) {
-        navigateShopPage(event);
-    });
-    searchBox.addEventListener("input", function () {
+
+    searchBox = document.getElementById('searchInput');
+    suggestionBox = document.getElementById('suggestionBox');
+    document.querySelector('.li-btn').addEventListener('click', function (event) {
+        event.preventDefault()
         var inputValue = searchBox.value.trim();
-        if (inputValue === "") {
-            suggestionBox.innerHTML = "";
+        if (inputValue != '') {
+            window.location.href = 'index.php?ctrl=shop&search=' + searchBox.value;
+        }
+    });
+    searchBox.addEventListener('input', function () {
+        var inputValue = searchBox.value.trim();
+        if (inputValue === '') {
+            suggestionBox.innerHTML = '';
+            suggestionBox.classList.remove('border-1px-solid');
             return;
         }
         loadSuggestion();
     });
     searchBox.addEventListener('keydown', function (event) {
-    navigateShopPage(event);
+        navigateShopPage(event);
     });
-})
-function LoadName(id) {
+
+    loadName();
+});
+function loadName() {
+    const actionLogged = document.querySelector('.header-action-logged');
     return $.ajax({
         type: 'post',
         url: 'index.php?ctrl=home&act=getUserName',
-        data: { id },
         dataType: 'json',
-        success: res => {     
-            menuOption.innerHTML += "<ul id='user-menu' >" +
-                                        "<li><a href='index.php?ctrl=purchase_order&userID="+id+"'>Đơn mua</a></li>" +
-                                        "<li><a class='log_out' onClick = 'Log_Out()'>Đăng xuất</a></li>" +
-                                    "</ul>"
-            icon = document.querySelector('#avatar');
-            var name_split = res.user['name'][0].toUpperCase();
-            icon.textContent = name_split;
+
+        success: res => {
+            if (!res.user) return;
+            actionLogged.innerHTML = `<div class="logged-dropdown-wrap">
+                <ul class="logged-dropdown-list">
+                    <li class="logged-dropdown-item js-order-history">
+                        <a class="logged-dropdown-item-content" href='index.php?ctrl=purchase_order'>
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <p >Purchase</p>
+                        </a>
+                    </li>
+                    <li class="logged-dropdown-item">
+                        <a class="logged-dropdown-item-content">
+                            <i class="fa-solid fa-right-from-bracket icon-logout"></i>
+                            <p class='log_out' onClick = 'logOut()'>Log Out</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>`;
+            var avatar = document.getElementById('avatar');
+            var name_split = res.user['name'].toUpperCase();
+            avatar.textContent = name_split[0];
         },
         error: err => {
             console.log(err);
-        }
-    })
+        },
+    });
 }
-function Log_Out(){
-    sessionStorage.removeItem('token');
-    window.location.href = 'index.php?ctrl=login';
+function logOut() {
+    return $.ajax({
+        type: 'get',
+        url: 'index.php?ctrl=home&act=logout',
+        success: res => {
+            window.location.href = 'index.php?ctrl=login';
+        },
+        error: err => {
+            console.log('Error Status:', err.status);
+        },
+    });
 }
 function formLogIn() {
     window.location.href = 'index.php?ctrl=login';
 }
 
 function changeParamInUrl(param, paramValue, url) {
-    if(paramValue !== "") {
-        if(url.includes(param)) {
-            const arrCurUrlAfterSpliting = url.split("&");
-            const newArrCurUrl = arrCurUrlAfterSpliting.map((value) => {
-                if(value.includes(`${param}=`)) {
-                    const newValue = `${param}=` + paramValue;
-                    return newValue;
-                }
-                return value;
-            }).join("&");
+    if (paramValue !== '') {
+        if (url.includes(param)) {
+            const arrCurUrlAfterSpliting = url.split('&');
+            const newArrCurUrl = arrCurUrlAfterSpliting
+                .map(value => {
+                    if (value.includes(`${param}=`)) {
+                        const newValue = `${param}=` + paramValue;
+                        return newValue;
+                    }
+                    return value;
+                })
+                .join('&');
             window.location.href = newArrCurUrl;
-        } 
-        else {
+        } else {
             window.location.href = url + `&${param}=` + paramValue;
         }
     }
 }
 function navigateShopPage(event) {
     if (event.key === 'Enter') {
-        event.preventDefault();
+        event.preventDefault()
         var inputValue = searchBox.value.trim();
-        if (inputValue != "") {
-            window.location.href = "index.php?ctrl=shop&search=" + searchBox.value;
+        if (inputValue != '') {
+            window.location.href = 'index.php?ctrl=shop&search=' + searchBox.value;
         }
     }
 }
@@ -96,21 +117,22 @@ function loadSuggestion() {
         data: { stringFind },
         dataType: 'json',
         success: res => {
-            suggestionBox.innerHTML = "";
+            suggestionBox.setAttribute('class', 'border-1px-solid');
+            suggestionBox.innerHTML = '';
             res.suggest.forEach(item => {
                 var suggestionItem = document.createElement('div');
                 suggestionItem.textContent = item['name'];
                 suggestionItem.addEventListener('click', function () {
                     searchBox.value = suggestionItem.textContent;
-                    suggestionBox.innerHTML = "";
+                    suggestionBox.innerHTML = '';
                     searchBox.focus();
+                    suggestionBox.classList.remove('border-1px-solid');
                 });
                 suggestionBox.appendChild(suggestionItem);
             });
         },
         error: err => {
             console.log(err);
-        }
-
-    })
+        },
+    });
 }

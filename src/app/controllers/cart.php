@@ -8,42 +8,54 @@ class cart extends Controller
     {
         $this->loadModel('CartModel');
         $this->cart_model = new CartModel();
+        require_once './app/middlewares/jwt.php';
     }
     public function index()
     {
-        $cart = $this->cart_model->getCart();
-        return $this->view('main_layout', ['page' => 'cart', 'cart' => $cart]);
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            if (!isset($_COOKIE['token'])) {
+                header("Location: index.php?ctrl=login");
+                exit();
+            }
+            $token = $_COOKIE['token'];
+            $jwt = new jwt();
+            $data = $jwt->decodeToken($token);
+            if (!$data) {
+                return $this->view('null_layout', ['page' => 'error/400']);
+            }
+            $cart = $this->cart_model->getCart($data['id']);
+            return $this->view('main_layout', ['page' => 'cart', 'cart' => $cart]);
+        }
     }
+
     public function update_quantity()
     {
-        // $_SESSION['user_id']
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (!isset($_COOKIE['token'])) {
+                return $this->view('null_layout', ['page' => 'error/400']);
+            }
             $id = $_POST['id'];
             $quantity = $_POST['quantity'];
-            $rs = $this->cart_model->checkStock($id);
-            $stock = 0;
-            foreach ($rs as $item) {
-                $stock = $item['quantity'];
-            }
-            // echo json_encode(["st" => $stock]);
-            // $stock = json_decode($rs);
-            if (intval($quantity) > intval($stock)) {
-                echo json_encode(["message" => "Exceed the scope"]);
+            $variantID = $this->cart_model->getVariantID($id);
+            $rs = $this->cart_model->checkStock($variantID['variantID']);
+            if (intval($quantity) > intval($rs['quantity'])) {
+                echo json_encode(['message' => 'Exceed the scope']);
                 return;
             }
 
-            // echo json_encode(["error" => "Exceed the scope", "q" => intval($quantity), "id" => intval($stock)]); return;
-
-            $this->cart_model->updateQuantity( $id, $quantity );
-            echo json_encode(["success" => true]);
+            $this->cart_model->updateQuantity($id, $quantity);
+            echo json_encode(['success' => true, 's' => $rs['quantity']]);
         }
     }
     public function remove_item()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (!isset($_COOKIE['token'])) {
+                return $this->view('null_layout', ['page' => 'login']);
+            }
             $id = $_POST['id'];
             $this->cart_model->removeItem($id);
-            echo json_encode(["success" => true, "id" => $id]);
+            echo json_encode(['success' => true, 'id' => $id]);
         }
     }
 }

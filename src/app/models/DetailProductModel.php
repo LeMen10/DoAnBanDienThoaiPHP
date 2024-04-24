@@ -1,5 +1,5 @@
 <?php
-require './app/database/connect.php';
+include_once './app/database/connect.php';
 class DetailProductModel extends Connect{
 
     public function getProductDetail($phoneID){
@@ -55,10 +55,12 @@ class DetailProductModel extends Connect{
         return $Images;
     }
 
-    public function addToCart($phoneID, $Quantity, $userID)
+    public function addToCart($variantID, $Quantity, $userID)
     {
-        $sql = 'INSERT INTO `cart`( `phoneID`, `quantity`, `customerID`) VALUES ('.$phoneID.', '.$Quantity.', '.$userID.') ';
-        return mysqli_query($this->con, $sql);
+        $sql = 'INSERT INTO `cart`( `variantID`, `quantity`, `customerID`) VALUES ('.$variantID.', '.$Quantity.', '.$userID.') ';
+        mysqli_query($this->con, $sql);
+        $cartID = mysqli_insert_id($this->con);
+        return $cartID;
     }
     public function getTotalCart($userID)
     {

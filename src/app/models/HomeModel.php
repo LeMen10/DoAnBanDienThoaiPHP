@@ -26,4 +26,6 @@ class HomeModel extends connect{
             }
             return $suggestions;
         }
+
+        
 }

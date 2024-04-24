@@ -1,33 +1,59 @@
 <?php
-require './app/database/connect.php';
+include_once './app/database/connect.php';
+class AccountModel extends connect
+{
+    public function CheckLogin($email)
+    {
+        $query = "SELECT c.id, c.name, c.email, c.visible, c.password, 
+        author.name AS authorName 
+        FROM customer c, author 
+        WHERE email = '$email' AND c.author = author.ID";
 
-class AccountModel extends connect{
-
-    
-        public function CheckLogin($email, $password) {
-            $query = "SELECT customer.* , author.name AS authorName FROM customer, author WHERE email = '$email' AND password = '$password' AND customer.author = author.ID";
-            
-            $result = mysqli_query($this->con, $query);
-            // $check = false;
-            $user = null;
-            if($result->num_rows){
-                $user = mysqli_fetch_array($result);
-                
-            }
-            return $user;
+        $result = mysqli_query($this->con, $query);
+        // $check = false;
+        $user = null;
+        if ($result->num_rows) {
+            $user = mysqli_fetch_array($result);
         }
+        return $user;
+    }
 
+    public function login($user)
+    {
+        $payload = $user;
+        $key = 'VDaZW4QaV6rjAnPlK5RZTO63zLeslqkI2FiEGeCP77I=';
+        $header = [
+            'alg' => 'HS256',
+            'typ' => 'JWT',
+        ];
 
-    public function Register($firstName, $lastName, $email, $password){
-        $fullName = $firstName.' '.$lastName;
-        $sql = "INSERT INTO `customer`(`name`,`email`, `password`) VALUES ('$fullName','$email','$password')";
+        $header = json_encode($header);
+        $header = base64_encode($header);
+
+        $payload = json_encode($payload);
+        $payload = base64_encode($payload);
+
+        $signature = hash_hmac('sha256', $header . '.' . $payload, $key, true);
+        $signature = base64_encode($signature);
+
+        $jwt = $header . '.' . $payload . '.' . $signature;
+
+        return $jwt;
+    }
+
+    public function Register($firstName, $lastName, $email, $password)
+    {
+        $hashed_password = md5($password);
+        $fullName = $firstName . ' ' . $lastName;
+        $sql = "INSERT INTO `customer`(`name`,`email`, `password`) VALUES ('$fullName','$email','$hashed_password')";
         $check = true;
         $result = mysqli_query($this->con, $sql);
-      
+
         return $result;
     }
 
-    public function CheckRegister($email) {
+    public function CheckRegister($email)
+    {
         $query = "SELECT * FROM customer WHERE email = '$email'";
         $result = mysqli_query($this->con, $query);
         $check = false;
@@ -37,36 +63,8 @@ class AccountModel extends connect{
         return $check;
     }
 
-    // function validateEmail($email){
-    //     preg_match('/\S+@\S+\.\S+/', $email, $matches);
-    //     if (count($matches) == 0) {
-    //         return false;
-    //     }
-    //     return true;
-    // }
-
-    // function validatePhoneNumber($sdt){
-    //     preg_match('/^0(\d{9}|9\d{8})$/', $sdt, $matches);
-    //     if (count($matches) == 0) {
-    //         return false;
-    //     }
-    //     return true;
-    // }
-
-    // function validatePass_Repass($pass, $repass){
-    //     if($pass == $repass)
-    //         return true;
-    //     else return false;
-    // }
-
-    // function validate_Name($firstName, $lastName){
-    //     $tenChuaSo = false;
-    //     if (preg_match('/d[0-9]/', $firstName)  || preg_match('/d[0-9]/', $lastName)) {
-    //         $tenChuaSo = true;
-    //     }
-    //     else return false;
-    // }
-    function LoadAllCustomer($email,$password) {
+    function LoadAllCustomer($email, $password)
+    {
         $query = "SELECT * FORM 'customer' WHERE 'email' = $email AND 'password' = $password";
         $result = mysqli_query($this->con, $query);
         $acc = [];
@@ -74,9 +72,11 @@ class AccountModel extends connect{
             $acc = $row;
         }
         return $acc;
+    }
 
+    public function checkPassword($passworddb, $password){
+        $hashPassword = md5($password);
+        if($hashPassword === $passworddb) return true;
+        return false;
     }
 }
-
-
-

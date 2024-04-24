@@ -1,5 +1,5 @@
 <?php
-require_once './config.php';
+require './config.php';
 
 class connect {
     public $con;

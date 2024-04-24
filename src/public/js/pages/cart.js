@@ -1,4 +1,6 @@
+let btnCheckout;
 $(document).ready(() => {
+    let dataID = [];
     const qtyButtonAdds = document.querySelectorAll('.qtybutton-add');
     qtyButtonAdds.forEach(element => {
         element.addEventListener('click', () => {
@@ -26,21 +28,115 @@ $(document).ready(() => {
     });
 
     const onChangeCheckbox = document.querySelectorAll('.checkbox-cart');
-    onChangeCheckbox.forEach(element => {
-        element.addEventListener('change', () => {
+    onChangeCheckbox.forEach((e, index) => {
+        e.addEventListener('change', () => {
+            if (e.checked == true) dataID.push(Number(e.value));
+            else if (e.checked == false) {
+                dataID.splice(index, 1);
+                const cartID = localStorage.getItem('cartID');
+                if (cartID != null && Number(e.value) === Number(cartID)) {
+                    localStorage.removeItem('cartID');
+                }
+            }
+            checkAll(dataID, onChangeCheckbox.length);
             updateTotalCart();
         });
     });
 
-    const checkall = document.querySelector('.checkall');
-    checkall.addEventListener('change', ()=>{
-        onChangeCheckbox.forEach(element => {
-            if (element.checked == true) element.checked = false;
-            else if(element.checked == false) element.checked = true;
-        });
+    const cartID = localStorage.getItem('cartID');
+    if (cartID != null) {
+        const input = document.querySelector(`.checkbox-cart[value="${cartID}"]`);
+        input.checked = true;
+        dataID.push(Number(input.value));
+        checkAll(dataID, onChangeCheckbox.length);
         updateTotalCart();
+    }
+
+    const checkall = document.querySelector('.checkall');
+    checkall.addEventListener('change', () => {
+        if (checkall.checked == false) {
+            onChangeCheckbox.forEach(element => {
+                if (element.checked == true) element.checked = false;
+            });
+            dataID = [];
+        } else {
+            dataID = [];
+            onChangeCheckbox.forEach(element => {
+                if (element.checked == false) element.checked = true;
+                dataID.push(Number(element.value));
+            });
+        }
+        updateTotalCart();
+    });
+
+    btnCheckout = document.querySelector('.btn-checkout');
+    btnCheckout.addEventListener('click', () => checkout(dataID));
+
+    window.addEventListener('load', () => {
+        localStorage.removeItem('cartID');
+        dataID = [];
     })
 });
+
+const toast = ({ title = '', message = '', type = 'info', duration = 2000 }) => {
+    const main = document.getElementById('toast');
+    if (main) {
+        const toast = document.createElement('div');
+
+        const autoRemove = setTimeout(function () {
+            main.removeChild(toast);
+        }, duration + 1000);
+
+        toast.onclick = function (e) {
+            if (e.target.closest('.toast__close')) {
+                main.removeChild(toast);
+                clearTimeout(autoRemove);
+            }
+        };
+        const icons = {
+            success: 'fa-solid fa-circle-check',
+            info: 'fa-solid fa-circle-info',
+            warning: 'fa-solid fa-circle-exclamation',
+        };
+        const icon = icons[type];
+        const delay = (duration / 1000).toFixed(2);
+        toast.classList.add('toast', `toast--${type}`);
+        toast.style.animation = `slideInleft ease .6s, fadeOut linear 1s ${delay}s forwards`;
+
+        toast.innerHTML = `
+                <div class="toast__icon">
+                    <i class="${icon}"></i>
+                </div>
+                <div class="toast__body">
+                    <h3 class="toast__title">${title}</h3>
+                    <p class="toast__msg">${message}</p>
+                </div>
+                <div class="toast__close">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+            `;
+        main.appendChild(toast);
+    }
+};
+
+const checkAll = (dataID, quantityItem) => {
+    const checkall = document.querySelector('.checkall');
+    dataID.length === quantityItem ? (checkall.checked = true) : (checkall.checked = false);
+    const cartID = localStorage.getItem('cartID');
+    if (cartID != null) localStorage.removeItem('cartID');
+};
+
+const checkout = dataID => {
+    if (dataID.length > 0) window.location.href = 'index.php?ctrl=checkout&data_id=' + encodeURIComponent(dataID);
+    else {
+        toast({
+            title: 'Thông báo!',
+            message: 'Bạn chưa chọn sản phẩm 😐',
+            type: 'warning',
+            duration: 2000,
+        });
+    }
+};
 
 const removeItemCart = id => {
     return $.ajax({
@@ -67,23 +163,30 @@ const decreaseQuantity = (id, quantity) => {
             updateTotalItem(id, quantity);
         },
         error: err => {
-            console.log('Error Status:', err.status);
+            console.log('Error Status:', err);
         },
     });
 };
 
 const increaseQuantity = (id, quantity) => {
+    console.log(id);
     return $.ajax({
         type: 'post',
         url: 'index.php?ctrl=cart&act=update_quantity',
         data: { id, quantity },
         dataType: 'json',
         success: res => {
-            if (res.message === 'Exceed the scope') return alert('Hết hàng');
+            if (res.message === 'Exceed the scope')
+                toast({
+                    title: 'Thông báo!',
+                    message: 'Hàng trong kho đã hết 😐',
+                    type: 'warning',
+                    duration: 2000,
+                });
             updateTotalItem(id, quantity);
         },
         error: err => {
-            console.log('Error Status:', err.status);
+            console.log('Error Status:', err);
         },
     });
 };
@@ -110,10 +213,8 @@ const updateTotalCart = () => {
         if (e.checked) {
             temp += totalItem;
             checkedNumber += 1;
-            console.log(checkedNumber);
         }
     });
-    console.log(checkboxCarts.length, checkedNumber);
-    checkboxCarts.length === checkedNumber ? checkedArr.checked = true : checkedArr.checked = false;
+    checkboxCarts.length === checkedNumber ? (checkedArr.checked = true) : (checkedArr.checked = false);
     totalPrice.textContent = temp;
 };
