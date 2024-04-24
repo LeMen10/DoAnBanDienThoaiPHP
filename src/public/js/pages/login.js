@@ -13,6 +13,10 @@ $(document).ready(() => {
     document.getElementById('Forgotten_password').addEventListener('click', FormForgotPassword);
     icon = document.getElementById('close-icon');
     icon.addEventListener('click', close_formLogin);
+
+    document.querySelector('.user-container').addEventListener('click', () => {
+        window.location.href = 'index.php?ctrl=login';
+    });
 });
 function FormForgotPassword() {
     window.location.href = 'index.php?ctrl=forgot_password';
@@ -27,7 +31,7 @@ function handleLogin() {
 }
 
 const LoadAccount = (email, password) => {
-    console.log(1)
+    console.log(1);
     return $.ajax({
         type: 'post',
         url: 'index.php?ctrl=login&act=Login',

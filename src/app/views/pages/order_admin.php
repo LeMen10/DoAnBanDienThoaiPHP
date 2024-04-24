@@ -6,9 +6,9 @@ require './app/includes/addOrUpdateQueryParam.php';
     <div class="col-12">
         
         <div class="bg-light rounded h-100 pt-3 pb-3 px-4">
-            <div class="time d-flex align-items-center">
-                <input type="text" id="searchInput">
-                <button onclick="search()">Search</button>
+            <div class="time d-flex align-items-center h-100">
+                <input type="text" id="searchInput" class="search-order-admin h-100" placeholder="Search...">
+                <button onclick="search()" class="btn-search-order-admin">Search</button>
                 <!-- <?php
                 if (isset ($result)) {
                     

@@ -76,8 +76,6 @@ $(document).ready(() => {
         localStorage.removeItem('cartID');
         dataID = [];
     })
-
-    getCountItemCart();
 });
 
 const toast = ({ title = '', message = '', type = 'info', duration = 2000 }) => {
@@ -223,11 +221,11 @@ const updateTotalCart = () => {
     totalPrice.textContent = temp;
 };
 
-const getCountItemCart = () => {
+const getCountCart = () => {
     const tag = document.querySelector('.cart-item-count');
     return $.ajax({
         type: 'get',
-        url: 'index.php?ctrl=cart&act=getCountItemCart',
+        url: 'index.php?ctrl=cart&a',
         dataType: 'json',
         success: res => {
             console.log(res)

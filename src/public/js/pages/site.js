@@ -69,7 +69,7 @@ function logOut() {
         type: 'get',
         url: 'index.php?ctrl=home&act=logout',
         success: res => {
-            window.location.href = 'index.php?ctrl=login';
+            window.location.href = 'index.php?';
         },
         error: err => {
             console.log('Error Status:', err.status);
