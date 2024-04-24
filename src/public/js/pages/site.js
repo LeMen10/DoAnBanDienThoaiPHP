@@ -28,6 +28,7 @@ $(document).ready(() => {
     });
 
     loadName();
+    getCountItemCart();
 });
 function loadName() {
     const actionLogged = document.querySelector('.header-action-logged');
@@ -129,6 +130,22 @@ function loadSuggestion() {
         },
         error: err => {
             console.log(err);
+        },
+    });
+}
+
+const getCountItemCart = () => {
+    const tag = document.querySelector('.cart-item-count');
+    return $.ajax({
+        type: 'get',
+        url: 'index.php?ctrl=cart&act=getCountItemCart',
+        dataType: 'json',
+        success: res => {
+            console.log(res)
+            tag.textContent = res.count || 0;
+        },
+        error: err => {
+            console.log('Error Status:', err.status);
         },
     });
 }
