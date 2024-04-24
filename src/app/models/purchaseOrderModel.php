@@ -15,7 +15,7 @@ class PurchaseOrderModel extends Connect{
     }
     public function getOrdersByUserID($userID, $Status, $sortDate = ""){
         $sql = "SELECT * FROM `order` 
-        WHERE ".($Status == "All"? "": "orderStatus = '".$Status."' ")." 
+        WHERE ".($Status == "All"? "": "orderStatus = '".$Status."' AND ")." 
         customerID = $userID ".($sortDate == ""? "" : "ORDER BY date $sortDate ");
         $result = mysqli_query($this->con, $sql);
         $orderIDList = [];
@@ -42,7 +42,9 @@ class PurchaseOrderModel extends Connect{
     }
     public function getCustomerInfoByOrderID($orderID)
     {
-        $sql = "SELECT a.recipientName, a.recipientPhone, a.detail, o.customerID, o.date, o.totalPayment, o.orderStatus, o.id AS `orderID`, p.name AS Province, d.name AS District, w.name AS Wards
+        $sql = "SELECT a.recipientName, a.recipientPhone, a.detail, o.customerID, o.date, o.totalPayment,
+        o.orderStatus, o.id AS `orderID`, p.name AS Province, a.provinceID, d.name AS District,
+        a.districtID, w.name AS Wards, a.wardsID
         FROM `address` a
         JOIN `order` o ON a.id = o.addressID
         JOIN `district` d ON a.districtID = d.id
@@ -75,5 +77,45 @@ class PurchaseOrderModel extends Connect{
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         return $result;
+    }
+    public function getAllProvince(){
+        $sql = "SELECT * FROM province";
+        $result = mysqli_query($this->con, $sql);
+        $listProvince = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $listProvince [] = $row;
+        }
+        return $listProvince;
+    }
+    public function getAllDistrict($provinceID){
+        $sql = "SELECT * FROM district WHERE provinceID = $provinceID";
+        $result = mysqli_query($this->con, $sql);
+        $listDistrict = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $listDistrict [] = $row;
+        }
+        return $listDistrict;
+    }
+    public function getAllWards($districtID){
+        $sql = "SELECT * FROM wards WHERE districtID = $districtID";
+        $result = mysqli_query($this->con, $sql);
+        $listWards = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $listWards [] = $row;
+        }
+        return $listWards;
+    }
+    public function saveAddress($userID,$Name, $Phone, $P, $D, $W, $Detail)
+    {
+        $sql = "INSERT INTO `address`(`customerID`, `provinceID`, `districtID`, `detail`, `recipientName`, `wardsID`, `recipientPhone`)
+        VALUES ($userID,$P,$D,'$Detail','$Name',$W,'$Phone')";
+        mysqli_query($this->con, $sql);
+        $insertedId = mysqli_insert_id($this->con);
+        return $insertedId;
+    }
+    public function changeAddressOrder($orderID, $addressID)
+    {
+        $sql = "UPDATE `order` SET `addressID`= $addressID WHERE `id`=$orderID";
+        mysqli_query($this->con, $sql);
     }
 }

@@ -473,7 +473,7 @@ input {
 
 select {
     width: 138px;
-    
+
     background: #eceff8;
     border: 2px solid #eceff8;
     height: 45px;
@@ -1966,7 +1966,7 @@ textarea:focus {
 .hm-wishlist {
     float: right;
     position: relative;
-   
+
 }
 
 .hm-wishlist>a {
@@ -1984,6 +1984,7 @@ textarea:focus {
 .hm-wishlist>a:hover {
     cursor: pointer;
 }
+
 /* lớp giả */
 .hm-wishlist::after {
     content: "";
@@ -1993,7 +1994,7 @@ textarea:focus {
     left: 0px;
     width: 60px;
     height: 30px;
-    background-color: transparent; 
+    background-color: transparent;
 }
 
 
@@ -2002,7 +2003,7 @@ textarea:focus {
     display: none;
     position: absolute;
     /* display: flex;  */
-    flex-direction: column;  
+    flex-direction: column;
     right: 0;
     width: 75px;
     background-color: #000;
@@ -2011,7 +2012,7 @@ textarea:focus {
     font-size: 18px;
     z-index: 20;
 
-    
+
 }
 
 #user-menu li a:hover {
@@ -2019,6 +2020,7 @@ textarea:focus {
     color: white;
 
 }
+
 /* Hiển thị user-menu khi di chuột vào user-container */
 .user-container:hover #user-menu {
     display: flex;
@@ -4930,19 +4932,23 @@ thead {
 .fa-solid.fa-xmark {
     cursor: pointer;
 }
-#btn_register{
+
+#btn_register {
     width: 106px;
     line-height: 100%;
     padding-top: 8px;
 }
-.process{
+
+.process {
     width: 100%;
 }
-.process-register{
+
+.process-register {
     display: flex;
     justify-content: space-between;
 }
-.dang-Ky{
+
+.dang-Ky {
     font-weight: 600;
     color: #000;
 }
@@ -6738,7 +6744,8 @@ span.required {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.3);
 }
-#btn_Login{
+
+#btn_Login {
     width: 54px;
     border-radius: 20px
 }
@@ -6747,28 +6754,31 @@ span.required {
 .li-product-thumbnail a img {
     width: 68px;
 }
+
 /* forgotten password */
-.ok-forgotPass-button{
+.ok-forgotPass-button {
     border-radius: 15px;
 }
 
 /* forgot password trang reseet password */
-.processing{
+.processing {
     display: flex;
     width: 100%;
     align-items: center;
 }
-#bt_sendEmail{
+
+#bt_sendEmail {
     height: 32px;
     width: 82px;
 }
 
-.mt-0{
+.mt-0 {
     font-weight: 700;
     color: black;
     height: 30px;
     width: 40px;
 }
+
 /* Purchase order */
 .container {
     max-width: 1200px;
@@ -6808,6 +6818,7 @@ span.required {
     color: red;
     font-weight: 600;
 }
+
 .search-purchase-order {
     margin-top: 10px;
     position: relative;
@@ -6960,23 +6971,23 @@ span.required {
     text-shadow: 0 0 10px rgba(255, 20, 20, 0.9), 0 0 10px rgba(255, 46, 46, 0.8), 0 0 10px rgba(237, 7, 7, 0.8);
 }
 
-.purchase-order-pagination
-{
+.purchase-order-pagination {
     text-align: center;
 }
-.purchase-order-pagination .page-Index
-{
+
+.purchase-order-pagination .page-Index {
     font-size: 20px;
     margin: 10px;
 }
-.empty-list-order
-{
+
+.empty-list-order {
     text-align: center;
     font-size: 30px;
     margin: 20px;
     color: #888;
     font-weight: 700;
 }
+
 .container .form-container {
     background-color: white;
     padding: 20px;
@@ -6997,8 +7008,8 @@ span.required {
     background-color: #f7f7f7;
     margin-bottom: 30px;
 }
-.title-order
-{
+
+.title-order {
     display: flex;
 }
 
@@ -7010,7 +7021,7 @@ span.required {
 }
 
 .detail-purchase-order .title-order h1 {
-     text-align: left;
+    text-align: left;
     width: 50%;
     font-size: 20px;
     font-weight: bold;
@@ -7022,12 +7033,13 @@ span.required {
     font-size: 16px;
     font-weight: normal;
 }
-.status-order-map
-{
+
+.status-order-map {
     text-align: center;
 }
+
 .status-order-map .item-map {
-    width:20%;
+    width: 20%;
     position: relative;
     display: inline-block;
     text-align: center;
@@ -7044,16 +7056,46 @@ span.required {
     height: 40px;
     border-radius: 50%;
     border: 5px solid gray;
-    background-color: white; 
+    background-color: white;
     transform: translate(-50%, 0);
 }
+
 .status-order-map .item-map .circle.active {
     border: 5px solid green;
 }
+
 .status-order-map .item-map .circle.red-active {
     border: 5px solid red;
 }
 
+.Info-container {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+.purchase-order-note
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 20px;
+}
+
+.purchase-order-note button
+{
+    height: 35%;
+    width: 10%;
+    border: none;
+    color: #000;
+    background-color: #fed700;
+}
+.purchase-order-note button:hover
+{
+    color: white;
+    background-color: black;
+}
 .status-order-map .item-map .line-map {
     position: absolute;
     left: 50%;
@@ -7064,9 +7106,11 @@ span.required {
     background-color: gray;
     transform: translate(0, -25%);
 }
+
 .status-order-map .item-map .line-map.active {
     background-color: green;
 }
+
 .status-order-map .item-map .line-map.red-active {
     background-color: red;
 }
@@ -7075,6 +7119,7 @@ span.required {
     margin-top: 5px;
     line-height: 20px;
 }
+
 .cancel-overlay {
     display: none;
     position: fixed;
@@ -7085,6 +7130,7 @@ span.required {
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 999;
 }
+
 .cancel-form {
     display: none;
     position: fixed;
@@ -7096,11 +7142,13 @@ span.required {
     padding: 20px;
     z-index: 1000;
 }
+
 .cancel-form.cancel-form-active,
-.cancel-overlay.cancel-form-active
-{
+.cancel-overlay.cancel-form-active,
+.change-form.change-form-active {
     display: block;
 }
+
 .cancel-body {
     display: flex;
     align-items: center;
@@ -7108,29 +7156,36 @@ span.required {
 }
 
 .cancel-body i {
-    color:black;
+    color: black;
     margin-right: 10px;
     font-size: -webkit-xxx-large;
 }
+
 .cancel-body span {
     font-size: 24px;
     color: red;
     font-weight: 600;
 }
-.cancel-form .cancel-footer .confirm-btn
-{
+
+.cancel-form .cancel-footer .confirm-btn,
+.change-form .confirm-btn{
     background-color: #fed700;
     border: none;
     color: black;
     font-weight: 500;
 }
-.cancel-form .cancel-footer .confirm-btn:hover
-{
+
+.cancel-form .cancel-footer .confirm-btn:hover {
     background-color: red;
     color: white;
 }
+.change-form .confirm-btn:hover {
+    background-color: green;
+    color: white;
+}
 
-.cancel-form .close-btn {
+.cancel-form .close-btn,
+.change-form .close-btn {
     background: none;
     border: none;
     color: #aaa;
@@ -7140,14 +7195,68 @@ span.required {
     top: 5px;
     right: 5px;
 }
-.cancel-form .close-btn:hover
-{
+
+.cancel-form .close-btn:hover,
+.change-form .close-btn:hover{
     color: red;
 }
 
-.cancel-footer {
+.cancel-footer,
+.change-footer {
+    margin-top: 20px;
     text-align: center;
 }
+.change-form
+{
+    display: none;
+    padding: 10px;
+    background-color: white;
+    position: fixed;
+    top: 50%;
+    width: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    border-radius: 16px;
+}
+.change-customer-content
+{
+    margin-top: 10px;
+}
+.change-address-content .address-content
+{
+    display: flex;
+    margin-top: 10px;
+}
+
+.change-address-content label
+{
+    width: 30%;
+}
+.change-address-content select
+{
+    width: 70%;
+}
+.change-address-body .info-content
+{
+    margin: 10px 0;
+}
+.change-address-body .detail
+{
+    display: block;
+}
+.change-form .customer-phone
+{
+    position: relative;
+}
+.change-form .err-span
+{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: red;
+}
+
 /*----------------------------------------------------------------------------------------------------*/
 /*------------------------------------------> The End <-----------------------------------------------*/
 /*----------------------------------------------------------------------------------------------------*/

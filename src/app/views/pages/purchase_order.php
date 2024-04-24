@@ -11,7 +11,7 @@
         //Hiện chi tiết đơn hàng
         if(isset($orderDetail) && isset($customerInfo) && isset($listProduct))
         {
-            echo "<div class='detail-purchase-order'> <div class='title-order'><a href='index.php?ctrl=purchase_order'><i class='fa-solid fa-arrow-left'></i></a>";
+            echo "<div class='detail-purchase-order'> <div class='title-order'><a href='index.php?ctrl=purchase_order&userID=".$customerInfo["customerID"]."'><i class='fa-solid fa-arrow-left'></i></a>";
             echo "<h1>ORDER ID: ".$orderDetail["id"]."</h1>";
             echo "<h2>".$orderDetail["orderStatus"]."</h2>";
             echo "</div><div class='purchase-order-content'><div class='purchase-order-info'><div class='status-order-map'>";
@@ -49,15 +49,29 @@
             }
             echo "</div><div class='payment-and-date'>";
             $address = $customerInfo["detail"].", ".$customerInfo["Wards"].", ".$customerInfo["District"].", ".$customerInfo["Province"];
-            echo "<div class='paymentInfo'>";
-            echo "<p>Total payment: <span>đ</span>".$orderDetail["totalPayment"]."</p>";
-            echo "<p>Order date: ".$orderDetail["date"]."</p></div>";
+            echo "<div class= 'Info-container'>";
             echo "<div class='addressInfo'>";
             echo "<p>Receiver: ".$customerInfo["recipientName"]."</p>";
             echo "<p>Address: ".$address."</p>";
             echo "<p>Phone: ".$customerInfo["recipientPhone"]."</p></div>";
-            echo "<div class='purchase-order-note'> <h3>Note</h3>";
-            echo "<p>You are only allowed to cancel an order while the order is being processed.</p>";
+            echo "<div class='paymentInfo'>";
+            echo "<p>Total payment: <span>đ</span>".$orderDetail["totalPayment"]."</p>";
+            echo "<p>Order date: ".$orderDetail["date"]."</p></div></div>";
+            echo "<div class='product-list'><h4>Product</h4>";
+            foreach ($listProduct as $Product) 
+            {
+                echo "<ul class='product-list'><li class='product-info'> ";
+                echo "<img src='public/img/phone_image/".$Product["image"]."' alt='' class='image_product'>";
+                echo "<div class='detail-info'><div class='product-name'>".$Product["name"]."</div>";
+                echo "<div class='product-size'>Size: ".$Product["size"]."</div>";
+                echo "<div class='color-product'>Color: ".$Product["color"]."</div><div class='price-content'>";
+                echo "<div class='quantity-product'>x".$Product["quantity"]."</div>";
+                echo "<div class='price-product'>".$Product["price"]."</div>";                    
+                echo "</div></di></iv></li></ul>";
+            }
+            echo "</div>";
+            echo "<div class='purchase-order-note'><div class='note-info'> <h4>Note</h4>";
+            echo "<p>You are only allowed to cancel an order while the order is being processed.</p></div>";
             if($orderDetail['orderStatus'] == 'Completed')
             {
                 echo '<button>Buy again</button>';
@@ -65,7 +79,7 @@
             echo "</div></div></div></div></div>";
         }
         //Hiện danh sách đơn hàng
-        else if(isset($listOrder))
+        else if(isset($listOrder) && isset($listOrderPerPage))
         {
             echo "<ul class='status-purchase-order'>";
             echo "<li class='status-li' id='status-All' onClick='handleChangeStatusList(\"All\")'>All</li>";
@@ -81,7 +95,7 @@
             {
                 echo "<div class='empty-list-order'>These are no purchases</div>";
             }
-            foreach ($listOrder as $Order) {
+            foreach ($listOrderPerPage as $Order) {
                 echo " <div class='purchase-order-list'><div class='purchase-order-item'>";
                 echo "<div class='order-info'><div class='order-id'>".$Order["id"]."</div>";
                 echo "<div class='order-status'>".$Order["orderStatus"]."</div></div>";
@@ -109,7 +123,7 @@
                 echo "<div class='action-content'>";
                 if($Order["orderStatus"] == "Processing")
                 {
-                    echo "<button class='change-info' onClick='handleChangeInfo(".$Order["id"].")' type='submit'>Change info</button>";
+                    echo "<button class='change-info' onClick='openChangeAddressForm(".$Order["id"].")' type='submit'>Change info</button>";
                     echo "<button class='cancel-order' onClick='openCancelForm(".$Order["id"].")' type='submit'>Cancel</button>";
                 }
                 echo "</div> </div> </div> </div></div>";
@@ -141,14 +155,58 @@
     ?>
 </div>
 <div class="cancel-overlay"></div>
-<div class="cancel-form" order-id = ''>
-    <div class="cancel-body">
+<form class="cancel-form" order-id = ''>
+<div class="cancel-body">
         <i class="fas fa-sad-tear"></i> 
         <span>Confirm order deletion</span>
-        <button class="close-btn" onclick="closeCancelForm()">&times;</button>
+        <button class="close-btn" onclick="closeCancelForm(event)">&times;</button>
     </div>
     <div class="cancel-footer">
         <button class="confirm-btn" onclick="handleDeleteOrder()">Confirm</button>
     </div>
-</div>
+</form>
+
+<form class="change-form" order-id = ''>
+    <div class="change-address-body">
+        <div>Change info</div>
+        <button class="close-btn" onclick="closeChangeAddressForm(event)">&times;</button>
+        <div class='change-customer-content'>
+            <div class='customer-info info-content'>
+                <div class='customer-name'>
+                    <label>Tên người nhận:</label>
+                    <input id="customer-name-input" type="text" value="" size="25" placeholder="Mảnh đẹp trai" />
+                    <span class="err-span" id="err-name-span"></span>
+                </div>
+                <div class='customer-phone info-content'>
+                    <label>Số điện thoại người nhận:</label>
+                    <input id="customer-phone-input" type="text" value="" size="25" placeholder="khum một hai ..." />
+                    <span class="err-span" id="err-phone-span"></span>
+                </div>
+            </div>
+        </div>
+        <div class='change-address-content'>
+            <div class='address-info'>
+                <div class='province-name address-content'>
+                    <label>Tỉnh / Thành phố:</label>
+                    <select name="select-address" id="province-select"></select>
+                </div>
+                <div class='district-name address-content'>
+                    <label>Quận / Huyện:</label>
+                    <select name="select-address" id="district-select"></select>
+                </div>
+                <div class='wards-name address-content'>
+                    <label>Phường / Xã:</label>
+                    <select name="select-address" id="wards-select"></select>
+                </div>
+                <div class='detail address-content'>
+                    <label>Mô tả chi tiết:</label>
+                    <input id="detail-address-input" type="text" value="" size="25" placeholder="75/12 Nguyễn Văn Cừ ..." />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="change-footer">
+        <button class="confirm-btn" onclick="handleChangeInfo(event)">Confirm</button>
+    </div>
+</form>
 
