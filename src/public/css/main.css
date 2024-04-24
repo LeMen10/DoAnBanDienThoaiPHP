@@ -5522,6 +5522,7 @@ thead {
 .link-register{
     font-size: 13px;
     margin: 0 auto;
+
 }
 
 .dang-Ky {
@@ -7344,7 +7345,6 @@ span.required {
     align-items: center;
 }
 
-
 /* Purchase order */
 .container {
     max-width: 1200px;
@@ -7634,6 +7634,34 @@ span.required {
     border: 5px solid red;
 }
 
+.Info-container {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+.purchase-order-note
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 20px;
+}
+
+.purchase-order-note button
+{
+    height: 35%;
+    width: 10%;
+    border: none;
+    color: #000;
+    background-color: #fed700;
+}
+.purchase-order-note button:hover
+{
+    color: white;
+    background-color: black;
+}
 .status-order-map .item-map .line-map {
     position: absolute;
     left: 50%;
@@ -7682,7 +7710,9 @@ span.required {
 }
 
 .cancel-form.cancel-form-active,
-.cancel-overlay.cancel-form-active {
+.cancel-overlay.cancel-form-active,
+.change-form.change-form-active {
+
     display: block;
 }
 
@@ -7704,7 +7734,9 @@ span.required {
     font-weight: 600;
 }
 
-.cancel-form .cancel-footer .confirm-btn {
+.cancel-form .cancel-footer .confirm-btn,
+.change-form .confirm-btn{
+
     background-color: #fed700;
     border: none;
     color: black;
@@ -7715,8 +7747,13 @@ span.required {
     background-color: red;
     color: white;
 }
+.change-form .confirm-btn:hover {
+    background-color: green;
+    color: white;
+}
 
-.cancel-form .close-btn {
+.cancel-form .close-btn,
+.change-form .close-btn {
     background: none;
     border: none;
     color: #aaa;
@@ -7727,13 +7764,68 @@ span.required {
     right: 5px;
 }
 
-.cancel-form .close-btn:hover {
+
+.cancel-form .close-btn:hover,
+.change-form .close-btn:hover{
+
     color: red;
 }
 
-.cancel-footer {
+.cancel-footer,
+.change-footer {
+    margin-top: 20px;
     text-align: center;
 }
+
+.change-form
+{
+    display: none;
+    padding: 10px;
+    background-color: white;
+    position: fixed;
+    top: 50%;
+    width: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    border-radius: 16px;
+}
+.change-customer-content
+{
+    margin-top: 10px;
+}
+.change-address-content .address-content
+{
+    display: flex;
+    margin-top: 10px;
+}
+
+.change-address-content label
+{
+    width: 30%;
+}
+.change-address-content select
+{
+    width: 70%;
+}
+.change-address-body .info-content
+{
+    margin: 10px 0;
+}
+.change-address-body .detail
+{
+    display: block;
+}
+.change-form .customer-phone
+{
+    position: relative;
+}
+.change-form .err-span
+{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: red;
 
 /* cart */
 .li-product-thumbnail a img {
@@ -7849,6 +7941,7 @@ span.required {
 
 .toast__close:hover {
     color: rgba(0, 0, 0, 0.2);
+
 }
 
 /*----------------------------------------------------------------------------------------------------*/

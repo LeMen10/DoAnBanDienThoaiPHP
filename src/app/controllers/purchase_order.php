@@ -30,12 +30,13 @@ class purchase_order extends Controller
             if(isset($_GET["userID"]))
             {
                 $id = $_GET["userID"];
-                $listOrder = $this->purchaseOrder_model -> getOrdersByUserIDAndPage($id, $Status, $currentPage, $itemsPerPage, $sortDate);
-                foreach ($listOrder as &$Order) {
+                $listOrder = $this->purchaseOrder_model -> getOrdersByUserID($id, $Status, $sortDate);
+                $listOrderPerPage = $this->purchaseOrder_model -> getOrdersByUserIDAndPage($id, $Status, $currentPage, $itemsPerPage, $sortDate);
+                foreach ($listOrderPerPage as &$Order) {
                     $Order['listProduct'] = $this->purchaseOrder_model ->  getListOrderProduct($Order["id"]);
                 }
                 unset($Order);
-                return $this->view('main_layout', ['page' => 'purchase_order','listOrder' => $listOrder]);
+                return $this->view('main_layout', ['page' => 'purchase_order','listOrder' => $listOrder, 'listOrderPerPage' => $listOrderPerPage]);
             }
             else
             {
@@ -45,7 +46,16 @@ class purchase_order extends Controller
 
         
     }
-
+    public function getCustomerInfoByOrderID()
+    {
+        $result = false;
+        if($_SERVER['REQUEST_METHOD'] == 'POST')
+        {
+            $orderID = $_POST['orderID'];
+            $result = $this->purchaseOrder_model-> getCustomerInfoByOrderID($orderID);  
+        }
+        echo json_encode(['success'=>true,'result' => $result]);
+    }
     public function cancelOrder()
     {
         $result = false;
@@ -55,6 +65,52 @@ class purchase_order extends Controller
             $result = $this->purchaseOrder_model-> cancelOrder($orderID);  
         }
         echo json_encode(['success'=>true,'result' => $result]);
+    }
+    public function getAllProvince()
+    {
+        $result = null;
+        if($_SERVER['REQUEST_METHOD'] == 'GET')
+        {
+            $result = $this->purchaseOrder_model-> getAllProvince();  
+        }
+        echo json_encode(['success'=>true,'listProvince' => $result]);
+    }
+    public function getAllDistrict()
+    {
+        $result = null;
+        if($_SERVER['REQUEST_METHOD'] == 'POST')
+        {
+            $provinceID = $_POST['provinceID'];
+            $result = $this->purchaseOrder_model-> getAllDistrict($provinceID);  
+        }
+        echo json_encode(['success'=>true,'listDistrict' => $result]);
+    }
+    public function getAllWards()
+    {
+        $result = null;
+        if($_SERVER['REQUEST_METHOD'] == 'POST')
+        {
+            $districtID = $_POST['districtID'];
+            $result = $this->purchaseOrder_model-> getAllWards($districtID);  
+        }
+        echo json_encode(['success'=>true,'listWards' => $result]);
+    }
+    public function saveAddress()
+    {
+        if($_SERVER['REQUEST_METHOD'] == 'POST')
+        {
+            $orderID = $_POST['orderID'];
+            $userID = $_POST['userID'];
+            $Name = $_POST['Name'];
+            $Phone = $_POST['Phone'];
+            $P = $_POST['P'];
+            $D = $_POST['D'];
+            $W = $_POST['W'];
+            $Detail = $_POST['Detail'];
+            $result = $this->purchaseOrder_model-> saveAddress($userID,$Name, $Phone, $P, $D, $W, $Detail);
+            $this->purchaseOrder_model-> changeAddressOrder($orderID, $result);
+        }
+        echo json_encode(['success'=>true]);
     }
     public function show()
     {
