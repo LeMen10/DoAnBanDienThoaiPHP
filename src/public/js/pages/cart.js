@@ -72,10 +72,12 @@ $(document).ready(() => {
     btnCheckout = document.querySelector('.btn-checkout');
     btnCheckout.addEventListener('click', () => checkout(dataID));
 
-    window.addEventListener('load', () => {
+    window.addEventListener('beforeunload', (event) => {
         localStorage.removeItem('cartID');
         dataID = [];
     })
+
+    getCountItemCart();
 });
 
 const toast = ({ title = '', message = '', type = 'info', duration = 2000 }) => {
@@ -127,6 +129,8 @@ const checkAll = (dataID, quantityItem) => {
 };
 
 const checkout = dataID => {
+    console.log(1)
+    console.log(dataID)
     if (dataID.length > 0) window.location.href = 'index.php?ctrl=checkout&data_id=' + encodeURIComponent(dataID);
     else {
         toast({
@@ -146,6 +150,7 @@ const removeItemCart = id => {
         success: res => {
             document.querySelector(`.wrap-product-item[data-id="${id}"]`).remove();
             updateTotalCart();
+            getCountItemCart();
         },
         error: err => {
             console.log('Error Status:', err.status);
@@ -218,3 +223,19 @@ const updateTotalCart = () => {
     checkboxCarts.length === checkedNumber ? (checkedArr.checked = true) : (checkedArr.checked = false);
     totalPrice.textContent = temp;
 };
+
+const getCountItemCart = () => {
+    const tag = document.querySelector('.cart-item-count');
+    return $.ajax({
+        type: 'get',
+        url: 'index.php?ctrl=cart&act=getCountItemCart',
+        dataType: 'json',
+        success: res => {
+            console.log(res)
+            tag.textContent = res.count || 0;
+        },
+        error: err => {
+            console.log('Error Status:', err.status);
+        },
+    });
+}

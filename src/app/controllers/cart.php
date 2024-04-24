@@ -13,16 +13,11 @@ class cart extends Controller
     public function index()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            if (!isset($_COOKIE['token'])) {
-                header("Location: index.php?ctrl=login");
-                exit();
-            }
+            if (!isset($_COOKIE['token'])) header("Location: index.php?ctrl=login");
             $token = $_COOKIE['token'];
             $jwt = new jwt();
             $data = $jwt->decodeToken($token);
-            if (!$data) {
-                return $this->view('null_layout', ['page' => 'error/400']);
-            }
+            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
             $cart = $this->cart_model->getCart($data['id']);
             return $this->view('main_layout', ['page' => 'cart', 'cart' => $cart]);
         }
@@ -31,9 +26,7 @@ class cart extends Controller
     public function update_quantity()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (!isset($_COOKIE['token'])) {
-                return $this->view('null_layout', ['page' => 'error/400']);
-            }
+            if (!isset($_COOKIE['token'])) header("Location: index.php?ctrl=login");
             $id = $_POST['id'];
             $quantity = $_POST['quantity'];
             $variantID = $this->cart_model->getVariantID($id);
@@ -50,12 +43,23 @@ class cart extends Controller
     public function remove_item()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (!isset($_COOKIE['token'])) {
-                return $this->view('null_layout', ['page' => 'login']);
-            }
+            if (!isset($_COOKIE['token'])) header("Location: index.php?ctrl=login");
             $id = $_POST['id'];
             $this->cart_model->removeItem($id);
             echo json_encode(['success' => true, 'id' => $id]);
+        }
+    }
+
+    public function getCountItemCart()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            if (!isset($_COOKIE['token'])) header("Location: index.php?ctrl=login");
+            $token = $_COOKIE['token'];
+            $jwt = new jwt();
+            $customer = $jwt->decodeToken($token);
+            if (!$customer) return $this->view('null_layout', ['page' => 'error/400']);
+            $count = $this->cart_model->getCountItemCart($customer['id']);
+            echo json_encode(['success' => true, 'count' => $count['count']]);
         }
     }
 }
