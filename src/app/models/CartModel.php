@@ -24,11 +24,6 @@ class CartModel extends connect
         $check_stock = "SELECT v.quantity FROM variant v WHERE v.id = '$variantID'";
 
         $rs = mysqli_query($this->con, $check_stock);
-        // $rows = [];
-        // while ($row = mysqli_fetch_assoc($rs)) {
-        //     $rows[] = $row;
-        // }
-        // return $rows;
         $stock = null;
         if ($rs->num_rows) {
             $stock = mysqli_fetch_array($rs);
@@ -54,5 +49,13 @@ class CartModel extends connect
         $rs = mysqli_query($this->con, $sql);
         $variantID = mysqli_fetch_assoc($rs);
         return $variantID;
+    }
+
+    public function getCountItemCart($customerID)
+    {
+        $sql = 'SELECT COUNT(*) as count FROM cart WHERE customerID = ' . $customerID;
+        $rs = mysqli_query($this->con, $sql);
+        $count = mysqli_fetch_assoc($rs);
+        return $count;
     }
 }

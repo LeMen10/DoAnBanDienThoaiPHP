@@ -28,6 +28,7 @@ $(document).ready(() => {
     });
 
     loadName();
+    getCountItemCart();
 });
 function loadName() {
     return $.ajax({
@@ -70,7 +71,7 @@ function logOut() {
         type: 'get',
         url: 'index.php?ctrl=home&act=logout',
         success: res => {
-            window.location.href = 'index.php?ctrl=login';
+            window.location.href = 'index.php?';
         },
         error: err => {
             console.log('Error Status:', err.status);
@@ -131,6 +132,22 @@ function loadSuggestion() {
         },
         error: err => {
             console.log(err);
+        },
+    });
+}
+
+const getCountItemCart = () => {
+    const tag = document.querySelector('.cart-item-count');
+    return $.ajax({
+        type: 'get',
+        url: 'index.php?ctrl=cart&act=getCountItemCart',
+        dataType: 'json',
+        success: res => {
+            console.log(res)
+            tag.textContent = res.count || 0;
+        },
+        error: err => {
+            console.log('Error Status:', err.status);
         },
     });
 }

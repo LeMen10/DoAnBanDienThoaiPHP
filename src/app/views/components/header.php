@@ -4,14 +4,14 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="logo pb-sm-30 pb-xs-30">
-                        <a href="">
+                        <a href="index.php">
                             <img src="public/img/logo/logo-1.jpg" alt="">
                         </a>
                     </div>
                 </div>
                 <div class="col-lg-9 pl-0 ml-sm-15 ml-xs-15">
                     <form action="" class="hm-searchbox">
-                        <input type="text" placeholder="Enter your search key ..." id='searchInput'>
+                        <input type="text" placeholder="Enter your search key ..." id='searchInput' class="search-home-page">
                         <div id="suggestionBox"></div>
                         <button class="li-btn" type=""><i class="fa fa-search"></i></button>
                     </form>

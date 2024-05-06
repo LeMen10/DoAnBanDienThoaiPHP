@@ -482,10 +482,13 @@ input:checked+.slider:before {
 .select_tg{
     border-radius: 38px;
 }
-#searchInput{
-    width: 90%;
-    margin-right: 20px;
-    height: 100%;
+
+.search-order-admin{
+    background-color: #fff;
+    width: 24%;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border: 1px solid;
 }
 
 /* trash user */

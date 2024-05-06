@@ -1917,11 +1917,27 @@ html *::-webkit-scrollbar-track {
     margin-right: 30px;
 }
 
+
+.product-variants .produt-variants-size label {
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 2px;
+}
+
 .product-variants .produt-variants-size .form-control-select {
     width: 60px;
     border-radius: 0px;
     border: 1px solid #ddd;
     height: 30px;
+}
+
+
+.product-variants .produt-variants-color label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 2px;
 }
 
 .product-variants .produt-variants-color .color-list li {
@@ -1968,6 +1984,7 @@ html *::-webkit-scrollbar-track {
     display: block;
     font-size: 16px;
     font-weight: 600;
+    margin-bottom: 2px;
 }
 
 .cart-quantity .add-to-cart {
@@ -2415,6 +2432,12 @@ html *::-webkit-scrollbar-track {
     padding: 0 60px 0 33px;
 }
 
+.search-home-page{
+    width: 93%;
+    height: 100%;
+    border-radius: 4px;
+}
+
 /*Header Middle Right*/
 .header-middle-right {
     display: flex;
@@ -2458,9 +2481,12 @@ html *::-webkit-scrollbar-track {
 }
 
 
-
+.user-container:hover{
+    cursor: pointer;
+}
 .user-container:hover .logged-dropdown-wrap{
     display: block;
+    
 }
 
 
@@ -2492,6 +2518,7 @@ html *::-webkit-scrollbar-track {
 
 .logged-dropdown-item:hover .logged-dropdown-item-content {
     background-color: var(--border-color);
+    cursor: pointer;
 }
 
 .logged-dropdown-wrap .logged-dropdown-item-content p {
@@ -5677,7 +5704,8 @@ thead {
 .cart-page-content>.btn-payment,
 .login-button,
 #bt_sendEmail,
-.register-button {
+.register-button,
+.btn-search-order-admin {
     background-color: #333;
     border: 1px solid #333;
     color: #fff;
@@ -5692,7 +5720,8 @@ thead {
 .cart-page-content>.btn-payment:hover,
 .login-button:hover,
 #bt_sendEmail:hover,
-.register-button:hover {
+.register-button:hover,
+.btn-search-order-admin:hover {
     background: #fed700;
     cursor: pointer;
     border-color: #fed700;

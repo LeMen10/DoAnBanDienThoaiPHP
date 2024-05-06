@@ -14,7 +14,8 @@ class checkout extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             if (!isset($_COOKIE['token'])) {
-                return $this->view('null_layout', ['page' => 'error/400']);
+                header("Location: index.php?ctrl=login");
+                exit();
             }
             $token = $_COOKIE['token'];
             $jwt = new jwt();
