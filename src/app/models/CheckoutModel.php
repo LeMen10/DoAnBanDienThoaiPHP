@@ -2,19 +2,31 @@
 include_once './app/database/connect.php';
 class CheckoutModel extends connect
 {
-    public function getCheckout($data, $customerID)
+    public function getCheckout($data, $customerID, $orderID = 0)
     {
-        $temp = explode(',', $data);
-        $resultString = '(' . implode(', ', $temp) . ')';
-        $sql =
-            'SELECT p.name, v.price, c.quantity, c.id, i.image, v.id as variantID FROM cart c ' .
-            'JOIN variant v ON c.variantID = v.id ' .
-            'JOIN image i ON v.phoneID = i.phoneID ' .
-            'JOIN phone p ON v.phoneID = p.id WHERE i.colorID = v.colorID AND c.customerID = ' .
-            $customerID .
-            ' AND c.id IN ' .
-            $resultString .
-            ' GROUP BY c.id;';
+        $sql = "";
+        if($orderID == 0)
+        {
+            $temp = explode(',', $data);
+            $resultString = '(' . implode(', ', $temp) . ')';
+            $sql =
+                'SELECT p.name, v.price, c.quantity, c.id, i.image, v.id as variantID FROM cart c ' .
+                'JOIN variant v ON c.variantID = v.id ' .
+                'JOIN image i ON v.phoneID = i.phoneID ' .
+                'JOIN phone p ON v.phoneID = p.id WHERE i.colorID = v.colorID AND c.customerID = ' .
+                $customerID .
+                ' AND c.id IN ' .
+                $resultString .
+                ' GROUP BY c.id;';
+        }
+        else
+        {
+            $sql = 'SELECT p.name, v.price, o.quantity, i.image, v.id as variantID 
+                FROM orderdetail o JOIN variant v ON o.variantID = v.id 
+                JOIN image i ON v.phoneID = i.phoneID 
+                JOIN phone p ON v.phoneID = p.id 
+                WHERE o.orderID = '.$orderID.' GROUP BY v.id';
+        }
         $result = mysqli_query($this->con, $sql);
         $rows = [];
         while ($row = mysqli_fetch_assoc($result)) {

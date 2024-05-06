@@ -43,12 +43,12 @@
                             <tbody>
                                 <?php foreach ($data['checkout'] as $item) {
                                     echo "
-                                        <tr class='wrap-product-item' data-id='". $item['id'] ."'>
+                                        <tr class='wrap-product-item' >
                                             <td class='li-product-thumbnail'><a href='#'><img src='public/img/phone_image/". $item['image'] ."' alt='Li's Product Image'></a></td>
                                             <td class='li-product-name'><a href='#'>". $item['name'] ."</a></td>
-                                            <td class='li-product-price'><span class='amount'><span class='currency-unit'>đ</span><span class='currency-price' data-id='". $item['id'] ."'>". $item['price']."</span></span></td>
+                                            <td class='li-product-price'><span class='amount'><span class='currency-unit'>đ</span><span class='currency-price'>". $item['price']."</span></span></td>
                                             <td class='quantity'>". $item['quantity'] ."</td>
-                                            <td class='product-subtotal'><span class='amount' ><span class='currency-unit'>đ</span><span class='product-subtotal-value' data-id='".$item['id']."'>".$item['quantity']*$item['price']."</span></span></td>
+                                            <td class='product-subtotal'><span class='amount' ><span class='currency-unit'>đ</span><span class='product-subtotal-value'>".$item['quantity']*$item['price']."</span></span></td>
                                         </tr>";
                                 } ?>
                             </tbody>

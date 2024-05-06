@@ -22,9 +22,17 @@ class checkout extends Controller
             if (!$data) {
                 return $this->view('null_layout', ['page' => 'error/400']);
             }
-
-            $dataID = $_GET['data_id'];
-            $rs = $this->checkout_model->getCheckout($dataID, $data['id']);
+            $rs = [];
+            if(isset($_GET['data_id']))
+            {
+                $dataID = $_GET['data_id'];
+                $rs = $this->checkout_model->getCheckout($dataID, $data['id']);
+            }
+            else if(isset($_GET['order_id']))
+            {
+                $orderID = $_GET['order_id'];
+                $rs = $this->checkout_model->getCheckout("", $data['id'], $orderID);
+            }
             $address = $this->checkout_model->getActiveAddress();
             return $this->view('main_layout', ['page' => 'checkout', 'checkout' => $rs, 'address' => $address]);
         }

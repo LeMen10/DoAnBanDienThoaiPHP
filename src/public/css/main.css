@@ -1811,6 +1811,13 @@ html *::-webkit-scrollbar-track {
     position: absolute;
     padding: 10px 20px;
     background-color: #00000028;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 5px;
+    left: 0;
+    top: 50%;
 }
 
 
@@ -1886,13 +1893,15 @@ html *::-webkit-scrollbar-track {
 .product-variants .produt-variants-size,
 .product-variants .produt-variants-color {
     margin-right: 30px;
+    margin-top: 30px;
 }
 
 .product-variants .produt-variants-size label,
 .product-variants .produt-variants-color label {
     display: block;
-    font-size: 14px;
-    font-weight: 400;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
 }
 
 .product-details-view-content .content-center .product-variants {
@@ -1908,23 +1917,11 @@ html *::-webkit-scrollbar-track {
     margin-right: 30px;
 }
 
-.product-variants .produt-variants-size label {
-    display: block;
-    font-size: 14px;
-    font-weight: 400;
-}
-
 .product-variants .produt-variants-size .form-control-select {
     width: 60px;
     border-radius: 0px;
     border: 1px solid #ddd;
     height: 30px;
-}
-
-.product-variants .produt-variants-color label {
-    display: block;
-    font-size: 16px;
-    font-weight: 600;
 }
 
 .product-variants .produt-variants-color .color-list li {
@@ -1961,16 +1958,24 @@ html *::-webkit-scrollbar-track {
     margin-top: 25px;
     overflow: hidden;
     float: left;
+    align-items: flex-end;
+    display: flex;
     width: 100%;
 }
 
 .cart-quantity label {
+    padding-bottom: 10px;
     display: block;
     font-size: 16px;
     font-weight: 600;
 }
 
 .cart-quantity .add-to-cart {
+    text-align: center;
+    width: 30%;
+    margin-right: 10px;
+    height: 50px;
+    padding: 10px;
     border: none;
     font-size: 14px;
     color: #242424;
@@ -1979,12 +1984,16 @@ html *::-webkit-scrollbar-track {
     cursor: pointer;
     font-weight: 500;
     text-transform: capitalize;
-    padding: 13px 70px;
     border-radius: 2px;
     transition: all 0.3s ease-in-out;
 }
 
 .cart-quantity .buy-now {
+    text-align: center;
+    width: 30%;
+    margin-right: 10px;
+    height: 50px;
+    padding: 10px;
     border: none;
     font-size: 14px;
     color: white;
@@ -1993,7 +2002,6 @@ html *::-webkit-scrollbar-track {
     cursor: pointer;
     font-weight: 500;
     text-transform: capitalize;
-    padding: 15px 70px;
     border-radius: 2px;
     transition: all 0.3s ease-in-out;
 }
@@ -7583,7 +7591,7 @@ span.required {
 {
     margin-top: 20px;
 }
-.detail-purchase-order .title-order a {
+.detail-purchase-order .title-order span {
     text-align: left;
     width: 10%;
     text-decoration: none;
@@ -7701,7 +7709,8 @@ span.required {
     z-index: 999;
 }
 
-.cancel-form {
+.cancel-form, 
+.buy-again-form{
     display: none;
     position: fixed;
     top: 50%;
@@ -7715,19 +7724,26 @@ span.required {
 
 .cancel-form.cancel-form-active,
 .cancel-overlay.cancel-form-active,
-.change-form.change-form-active {
+.change-form.change-form-active,
+.buy-again-form-active {
 
     display: block;
 }
 
-.cancel-body {
+.cancel-body, .buy-again-body {
     display: flex;
     align-items: center;
     margin: 20px;
 }
 
-.cancel-body i {
+.cancel-body i{
     color: black;
+    margin-right: 10px;
+    font-size: -webkit-xxx-large;
+}
+.buy-again-body i
+{
+    color: pink;
     margin-right: 10px;
     font-size: -webkit-xxx-large;
 }
@@ -7738,8 +7754,15 @@ span.required {
     font-weight: 600;
 }
 
+.buy-again-body span {
+    font-size: 24px;
+    color: greenyellow;
+    font-weight: 600;
+}
+
 .cancel-form .cancel-footer .confirm-btn,
-.change-form .confirm-btn{
+.change-form .confirm-btn,
+.buy-again-form .confirm-btn{
 
     background-color: #fed700;
     border: none;
@@ -7751,13 +7774,15 @@ span.required {
     background-color: red;
     color: white;
 }
-.change-form .confirm-btn:hover {
+.change-form .confirm-btn:hover,
+.buy-again-form .confirm-btn:hover {
     background-color: green;
     color: white;
 }
 
 .cancel-form .close-btn,
-.change-form .close-btn {
+.change-form .close-btn,
+.buy-again-form .close-btn{
     background: none;
     border: none;
     color: #aaa;
@@ -7770,13 +7795,15 @@ span.required {
 
 
 .cancel-form .close-btn:hover,
-.change-form .close-btn:hover{
+.change-form .close-btn:hover,
+.buy-again-form .close-btn:hover{
 
     color: red;
 }
 
 .cancel-footer,
-.change-footer {
+.change-footer,
+.buy-again-footer {
     margin-top: 20px;
     text-align: center;
 }
@@ -7847,6 +7874,7 @@ span.required {
     right: 10px;
     top: 50%;
     color: red;
+}
 
 /* cart */
 .li-product-thumbnail a img {

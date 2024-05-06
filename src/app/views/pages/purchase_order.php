@@ -11,7 +11,7 @@
         //Hiện chi tiết đơn hàng
         if(isset($orderDetail) && isset($customerInfo) && isset($listProduct))
         {
-            echo "<div class='detail-purchase-order'> <div class='title-order'><a href='index.php?ctrl=purchase_order&userID=".$customerInfo["customerID"]."'><i class='fa-solid fa-arrow-left'></i></a>";
+            echo "<div class='detail-purchase-order'> <div class='title-order'><span onclick='returnHandle(event)'><i class='fa-solid fa-arrow-left'></i></span>";
             echo "<h1>ORDER ID: ".$orderDetail["id"]."</h1>";
             echo "<h2>".$orderDetail["orderStatus"]."</h2>";
             echo "</div><div class='purchase-order-content'><div class='purchase-order-info'><div class='status-order-map'>";
@@ -74,7 +74,7 @@
             echo "<p>You are only allowed to cancel an order while the order is being processed.</p></div>";
             if($orderDetail['orderStatus'] == 'Completed')
             {
-                echo '<button>Buy again</button>';
+                echo "<button onclick='openBuyAgainForm(".$orderDetail["id"].")'>Buy again</button>";
             }
             echo "</div></div></div></div></div>";
         }
@@ -210,3 +210,13 @@
     </div>
 </form>
 
+<form class="buy-again-form" order-id = ''>
+<div class="buy-again-body">
+        <i class="fa-light fa-face-kiss-wink-heart"></i>
+        <span>Would you like to repurchase this order?</span>
+        <button class="close-btn" onclick="closeBuyAgainForm(event)">&times;</button>
+    </div>
+    <div class="buy-again-footer">
+        <button class="confirm-btn" onclick="navigateCheckout(event)">Confirm</button>
+    </div>
+</form>

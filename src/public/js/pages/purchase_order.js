@@ -8,8 +8,26 @@ $(document).ready(() => {
         currentSelect = document.getElementById((select == null ? "status-All" : "status-" + select));
         currentSelect.classList.add('status-active');
     }
+    //tìm kiếm đơn hàng
+    searchBox = document.getElementById('search-purchase');
+    document.querySelector('.search-order-button').addEventListener('click', function (event) {
+        searchHandle(event);
+    });
+    searchBox.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+            searchHandle(event);
+        }
+    });
 
 })
+function searchHandle(event) {
+    event.preventDefault()
+    var searchBox = document.getElementById('search-purchase');
+    var currentURL = new URL(window.location.href);
+    currentURL.searchParams.set("search", searchBox.value);
+    if(currentURL.searchParams.get("search") == "") currentURL.searchParams.delete("search");
+    window.location.href = currentURL.href;
+}
 function addEventPhoneInput() {
     var phoneInput = document.getElementById("customer-phone-input");
     phoneInput.addEventListener('keydown', function (event) {
@@ -302,3 +320,31 @@ function changeColorHover() {
         });
     });
 }
+
+//---Trang chi tiết đơn hàng---
+function openBuyAgainForm(id) {
+    var buyAgainForm = document.querySelector(".buy-again-form");
+    var overlay = document.querySelector(".cancel-overlay");
+    buyAgainForm.classList.add("buy-again-form-active");
+    overlay.classList.add("cancel-form-active");
+    buyAgainForm.setAttribute("order-id", id);
+}
+function returnHandle(event) {
+    event.preventDefault()
+    var currentURL = new URL(window.location.href);
+    currentURL.searchParams.delete("orderID");
+    window.location.href = currentURL.href;
+}
+function closeBuyAgainForm(event) {
+    event.preventDefault();
+    var buyAgainForm = document.querySelector(".buy-again-form");
+    var overlay = document.querySelector(".cancel-overlay");
+    buyAgainForm.classList.remove("buy-again-form-active");
+    overlay.classList.remove("cancel-form-active");
+}
+function navigateCheckout (event) {
+    event.preventDefault();
+    var buyAgainForm = document.querySelector(".buy-again-form");
+    window.location.href = 'index.php?ctrl=checkout&order_id=' + buyAgainForm.getAttribute("order-id");
+};
+

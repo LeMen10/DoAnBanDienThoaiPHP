@@ -52,10 +52,16 @@ class detail extends Controller
     {
         if($_SERVER['REQUEST_METHOD'] == 'POST')
         {
+            $token = $_COOKIE['token'];
+            $jwt = new jwt();
+            $data = $jwt->decodeToken($token);
+            if (!$data) {
+                return $this->view('null_layout', ['page' => 'login']);
+            }
             $phoneID = $_POST['phoneID'];
             $sizeID = $_POST['sizeID'];
             $colorID = $_POST['colorID'];
-            $userID = $_POST['userID'];
+            $userID = $data['id'];
             $quantity = $_POST['quantity'];
             $Variant = $this->product_model -> getVariant($phoneID, $sizeID, $colorID);
             $Cart = null;

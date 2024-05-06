@@ -70,7 +70,7 @@
                                                 echo " </div> ";
                                                 echo " <div class='product_desc'> ";
                                                 echo " <div class='product_desc_info'> ";
-                                                echo " <h4><a class='product_name' href='single-product.html'>".$result_6_phones[$i]["PhoneName"]."</a></h4>";
+                                                echo " <h4><span class='product_name'>".$result_6_phones[$i]["PhoneName"]."</span></h4>";
                                                 echo " <div class='price-box'> ";
                                                 echo " <span class='new-price'>".format_money($result_6_phones[$i]["PhonePrice"])." VNĐ</span> ";
                                                 echo " </div> ";

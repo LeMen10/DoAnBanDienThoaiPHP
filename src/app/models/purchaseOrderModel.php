@@ -1,11 +1,32 @@
 <?php
 include_once './app/database/connect.php';
 class PurchaseOrderModel extends Connect{
-    public function getOrdersByUserIDAndPage($userID, $Status, $pageIndex, $itemsPerPage, $sortDate = ""){
-        $sql = "SELECT * FROM `order` 
-        WHERE ".($Status == "All"? "": "orderStatus = '".$Status."' AND ")." 
-        customerID = $userID ".($sortDate == ""? "" : "ORDER BY date DESC ").
-        "LIMIT ".(($pageIndex -1) * $itemsPerPage).", $itemsPerPage";
+    public function getOrdersByUserIDAndPage($userID, $Status, $pageIndex, $itemsPerPage, $sortDate = "", $search = "") {
+        $sql = "SELECT o.* FROM `order` o ";
+
+        if($search !== "")
+        {
+            $sql .= "JOIN `orderdetail` od ON od.orderID = o.id
+                    JOIN `variant` v ON v.id = od.variantID
+                    JOIN `phone` p ON p.id = v.phoneID ";
+        }
+     
+        $sql .= "WHERE ".($Status == "All" ? "" : "orderStatus = '" . $Status . "' AND ");
+        $sql .= "customerID = $userID ";
+
+        if ($search !== "") {
+            if(is_numeric($search))
+            {
+                $search = mysqli_real_escape_string($this->con, $search);
+                $sql .= "AND o.id = $search ";
+            }
+            $sql .= "AND p.name LIKE '%$search%' ";
+        }
+        
+        $sql .= ($sortDate == "" ? "" : "ORDER BY date DESC ") . 
+                "GROUP BY o.id ".
+                "LIMIT " . (($pageIndex - 1) * $itemsPerPage) . ", $itemsPerPage";
+        
         $result = mysqli_query($this->con, $sql);
         $orderIDList = [];
         while ($row = mysqli_fetch_assoc($result)) {
@@ -13,10 +34,31 @@ class PurchaseOrderModel extends Connect{
         }
         return $orderIDList;
     }
-    public function getOrdersByUserID($userID, $Status, $sortDate = ""){
-        $sql = "SELECT * FROM `order` 
-        WHERE ".($Status == "All"? "": "orderStatus = '".$Status."' AND ")." 
-        customerID = $userID ".($sortDate == ""? "" : "ORDER BY date $sortDate ");
+    
+    public function getOrdersByUserID($userID, $Status, $sortDate = "", $search = ""){
+        $sql = "SELECT o.* FROM `order` o ";
+
+        if($search !== "")
+        {
+            $sql .= "JOIN `orderdetail` od ON od.orderID = o.id
+                    JOIN `variant` v ON v.id = od.variantID
+                    JOIN `phone` p ON p.id = v.phoneID ";
+        }
+     
+        $sql .= "WHERE ".($Status == "All" ? "" : "orderStatus = '" . $Status . "' AND ");
+        $sql .= "customerID = $userID ";
+
+        if ($search !== "") {
+            if(is_numeric($search))
+            {
+                $search = mysqli_real_escape_string($this->con, $search);
+                $sql .= "AND orderID = $search ";
+            }
+            $sql .= "AND p.name LIKE '%$search%' ";
+        }
+        
+        $sql .= ($sortDate == "" ? "" : "ORDER BY date DESC ") ."GROUP BY o.id ";
+        
         $result = mysqli_query($this->con, $sql);
         $orderIDList = [];
         while ($row = mysqli_fetch_assoc($result)) {
@@ -24,6 +66,7 @@ class PurchaseOrderModel extends Connect{
         }
         return $orderIDList;
     }
+    
     public function getListOrderProduct($orderID){
         $sql = "SELECT p.name, od.quantity, od.price, i.image, c.color, v.size
         FROM `orderdetail` od
@@ -31,8 +74,7 @@ class PurchaseOrderModel extends Connect{
         JOIN `phone` p ON p.id = v.phoneID
         JOIN `image` i ON i.phoneID = v.phoneID 
         JOIN `color` c ON c.colorID = v.colorID
-        WHERE od.orderID = $orderID AND i.colorID = v.colorID AND c.phoneID = v.phoneID
-        GROUP BY v.id";
+        WHERE od.orderID = $orderID AND i.colorID = v.colorID AND c.phoneID = v.phoneID GROUP BY v.id";
         $result = mysqli_query($this->con, $sql);
         $orderDetailList = [];
         while ($row = mysqli_fetch_assoc($result)) {
