@@ -31,7 +31,6 @@ $(document).ready(() => {
     getCountItemCart();
 });
 function loadName() {
-    const actionLogged = document.querySelector('.header-action-logged');
     return $.ajax({
         type: 'post',
         url: 'index.php?ctrl=home&act=getUserName',
@@ -39,6 +38,8 @@ function loadName() {
 
         success: res => {
             if (!res.user) return;
+            const actionLogged = document.querySelector('.header-action-logged');
+            const priceCart = document.querySelector('.item-text');
             actionLogged.innerHTML = `<div class="logged-dropdown-wrap">
                 <ul class="logged-dropdown-list">
                     <li class="logged-dropdown-item js-order-history">
@@ -58,6 +59,7 @@ function loadName() {
             var avatar = document.getElementById('avatar');
             var name_split = res.user['name'].toUpperCase();
             avatar.textContent = name_split[0];
+            priceCart.innerHTML = `${res.cart['price']} <span class='cart-item-count'>${res.cart['quantity']}</span>`;
         },
         error: err => {
             console.log(err);

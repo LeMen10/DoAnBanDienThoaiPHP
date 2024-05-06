@@ -177,30 +177,22 @@ function handleAddCart() {
         alert('Đã hết hàng!');
         return;
     }
-    var tokenString = sessionStorage.getItem('token');
-    if (tokenString) {
-        var userID = JSON.parse(tokenString);
-        console.log(userID);
-    } else {
-        alert('Vui lòng đăng nhập để mua hàng!');
-        return;
-    }
-    loadCart(userID, phoneID, sizeID, colorID, quantity)
+    loadCart(phoneID, sizeID, colorID, quantity)
         .then(cart => {
             if (cart != null) {
-                priceCart.innerHTML = `${cart['price']} <span class='cart-item-count'>${cart['count']}</span>`;
+                priceCart.innerHTML = `${cart['price']} <span class='cart-item-count'>${cart['quantity']}</span>`;
             }
         })
         .catch(error => {
             console.log(error);
         });
 }
-const loadCart = (userID, phoneID, sizeID, colorID, quantity) => {
+const loadCart = (phoneID, sizeID, colorID, quantity) => {
     return new Promise((resolve, reject) => {
         $.ajax({
             type: 'post',
             url: 'index.php?ctrl=detail&act=addToCart',
-            data: { phoneID, sizeID, colorID, quantity, userID },
+            data: { phoneID, sizeID, colorID, quantity},
             dataType: 'json',
             success: res => {
                 resolve(res.cart);

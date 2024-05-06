@@ -32,7 +32,8 @@ class home extends Controller
         $jwt = new jwt();
         $data = $jwt->decodeToken($token);
         $user = $this->user_model->getUserByID($data['id']);
-        echo json_encode(['success' => true, 'user' => $user, 'data' => $data]);
+        $cart = $this->user_model->getTotalCart($data['id']);
+        echo json_encode(['success' => true, 'user' => $user, 'data' => $data, 'cart' => $cart]);
     }
     function GetSuggestion()
     {

@@ -145,4 +145,25 @@ class UserModel extends Connect
         }
         return $user;
     }
+
+    public function getTotalCart($userID)
+    {
+        $userID = mysqli_real_escape_string($this->con, $userID);
+
+        $sql = "SELECT COUNT(c.id) AS totalQuantity, SUM(v.price * c.quantity) AS totalPrice 
+                FROM cart c 
+                JOIN variant v ON c.variantID = v.id 
+                WHERE c.customerID = '$userID'";
+        $result = mysqli_query($this->con, $sql);
+
+        if (!$result) {
+            // Handle query error
+            return false;
+        }
+        $row = mysqli_fetch_assoc($result);
+        if (!$row) {
+            return array('price' => 0, 'quantity' => 0);
+        }
+        return array('price' => $row['totalPrice'], 'quantity' => $row['totalQuantity']);
+    }
 }

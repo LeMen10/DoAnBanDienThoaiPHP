@@ -27,6 +27,7 @@ class purchase_order extends Controller
             $itemsPerPage = 5;
             $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
             $sortDate = isset($_GET['sort']) ? $_GET['sort'] : "";
+            $search = isset($_GET['search']) ? $_GET['search'] : "";
             $Status =  isset($_GET['sl']) ? $_GET['sl'] : "All";
 
             if (!isset($_COOKIE['token'])) {
@@ -39,8 +40,8 @@ class purchase_order extends Controller
             if (!$data) {
                 return $this->view('null_layout', ['page' => 'error/400']);
             }
-            $listOrder = $this->purchaseOrder_model -> getOrdersByUserID($data["id"], $Status, $sortDate);
-            $listOrderPerPage = $this->purchaseOrder_model -> getOrdersByUserIDAndPage($data["id"], $Status, $currentPage, $itemsPerPage, $sortDate);
+            $listOrder = $this->purchaseOrder_model -> getOrdersByUserID($data["id"], $Status, $sortDate, $search);
+            $listOrderPerPage = $this->purchaseOrder_model -> getOrdersByUserIDAndPage($data["id"], $Status, $currentPage, $itemsPerPage, $sortDate, $search);
             foreach ($listOrderPerPage as &$Order) {
                 $Order['listProduct'] = $this->purchaseOrder_model ->  getListOrderProduct($Order["id"]);
             }
