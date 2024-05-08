@@ -265,13 +265,20 @@ class ProductModel extends connect {
             $query_weight = $weight;
         }
 
+        $query_search = "";
+        if ($query_brand != "" || $query_weight != "") {
+            $query_search = $search != "" ? " AND"." p.`name` LIKE N'%$search%'" : "";
+        } else {
+            $query_search = $search != "" ? " WHERE p.`name` LIKE N'%$search%'" : "";
+        }
+
         $sql = "SELECT * FROM `phone` p 
                 LEFT JOIN image i ON p.`id` = i.`phoneID` 
                 LEFT JOIN variant v ON p.`id` = v.`phoneID` 
                 LEFT JOIN spec s ON p.`id` = s.`phoneID`
                 ". $query_brand ."
                 ".$query_weight."
-                ".($search != "" ? ("WHERE p.`name` LIKE N'%".$search."%'"): "")."
+                ".$query_search."
                 GROUP BY p.`id`";
 
         $result = mysqli_query($this->con, $sql);
@@ -300,21 +307,28 @@ class ProductModel extends connect {
             } else {
                 $query_brand = $brand != "" ? "LEFT JOIN category c ON p.`category` = c.`id` WHERE c.`name` = '".$brand ."'" : "";
             }
+
             $query_weight = $weight != "" ? str_replace("WHERE", "AND", $weight) : " ";
         } else {
             $query_brand = "";
             $query_weight = $weight;
         }
 
-        $begin = ($page * $productsPerPage) - $productsPerPage;
+        $query_search = "";
+        if ($query_brand != "" || $query_weight != "") {
+            $query_search = $search != "" ? " AND"." p.`name` LIKE N'%$search%'" : "";
+        } else {
+            $query_search = $search != "" ? " WHERE p.`name` LIKE N'%$search%'" : "";
+        }
 
+        $begin = ($page * $productsPerPage) - $productsPerPage;
         $sql = "SELECT p.`id` as PhoneId, p.`name` as PhoneName, i.`image` as PhoneImage, v.`price` as PhonePrice FROM `phone` p 
                 LEFT JOIN image i ON p.`id` = i.`phoneID` 
                 LEFT JOIN variant v ON p.`id` = v.`phoneID` 
                 LEFT JOIN spec s ON p.`id` = s.`phoneID`
                 ". $query_brand ."
                 ".$query_weight."
-                ".($search != "" ? ("WHERE p.`name` LIKE N'%".$search."%'"): "")."
+                ".$query_search."
                 GROUP BY p.`id` 
                 ".$sort."
                 LIMIT $begin, $productsPerPage";
