@@ -701,3 +701,48 @@ input:checked+.slider:before {
     display: flex;
     margin-top: 22px
 }
+
+.body-business-situation{
+    background-color: #fff;
+}
+.body-business-situation tr td{
+    padding: 6px;
+}
+
+#since-business,
+#to-date-business{
+    width: 64%;
+
+}
+
+.business-situation{
+    width: 70%;
+}
+
+
+.business-situation-wrap{
+    padding: 20px 10px;
+    min-height: 326px;
+}
+
+.since,
+.to-date{
+    background-color: #fff;
+    padding: 8px 6px;
+}
+
+.selling-product tr td img{
+    width: 100%;
+}
+
+.selling-product tr td span{
+    font-size: 14px;
+}
+
+.selling-product tr td:first-child{
+    width: 10%;
+}
+
+.selling-product tr{
+    background-color: #fff;
+}

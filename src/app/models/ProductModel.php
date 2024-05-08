@@ -386,4 +386,43 @@ class ProductModel extends connect {
         }
         return $rows;
     }
+
+    public function getSellingProducts($since, $toDate)
+    {
+        $sql = "SELECT od.variantID, SUM(od.quantity) AS total_sold, p.name, v.price, i.image
+                FROM orderDetail od 
+                JOIN `order` o ON od.orderID = o.id 
+                JOIN variant v ON od.variantID = v.id 
+            	JOIN image i ON v.phoneID = i.phoneID  
+            	JOIN phone p ON v.phoneID = p.id    
+                WHERE o.orderStatus = 'Completed' 
+                AND o.date >= '$since' AND o.date <= '$toDate' 
+                AND i.colorID = v.colorID
+                GROUP BY od.variantID
+                ORDER BY total_sold DESC";
+        $result = mysqli_query($this->con, $sql);
+        $rows = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $rows[] = $row;
+        }
+        return $rows;
+    }
+
+    public function getBusinessSituation($since, $toDate)
+    {
+        $sql = "SELECT phone.category, category.name, SUM(orderDetail.quantity) AS total_quantity, 
+                    SUM(orderDetail.price) AS total_price FROM `order` o 
+                JOIN orderDetail ON o.id = orderDetail.orderID 
+                JOIN variant ON orderDetail.variantID = variant.id 
+                JOIN phone ON variant.phoneID = phone.id 
+                JOIN category ON category.id = phone.category 
+                WHERE o.orderStatus = 'Completed' AND o.date >= '$since' AND o.date <= '$toDate' 
+                GROUP BY phone.category";
+        $result = mysqli_query($this->con, $sql);
+        $rows = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $rows[] = $row;
+        }
+        return $rows;
+    }
 }

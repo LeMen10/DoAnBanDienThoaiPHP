@@ -13,18 +13,8 @@
         <div class="row">
             <div class="col-12 d-flex align-items-center">
                 <div class="address-checkout-title mr-10">Địa chỉ: </div>
-                <?php foreach ($data['address'] as $item) {
-                    echo    "<div class='address-checkout' >
-                                <div class='addressID' data-id=". $item['id'] .">
-                                    <span>". $item['recipientName'] ."</span>  
-                                    <span>". $item['recipientPhone'] ."</span>, 
-                                    <span>". $item['detail'] ."</span>, 
-                                    <span>". $item['wards'] ."</span>, 
-                                    <span>". $item['district'] ."</span>, 
-                                    <span>". $item['province'] ."</span>.
-                                </div>
-                            </div>";
-                }?>
+                <div class="address-checkout"></div>
+                
                 <div class="ml-10 btn-chage-address" onclick="changeAddress()">Thay đổi</div>
             </div>
             <div class="col-12 mt-20">
@@ -147,10 +137,10 @@
                 
                 <div class='auth-form__form add-auth-form__group'>
                     <div class='auth-form__group'>
-                        <select name="" id="province" onclick="onChangeProvince(this)"></select>
+                        <select class="w-100" name="" id="province" onclick="onChangeProvince(this)"></select>
                     </div>
                     <div class='auth-form__group'>
-                        <select name="" id="district" onclick="onChangeDistrict(this)" disabled>
+                        <select class="w-100" name="" id="district" onclick="onChangeDistrict(this)" disabled>
                             <option value = "0">Chọn Quận/Huyện</option>
                         </select>
                     </div>
@@ -158,7 +148,7 @@
                 
                 <div class='auth-form__form add-auth-form__group'>
                     <div class='auth-form__group'>
-                        <select name="" id="wards" onclick="onChangeWards(this)" disabled>
+                        <select class="w-100" name="" id="wards" onclick="onChangeWards(this)" disabled>
                             <option value = "0">Chọn Xã/Phường</option>
                         </select>
                     </div>

@@ -21,6 +21,7 @@ class login extends Controller
             $passworddb = $this->acc_model->checkPassword($user['password'], $password);
             if(!$passworddb) echo json_encode(['success' => false]);
             $token = $this->acc_model->login($user);
+            if (isset($_COOKIE['token'])) setcookie('token', '', time() - 1, '/');
             echo json_encode(['success' => true, 'user' => $user['authorName'], 'token' => $token]);
         }
     }
