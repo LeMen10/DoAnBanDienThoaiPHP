@@ -13,12 +13,9 @@ class checkout extends Controller
     public function index()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            if (!isset($_COOKIE['token'])) {
-                header("Location: index.php?ctrl=login");
-                exit();
-            }
-            $token = $_COOKIE['token'];
+            if (!isset($_COOKIE['token'])) header("Location: index.php?ctrl=login");
             $jwt = new jwt();
+<<<<<<< Updated upstream
             $data = $jwt->decodeToken($token);
             if (!$data) {
                 return $this->view('null_layout', ['page' => 'error/400']);
@@ -35,13 +32,26 @@ class checkout extends Controller
                 $rs = $this->checkout_model->getCheckout("", $data['id'], $orderID);
             }
             $address = $this->checkout_model->getActiveAddress();
+=======
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+            if ($data['authorName'] != 'customer') header("Location: index.php?ctrl=login");
+            $dataProductID = $_GET['data_id'];
+            $rs = $this->checkout_model->getCheckout($dataProductID, $data['id']);
+            $address = $this->checkout_model->getActiveAddress($data['id']);
+>>>>>>> Stashed changes
             return $this->view('main_layout', ['page' => 'checkout', 'checkout' => $rs, 'address' => $address]);
         }
     }
-    public function get_addresses()
+    public function get_address()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $address = $this->checkout_model->getAddresses();
+            if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
+            $jwt = new jwt();
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+            if ($data['authorName'] != 'customer') exit(json_encode(['status' => 401]));
+            $address = $this->checkout_model->getAddress($data['id']);
             echo json_encode(['success' => true, 'address' => $address]);
         }
     }
@@ -49,19 +59,27 @@ class checkout extends Controller
     public function save_address()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
+            $jwt = new jwt();
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+            if ($data['authorName'] != 'customer') exit(json_encode(['status' => 401]));
             $provinceID = $_POST['provinceID'];
             $districtID = $_POST['districtID'];
             $wardsID = $_POST['wardsID'];
             $recipientName = $_POST['name'];
             $recipientPhone = $_POST['phone'];
             $detail = $_POST['detail'];
+            $active = $_POST['active'];
             $this->checkout_model->saveAddress(
+                $data['id'],
                 $provinceID,
                 $districtID,
                 $wardsID,
                 $recipientName,
                 $recipientPhone,
-                $detail
+                $detail,
+                $active
             );
             echo json_encode(['success' => true]);
         }
@@ -70,6 +88,11 @@ class checkout extends Controller
     public function update_address()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
+            $jwt = new jwt();
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+            if ($data['authorName'] != 'customer') exit(json_encode(['status' => 401]));
             $id = $_POST['addressID'];
             $provinceID = $_POST['provinceID'];
             $districtID = $_POST['districtID'];
@@ -93,6 +116,11 @@ class checkout extends Controller
     public function get_address_editing()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
+            $jwt = new jwt();
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+            if ($data['authorName'] != 'customer') exit(json_encode(['status' => 401]));
             $id = $_GET['id'];
             $address = $this->checkout_model->getAddressEditing($id);
             echo json_encode(['success' => true, 'address' => $address]);
@@ -102,7 +130,12 @@ class checkout extends Controller
     public function get_active_address()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $address = $this->checkout_model->getActiveAddress();
+            if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
+            $jwt = new jwt();
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+            if ($data['authorName'] != 'customer') exit(json_encode(['status' => 401]));
+            $address = $this->checkout_model->getActiveAddress($data['id']);
             echo json_encode(['success' => true, 'address' => $address]);
         }
     }
@@ -110,6 +143,11 @@ class checkout extends Controller
     public function get_province()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
+            $jwt = new jwt();
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+            if ($data['authorName'] != 'customer') exit(json_encode(['status' => 401]));
             $province = $this->checkout_model->getProvince();
             echo json_encode(['success' => true, 'province' => $province]);
         }
@@ -118,6 +156,11 @@ class checkout extends Controller
     public function get_district()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
+            $jwt = new jwt();
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+            if ($data['authorName'] != 'customer') exit(json_encode(['status' => 401]));
             $id = $_GET['id'];
             $district = $this->checkout_model->getDistrict($id);
             echo json_encode(['success' => true, 'district' => $district]);
@@ -127,6 +170,11 @@ class checkout extends Controller
     public function get_wards()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
+            $jwt = new jwt();
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+            if ($data['authorName'] != 'customer') exit(json_encode(['status' => 401]));
             $id = $_GET['id'];
             $wards = $this->checkout_model->getWards($id);
             echo json_encode(['success' => true, 'wards' => $wards]);
@@ -136,9 +184,13 @@ class checkout extends Controller
     public function change_active_address()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
+            $jwt = new jwt();
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+            if ($data['authorName'] != 'customer') exit(json_encode(['status' => 401]));
             $addressID = $_GET['addressIdActive'];
-            $userID = 1;
-            $wards = $this->checkout_model->changeActiveAddress($addressID, $userID);
+            $wards = $this->checkout_model->changeActiveAddress($addressID, $data['id']);
             echo json_encode(['success' => true, 'wards' => $wards]);
         }
     }
@@ -146,22 +198,16 @@ class checkout extends Controller
     public function save_order()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (!isset($_COOKIE['token'])) {
-                header("Location: index.php?ctrl=login");
-                exit();
-            }
-            $token = $_COOKIE['token'];
+            if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
             $jwt = new jwt();
-            $customer = $jwt->decodeToken($token);
-            if (!$customer) {
-                return $this->view('null_layout', ['page' => 'error/400']);
-            }
-
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+            if ($data['authorName'] != 'customer') exit(json_encode(['status' => 401]));
             $addressID = $_POST['addressId'];
             $dataID = $_POST['dataID'];
             $totalPayment = $_POST['totalPayment'];
             $orderStatus = $_POST['orderStatus'];
-            $orderID = $this->checkout_model->saveOrder($addressID, $totalPayment, $orderStatus, $customer['id']);
+            $orderID = $this->checkout_model->saveOrder($addressID, $totalPayment, $orderStatus, $data['id']);
             $this->checkout_model->saveOrderDetail($dataID, $orderID);
             echo json_encode(['success' => true]);
         }
@@ -170,18 +216,13 @@ class checkout extends Controller
     public function get_checkout_data()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            if (!isset($_COOKIE['token'])) {
-                header("Location: index.php?ctrl=login");
-                exit();
-            }
-            $token = $_COOKIE['token'];
+            if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
             $jwt = new jwt();
-            $customer = $jwt->decodeToken($token);
-            if (!$customer) {
-                return $this->view('null_layout', ['page' => 'error/400']);
-            }
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+            if ($data['authorName'] != 'customer') exit(json_encode(['status' => 401]));
             $data = $_GET['dataID'];
-            $rs = $this->checkout_model->getCheckout($data, $customer['id']);
+            $rs = $this->checkout_model->getCheckout($data, $data['id']);
             echo json_encode(['success' => true, 'data' => $rs]);
         }
     }

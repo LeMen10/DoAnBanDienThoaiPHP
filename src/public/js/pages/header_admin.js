@@ -10,10 +10,22 @@ $(document).ready(() => {
     if(token != null){
         logOutElement.addEventListener('click', Log_Out);
     }
-    
+    selectedSiderbar();
 })
 function Log_Out(){
     sessionStorage.removeItem('token');
     window.location.href = 'index.php?ctrl=login';
-    console.log("1");
+}
+
+const selectedSiderbar = () => {
+    const url = new URL(window.location.href);
+    const ctrl = url.searchParams.get("ctrl");
+    const navPageAdmin = document.getElementById('page-admin');
+    const navPageProduct = document.getElementById('page-product');
+    const navPageUser = document.getElementById('page-user');
+    const navPageOrder = document.getElementById('page-order');
+    ctrl == 'admin' ? navPageAdmin.classList.add('active') : navPageAdmin.classList.remove('active');
+    ctrl == 'product_manage' ? navPageProduct.classList.add('active') : navPageProduct.classList.remove('active');
+    ctrl == 'user_manage' ? navPageUser.classList.add('active') : navPageUser.classList.remove('active');
+    ctrl == 'order_manage' ? navPageOrder.classList.add('active') : navPageOrder.classList.remove('active');
 }
