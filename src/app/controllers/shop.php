@@ -24,14 +24,6 @@ class shop extends Controller
     }
     public function index()
     {
-        // if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        //     if (!isset($_COOKIE['token'])) header("Location: index.php?ctrl=login");
-        //     $jwt = new jwt();
-        //     $data = $jwt->decodeToken($_COOKIE['token']);
-        //     if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
-        //     if ($data['authorName'] != 'customer') header("Location: index.php?ctrl=login");
-        // }
-
         $result_all_categories = $this->product_model->getAllCategoriesAndCountByPhoneID();
 
         $count_tu_duoi_170g =$this->product_model->getPhoneWeightByWeightAndCountByPhoneID($this->query_weight_option["tu_duoi_170g"]);
