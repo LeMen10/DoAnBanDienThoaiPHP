@@ -84,6 +84,7 @@ function restoreProduct(variantID) {
         type: 'POST',
         data: { variantID: variantID},
         success: function(response){
+            if(response.status == 401) return navigationLogin();
             // để chỉ xuất ra alert 1 lần khi dùng check all sau đó restore
             if(countRestore == 0) {
                 alert('Khôi phục điện thoại thành công!');
