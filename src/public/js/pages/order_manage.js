@@ -1,17 +1,11 @@
 function update(id, select) {
-
     var value = select.value;
-
     updateStatus(id, value);
 }
 function search() {
-    
     var input = document.getElementById("searchInput");
     var ten = input.value;
     SearchOrder(ten.trim());
-    // SortByDate();
-    
-
 }
 function handle(id) {
     if (id) {
@@ -28,32 +22,11 @@ const SearchOrder = (ten) => {
         data: { ten },
         dataType: 'json',
         success: res => {
+            if(res.status == 401) return navigationLogin();
             if (res.search) {
-                
                 var a = "";
                 document.getElementById("body").innerHTML = "";
                 res.search.forEach(element => {
-                    // a = "<tr id='product-item'>"+
-                    //     "<th scope='row'>"+
-                    //              "<input type='checkbox' name=' id='>"+
-                    //              "<td onClick = 'handle("+ element["id"] + ", event)' class='id_product'> "+ element["id"] +"</td>"+
-                    //              "<td onClick = 'handle(" + element["id"] + ", event)'>" + element["nameCustomer"] + "</td>";
-                    //              "<td onClick = 'handle(" + element["id"] + ", event)'>" + element["totalPayment"] + " VNĐ</td>"+
-                    //              "<td onClick = 'handle(" + element["id"] + ", event)'  class='date'>" + element["date"] + "</td>"+
-                    //              "<td onClick = 'handle(" + element["id"] + ", event)' class='status-" + element["id"] + "'>" + element["orderStatus"] + "</td>"+
-                    //              "<td> <select " + "  onchange='update(" + element["id"] + ",this )'  class='mySelect-" + element["id"] + "'>"+
-                    //                         "<option  value='Processing'>Processing</option>"+
-                    //                         "<option  value='Delivering'>Delivering</option>"+
-                    //                         "<option  value='Canceled'>Canceled</option>"+
-                    //                         "<option  value='Completed' >Completed</option>"+
-                    //                     "</select>"+
-                    //              "</td></tr>"+
-                    //              "<span></span></div></div></td></tr>"+
-                    //              "<tr >"+
-                    //              "<td class='empty-" + element["id"] + "' colspan = '7'></td>"+
-                    //              "</tr>";
-                    //              console.log(element); 
-                    //              document.getElementById("body").innerHTML += a;
                     a = "<tr id='product-item'>"+
                     "<th scope='row'>" +
                         "<input type='checkbox' name='id'>" +
@@ -76,15 +49,9 @@ const SearchOrder = (ten) => {
                         "<td class='empty-" + element["id"] + "' colspan='7'></td>" +
                         " </tr>";
                         
-                        document.getElementById("body").innerHTML += a;
-
+                    document.getElementById("body").innerHTML += a;
                 })
-
-
             }
-
-
-
         },
         error: err => {
             console.log(err);
@@ -101,14 +68,12 @@ const updateStatus = (id, value) => {
         data: { id, value },
         dataType: 'json',
         success: res => {
-            console.log(res.isSuccess);
+            if(res.status == 401) return navigationLogin();
             if (res.isSuccess) {
                 var select = document.querySelector(`.mySelect-${id}`);
                 var va = select.value;
                 var sta = document.querySelector(`.status-${id}`);
                 sta.textContent = va;
-                console.log(sta.textContent);
-
                 if (select.value === "Completed") {
                     select.disabled = true;
                 }
@@ -132,9 +97,8 @@ function LoadOrderDetail(id) {
         data: { id },
         dataType: 'json',
         success: res => {
-
+            if(res.status == 401) return navigationLogin();
             if (res.order_detail) {
-                console.log(res.order_detail);
                 var a = "<div class='detail_product'>" +
                     "<div class='profile'>" +
                     "<label  class='title_profile'>THÔNG TIN KHÁCH HÀNG:</label>" +
@@ -177,28 +141,6 @@ function LoadOrderDetail(id) {
             }
 
 
-        },
-        error: err => {
-            console.log(err);
-        }
-    })
-}
-
-const SortByDate = () => {
-    return $.ajax({
-        type: 'post',
-        url: 'index.php?ctrl=order_manage&act=SortDate',
-        data: {  },
-        dataType: 'json',
-        success: res => {
-          if(res.success){
-            const sortOrder = res.sort;
-            console.log(sortOrder);
-          }
-          else {
-            console.log('eror',res.message);
-          }
-        
         },
         error: err => {
             console.log(err);

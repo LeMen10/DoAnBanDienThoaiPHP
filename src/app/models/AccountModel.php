@@ -5,7 +5,7 @@ class AccountModel extends connect
     public function CheckLogin($email)
     {
         $query = "SELECT c.id, c.name, c.email, c.visible, c.password, 
-        author.name AS authorName 
+        author.name AS authorName, author.ID AS authorID
         FROM customer c, author 
         WHERE email = '$email' AND c.author = author.ID";
 

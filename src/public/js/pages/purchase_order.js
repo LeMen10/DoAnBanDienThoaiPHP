@@ -185,11 +185,8 @@ function cancelOrder(orderID) {
         data: { orderID },
         dataType: 'json',
         success: res => {
-            console.log(res)
-            if (res.result) {
-                console.log(1);
-                location.reload();
-            }
+            if(res.status == 401) return navigationLogin();
+            if (res.result) location.reload();
         },
         error: err => {
             console.log(err);
@@ -203,6 +200,7 @@ function loadAllProvince(provinceID) {
         data: {},
         dataType: 'json',
         success: res => {
+            if(res.status == 401) return navigationLogin();
             if (res.listProvince != null) {
                 var selectProvince = document.getElementById("province-select");
                 selectProvince.innerHTML = "";
@@ -225,6 +223,7 @@ function loadAllDistrict(provinceID) {
             data: { provinceID },
             dataType: 'json',
             success: res => {
+                if(res.status == 401) return navigationLogin();
                 if (res.listDistrict != null) {
                     var selectDistrict = document.getElementById("district-select");
                     selectDistrict.innerHTML = "";
@@ -247,6 +246,7 @@ function loadAllWards(districtID) {
         data: { districtID },
         dataType: 'json',
         success: res => {
+            if(res.status == 401) return navigationLogin();
             if (res.listWards != null) {
                 var selectWards = document.getElementById("wards-select");
                 selectWards.innerHTML = "";
@@ -269,6 +269,7 @@ const loadCustomerInfoByOrderID = (orderID) => {
             data: { orderID },
             dataType: 'json',
             success: res => {
+                if(res.status == 401) return navigationLogin();
                 resolve(res.result);
             },
             error: err => {
@@ -289,7 +290,13 @@ const saveChange = (orderID, userID, Name, Phone, P, D, W, Detail) => {
         data: { orderID, userID, Name, Phone, P, D, W, Detail },
         dataType: 'json',
         success: res => {
-            alert("thay đổi thành công!");
+            if(res.status == 401) return navigationLogin();
+            toast({
+                title: 'Thông báo!',
+                message: 'Thay đổi địa chỉ thành công 😊',
+                type: 'warning',
+                duration: 2000,
+            });
         },
         error: err => {
             console.log(err);
@@ -348,3 +355,43 @@ function navigateCheckout (event) {
     window.location.href = 'index.php?ctrl=checkout&order_id=' + buyAgainForm.getAttribute("order-id");
 };
 
+const toast = ({ title = '', message = '', type = 'info', duration = 2000 }) => {
+    const main = document.getElementById('toast');
+    if (main) {
+        const toast = document.createElement('div');
+        const autoRemove = setTimeout(function () {
+            main.removeChild(toast);
+        }, duration + 1000);
+        toast.onclick = function (e) {
+            if (e.target.closest('.toast__close')) {
+                main.removeChild(toast);
+                clearTimeout(autoRemove);
+            }
+        };
+        const icons = {
+            success: 'fa-solid fa-circle-check',
+            info: 'fa-solid fa-circle-info',
+            warning: 'fa-solid fa-circle-exclamation',
+        };
+        const icon = icons[type];
+        const delay = (duration / 1000).toFixed(2);
+        toast.classList.add('toast', `toast--${type}`);
+        toast.style.animation = `slideInleft ease .6s, fadeOut linear 1s ${delay}s forwards`;
+
+        toast.innerHTML = `
+                <div class="toast__icon">
+                    <i class="${icon}"></i>
+                </div>
+                <div class="toast__body">
+                    <h3 class="toast__title">${title}</h3>
+                    <p class="toast__msg">${message}</p>
+                </div>
+                <div class="toast__close">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+            `;
+        main.appendChild(toast);
+    }
+};
+
+const navigationLogin = () => { window.location.href = 'index.php?ctrl=login' };

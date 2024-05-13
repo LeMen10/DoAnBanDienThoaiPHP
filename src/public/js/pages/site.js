@@ -59,7 +59,7 @@ function loadName() {
             var avatar = document.getElementById('avatar');
             var name_split = res.user['name'].toUpperCase();
             avatar.textContent = name_split[0];
-            priceCart.innerHTML = `${res.cart['price']} <span class='cart-item-count'>${res.cart['quantity']}</span>`;
+            priceCart.innerHTML = `<span class='cart-item-count'>${res.cart['quantity']}</span>`;
         },
         error: err => {
             console.log(err);

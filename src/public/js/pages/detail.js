@@ -174,13 +174,18 @@ function handleAddCart() {
     const colorID = elementColorID.value;
     const quantity = quantityInput.value;
     if (quantity == 0) {
-        alert('Đã hết hàng!');
+        toast({
+            title: 'Thông báo!',
+            message: 'Hàng trong kho đã hết 😐',
+            type: 'warning',
+            duration: 2000,
+        });
         return;
     }
     loadCart(phoneID, sizeID, colorID, quantity)
         .then(cart => {
             if (cart != null) {
-                priceCart.innerHTML = `${cart['price']} <span class='cart-item-count'>${cart['quantity']}</span>`;
+                priceCart.innerHTML = `<span class='cart-item-count'>${cart['quantity']}</span>`;
             }
         })
         .catch(error => {
@@ -195,6 +200,7 @@ const loadCart = (phoneID, sizeID, colorID, quantity) => {
             data: { phoneID, sizeID, colorID, quantity},
             dataType: 'json',
             success: res => {
+                if(res.status == 401) return navigationLogin();
                 resolve(res.cart);
             },
             error: err => {
@@ -227,15 +233,13 @@ const buyNow = () => {
     const colorID = elementColorID.value;
     const quantity = quantityInput.value;
 
-    console.log(phoneID, sizeID, colorID, quantity)
-
     return $.ajax({
         type: 'post',
         url: 'index.php?ctrl=detail&act=buyNow',
         data: { phoneID, sizeID, colorID, quantity },
         dataType: 'json',
         success: res => {
-            console.log(res.cartID)
+            if(res.status == 401) return navigationLogin();
             localStorage.setItem('cartID', res.cartID);
             window.location.href = 'index.php?ctrl=cart';
         },
@@ -244,3 +248,44 @@ const buyNow = () => {
         },
     });
 }
+
+const toast = ({ title = '', message = '', type = 'info', duration = 2000 }) => {
+    const main = document.getElementById('toast');
+    if (main) {
+        const toast = document.createElement('div');
+        const autoRemove = setTimeout(function () {
+            main.removeChild(toast);
+        }, duration + 1000);
+        toast.onclick = function (e) {
+            if (e.target.closest('.toast__close')) {
+                main.removeChild(toast);
+                clearTimeout(autoRemove);
+            }
+        };
+        const icons = {
+            success: 'fa-solid fa-circle-check',
+            info: 'fa-solid fa-circle-info',
+            warning: 'fa-solid fa-circle-exclamation',
+        };
+        const icon = icons[type];
+        const delay = (duration / 1000).toFixed(2);
+        toast.classList.add('toast', `toast--${type}`);
+        toast.style.animation = `slideInleft ease .6s, fadeOut linear 1s ${delay}s forwards`;
+
+        toast.innerHTML = `
+                <div class="toast__icon">
+                    <i class="${icon}"></i>
+                </div>
+                <div class="toast__body">
+                    <h3 class="toast__title">${title}</h3>
+                    <p class="toast__msg">${message}</p>
+                </div>
+                <div class="toast__close">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+            `;
+        main.appendChild(toast);
+    }
+};
+
+const navigationLogin = () => { window.location.href = 'index.php?ctrl=login' };

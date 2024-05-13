@@ -15,31 +15,18 @@ class checkout extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             if (!isset($_COOKIE['token'])) header("Location: index.php?ctrl=login");
             $jwt = new jwt();
-<<<<<<< Updated upstream
-            $data = $jwt->decodeToken($token);
-            if (!$data) {
-                return $this->view('null_layout', ['page' => 'error/400']);
-            }
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
             $rs = [];
-            if(isset($_GET['data_id']))
-            {
+            if(isset($_GET['data_id'])){
                 $dataID = $_GET['data_id'];
                 $rs = $this->checkout_model->getCheckout($dataID, $data['id']);
             }
-            else if(isset($_GET['order_id']))
-            {
+            else if(isset($_GET['order_id'])){
                 $orderID = $_GET['order_id'];
                 $rs = $this->checkout_model->getCheckout("", $data['id'], $orderID);
             }
-            $address = $this->checkout_model->getActiveAddress();
-=======
-            $data = $jwt->decodeToken($_COOKIE['token']);
-            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
-            if ($data['authorName'] != 'customer') header("Location: index.php?ctrl=login");
-            $dataProductID = $_GET['data_id'];
-            $rs = $this->checkout_model->getCheckout($dataProductID, $data['id']);
             $address = $this->checkout_model->getActiveAddress($data['id']);
->>>>>>> Stashed changes
             return $this->view('main_layout', ['page' => 'checkout', 'checkout' => $rs, 'address' => $address]);
         }
     }
@@ -221,8 +208,8 @@ class checkout extends Controller
             $data = $jwt->decodeToken($_COOKIE['token']);
             if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
             if ($data['authorName'] != 'customer') exit(json_encode(['status' => 401]));
-            $data = $_GET['dataID'];
-            $rs = $this->checkout_model->getCheckout($data, $data['id']);
+            $dataID = $_GET['dataID'];
+            $rs = $this->checkout_model->getCheckout($dataID, $data['id']);
             echo json_encode(['success' => true, 'data' => $rs]);
         }
     }

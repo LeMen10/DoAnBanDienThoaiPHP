@@ -52,12 +52,11 @@ class detail extends Controller
     {
         if($_SERVER['REQUEST_METHOD'] == 'POST')
         {
-            $token = $_COOKIE['token'];
+            if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
             $jwt = new jwt();
-            $data = $jwt->decodeToken($token);
-            if (!$data) {
-                return $this->view('null_layout', ['page' => 'login']);
-            }
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+            if ($data['authorName'] != 'customer') exit(json_encode(['status' => 401]));
             $phoneID = $_POST['phoneID'];
             $sizeID = $_POST['sizeID'];
             $colorID = $_POST['colorID'];
@@ -76,16 +75,11 @@ class detail extends Controller
     {
         if($_SERVER['REQUEST_METHOD'] == 'POST')
         {
-            if (!isset($_COOKIE['token'])) {
-                header("Location: index.php?ctrl=login");
-                exit();
-            }
-            $token = $_COOKIE['token'];
+            if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
             $jwt = new jwt();
-            $data = $jwt->decodeToken($token);
-            if (!$data) {
-                return $this->view('null_layout', ['page' => 'login']);
-            }
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+            if ($data['authorName'] != 'customer') exit(json_encode(['status' => 401]));
 
             $phoneID = $_POST['phoneID'];
             $sizeID = $_POST['sizeID'];
