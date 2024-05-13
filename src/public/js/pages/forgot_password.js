@@ -5,8 +5,6 @@ $(document).ready(() => {
     document.getElementById("bt_sendEmail").addEventListener('click', handle);
     close = document.getElementById("close-icon");
     close.addEventListener('click', close_formLogin);
-    
-   
 })
 function handle() {
     if (email.value === "" ){
@@ -32,6 +30,7 @@ const CheckExistEmail = (email) => {
         data: { email},
         dataType: 'json',
         success: res => {
+            if(res.status == 401) return navigationLogin();
             if(res.check) return true;
             else{
                 toast({
@@ -114,7 +113,6 @@ function sendLink() {
     };
     xhttp.open("POST", "./app/views/pages/pro.php", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    console.log(xhttp.setRequestHeader)
     xhttp.send("email=" + email);
 
 }

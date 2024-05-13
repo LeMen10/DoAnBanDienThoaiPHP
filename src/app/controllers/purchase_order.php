@@ -12,6 +12,11 @@ class purchase_order extends Controller
     }
     public function index()
     {
+        if (!isset($_COOKIE['token'])) header("Location: index.php?ctrl=login");
+        $jwt = new jwt();
+        $data = $jwt->decodeToken($_COOKIE['token']);
+        if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+        if ($data['authorName'] != 'customer') header("Location: index.php?ctrl=login");
         $orderID = 0;
         if(isset($_GET['orderID']))
         {
@@ -30,16 +35,6 @@ class purchase_order extends Controller
             $search = isset($_GET['search']) ? $_GET['search'] : "";
             $Status =  isset($_GET['sl']) ? $_GET['sl'] : "All";
 
-            if (!isset($_COOKIE['token'])) {
-                return $this->view('null_layout', ['page' => 'error/400']);
-            }
-
-            $token = $_COOKIE['token'];
-            $jwt = new jwt();
-            $data = $jwt->decodeToken($token);
-            if (!$data) {
-                return $this->view('null_layout', ['page' => 'error/400']);
-            }
             $listOrder = $this->purchaseOrder_model -> getOrdersByUserID($data["id"], $Status, $sortDate, $search);
             $listOrderPerPage = $this->purchaseOrder_model -> getOrdersByUserIDAndPage($data["id"], $Status, $currentPage, $itemsPerPage, $sortDate, $search);
             foreach ($listOrderPerPage as &$Order) {
@@ -51,6 +46,11 @@ class purchase_order extends Controller
     }
     public function getCustomerInfoByOrderID()
     {
+        if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
+        $jwt = new jwt();
+        $data = $jwt->decodeToken($_COOKIE['token']);
+        if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+        if ($data['authorName'] != 'admin') exit(json_encode(['status' => 401]));
         $result = false;
         if($_SERVER['REQUEST_METHOD'] == 'POST')
         {
@@ -61,6 +61,11 @@ class purchase_order extends Controller
     }
     public function cancelOrder()
     {
+        if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
+        $jwt = new jwt();
+        $data = $jwt->decodeToken($_COOKIE['token']);
+        if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+        if ($data['authorName'] != 'admin') exit(json_encode(['status' => 401]));
         $result = false;
         if($_SERVER['REQUEST_METHOD'] == 'POST')
         {
@@ -71,6 +76,11 @@ class purchase_order extends Controller
     }
     public function getAllProvince()
     {
+        if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
+        $jwt = new jwt();
+        $data = $jwt->decodeToken($_COOKIE['token']);
+        if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+        if ($data['authorName'] != 'admin') exit(json_encode(['status' => 401]));
         $result = null;
         if($_SERVER['REQUEST_METHOD'] == 'GET')
         {
@@ -80,6 +90,11 @@ class purchase_order extends Controller
     }
     public function getAllDistrict()
     {
+        if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
+        $jwt = new jwt();
+        $data = $jwt->decodeToken($_COOKIE['token']);
+        if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+        if ($data['authorName'] != 'admin') exit(json_encode(['status' => 401]));
         $result = null;
         if($_SERVER['REQUEST_METHOD'] == 'POST')
         {
@@ -90,6 +105,11 @@ class purchase_order extends Controller
     }
     public function getAllWards()
     {
+        if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
+        $jwt = new jwt();
+        $data = $jwt->decodeToken($_COOKIE['token']);
+        if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+        if ($data['authorName'] != 'admin') exit(json_encode(['status' => 401]));
         $result = null;
         if($_SERVER['REQUEST_METHOD'] == 'POST')
         {
@@ -100,6 +120,11 @@ class purchase_order extends Controller
     }
     public function saveAddress()
     {
+        if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
+        $jwt = new jwt();
+        $data = $jwt->decodeToken($_COOKIE['token']);
+        if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+        if ($data['authorName'] != 'admin') exit(json_encode(['status' => 401]));
         if($_SERVER['REQUEST_METHOD'] == 'POST')
         {
             $orderID = $_POST['orderID'];
@@ -114,8 +139,5 @@ class purchase_order extends Controller
             $this->purchaseOrder_model-> changeAddressOrder($orderID, $result);
         }
         echo json_encode(['success'=>true]);
-    }
-    public function show()
-    {
     }
 }

@@ -57,15 +57,6 @@ class OrderModel extends connect{
         return $result;
         
     }
-    function SortByDate(){
-        $sql = "SELECT * FROM `order` ORDER BY `date`";
-        $result = mysqli_query($this->con, $sql);
-        $pro = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $pro[] = $row;
-        }
-        return $pro;
-    }
 
     function Search($ten){
         $sql = "SELECT c.name as nameCustomer, o.id, o.date, o.orderStatus, o.addressID, 

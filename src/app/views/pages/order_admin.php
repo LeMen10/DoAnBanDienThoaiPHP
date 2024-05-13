@@ -9,45 +9,13 @@ require './app/includes/addOrUpdateQueryParam.php';
                 <div class="time d-flex align-items-center h-100">
                     <input type="text" id="searchInput" class="search-order-admin h-100" placeholder="Search...">
                     <button onclick="search()" class="btn-search-order-admin">Search</button>
-                    <!-- <?php
-                    if (isset ($result)) {
-                        
-                        foreach ($result as $item) {
-                            
-                            $check = $item["orderStatus"] == "Completed" ? "disabled" : '';
-                            echo "<tr id='product-item'>";
-                            echo "<th scope='row'>";
-                            echo "<input type='checkbox' name=' id='></th>";
-                            echo "<td onClick = 'handle(" . $item["id"] . ", event)' class='id_product'> " . $item["id"] . "</td>";
-                            echo "<td onClick = 'handle(" . $item["id"] . ", event)'>" . $item["name"] . "</td>";
-                            echo "<td onClick = 'handle(" . $item["id"] . ", event)'>" . format_money($item["totalPayment"]) . " VNĐ</td>";
-                            echo "<td onClick = 'handle(" . $item["id"] . ", event)'  class='date'>" . $item["date"] . "</td>";
-                            echo "<td onClick = 'handle(" . $item["id"] . ", event)' class='status-" . $item["id"] . "'>" . $item["orderStatus"] . "</td>";
-
-                            echo "<td> <select " . $check . "  onchange='update(" . $item["id"] . ",this )'  class='mySelect-" . $item["id"] . "'>
-                                                    <option  value='Processing'>Processing</option>
-                                                    <option  value='Delivering'>Delivering</option>
-                                                    <option  value='Canceled'>Canceled</option>
-                                                    <option  value='Completed' >Completed</option>
-                                                </select>";
-                            echo "</td></tr>";
-                            echo "<span></span></div></div></td></tr>";
-                            echo "<tr >";
-                            echo "<td class='empty-" . $item["id"] . "' colspan = '7'></td>";
-                            echo "</tr>";
-                        }
-                    }
-
-                    ?> -->
-
-                    </select>
                 </div>
             </div>
         </div>
         <div class="col-12 pt-4">
             <div class="bg-light rounded h-100 p-4">
                 <div class="table-responsive">
-                    <table onchange="SortByDate()" class="table">
+                    <table class="table">
                         <thead>
                             <tr class="product_info">
                                 <th scope="col">

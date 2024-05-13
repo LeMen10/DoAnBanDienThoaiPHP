@@ -52,7 +52,7 @@ const restoreCustomer = id => {
         data: { id },
         success: res => {
             console.log(res);
-            // document.querySelector(`.wrap-product-item[data-id="${id}"]`).remove();
+            document.querySelector(`.wrap-product-item[data-id="${id}"]`).remove();
         },
         error: err => {
             console.log('Error Status:', err.status);
@@ -68,7 +68,7 @@ const restoreMultipleCustomer = arrID => {
         data: { arrID },
         success: res => {
             console.log(res);
-            // document.querySelector(`.wrap-product-item[data-id="${id}"]`).remove();
+            document.querySelector(`.wrap-product-item[data-id="${id}"]`).remove();
         },
         error: err => {
             console.log('Error Status:', err.status);

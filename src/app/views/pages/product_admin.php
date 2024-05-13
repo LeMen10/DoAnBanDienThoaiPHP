@@ -3,46 +3,41 @@
     require './app/includes/addOrUpdateQueryParam.php';
 ?>
 
-<div class="row g-4">
-    <div class="col-12">
-        <div class="bg-light rounded h-100 pt-3 pb-3 px-4">
-            <div class="d-flex justify-content-between align-items-center">
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="bg-light rounded h-100 pt-3 pb-3 px-4">
                 <div class="d-flex justify-content-between align-items-center">
                     <button type="button" class="btn btn-success ml-10 btndel" onclick="checkDeleteProduct()">Delete</button>
                     <button type="button" class="btn btn-success btnadd" onclick="handleOpen(null,1)">Add</button>
                 </div>
-                <a href="index.php?ctrl=trash_product">
-                    <i class="fa-regular fa-trash-can icon-trash"></i>
-                </a>
             </div>
         </div>
-    </div>
-    <div class="col-12 pt-4">
-        <div class="bg-light rounded h-100 p-4">
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr class='tr-title-table'>
-                            <th scope="col">
-                                <input type="checkbox" name="" class="parent_checkbox" onclick='showAllCheckbox()'>
-                            </th><th scope="col">ID</th>
-                            <th scope="col">Image</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Ram/Rom</th>
-                            <th scope="col">Color</th>
-                            <th scope="col">Quantity</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class='body_product'>
-                        <?php
-                            if (isset($products)) {
-                                foreach ($products as $product) {
-                                    $ram_rom = explode(" ", $product["size"]);
-                                    $size = join("/",$ram_rom);
-
+        <div class="col-12 pt-4">
+            <div class="bg-light rounded h-100 p-4">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr class='tr-title-table'>
+                                <th scope="col">
+                                    <input type="checkbox" name="" class="parent_checkbox" onclick='showAllCheckbox()'>
+                                </th><th scope="col">ID</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Category</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Ram/Rom</th>
+                                <th scope="col">Color</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class='body_product'>
+                            <?php
+                                if (isset($products)) {
+                                    foreach ($products as $product) {
+                                        $ram_rom = explode(" ", $product["size"]);
+                                        $size = join("/",$ram_rom);
                                     echo "<tr class='product-item'>
                                     <th scope='row'>
                                         <input type='checkbox' name='' class='child_checkbox_user' dataid='".$product["variantid"]."'>
@@ -51,69 +46,68 @@
                                     <td class='td-img-product'>
                                         <img class='img-product' src='public/img/phone_image/".$product["image"]."' alt='' class='image_product'>
                                         
-                                    </td>
-                                    
-                                    <td>".$product["phonename"]."</td>
-                                    <td>".$product["category"]."</td>
-                                    <td>".format_money($product["price"])." VNĐ</td>
-                                    <td>".$size."</td>
-                                    <td>".$product["color"]."</td>
-                                    <td>".$product["quantity"]."</td>
-                                    <td class='td-action'>
-                                        <span class='edit-product' onclick='handleOpen(".$product["variantid"].",0)'>
-                                            <i class='fa-solid fa-pen-to-square prdmng-icon-edit'></i>
-                                        </span>
-                                        <span class='delete-product' onclick='deleteProduct(".$product["variantid"].")'>
-                                            <i class='fa-regular fa-trash-can prdmng-icon-trash'></i>
-                                        </span>
-                                        </td>";
+                                        <td>".$product["phonename"]."</td>
+                                        <td>".$product["category"]."</td>
+                                        <td>".format_money($product["price"])." VNĐ</td>
+                                        <td>".$size."</td>
+                                        <td>".$product["color"]."</td>
+                                        <td>".$product["quantity"]."</td>
+                                        <td class='td-action'>
+                                            <span class='edit-product' onclick='handleOpen(".$product["variantid"].",0)'>
+                                                <i class='fa-solid fa-pen-to-square prdmng-icon-edit'></i>
+                                            </span>
+                                            <span class='delete-product' onclick='deleteProduct(".$product["variantid"].")'>
+                                                <i class='fa-regular fa-trash-can prdmng-icon-trash'></i>
+                                            </span>
+                                            </td>";
+                                    }
                                 }
-                            }
-                        ?>
-                    </tbody>
-                </table>
-                <div class="paginatoin-area">
-                    <div class="d-flex justify-content-center">
-                        <div class="">
-                            <ul class="pagination-box pt-xs-20 pb-xs-15">
-                                <?php 
-                                    $currentUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-                                    $page = isset($_GET["page"]) ? $_GET["page"] : 1;
-                                    
-                                    $productsPerPage = 5;
-                                    $num_all_rows = isset($quantity) ? $quantity : 0;
-                                    $totalPages = ceil($num_all_rows / $productsPerPage);
-                                    
-                                    if($page > 1) {
-                                        echo '<li><a href="'. addOrUpdateQueryParam($currentUrl, "page", $page - 1) .'" class="Previous"><i class="fa fa-chevron-left"></i> Previous</a></li>';
-                                    }
-                                    
-                                    if($totalPages > 5){
-                                        if($page > 20){
-                                            for ($i = $totalPages - 5; $i < $totalPages; $i++) {
-                                                        echo '<li class="'.($page == $i ? 'active' : '').'"><a href="'.addOrUpdateQueryParam($currentUrl, "page", $i).'">'.$i.'</a></li>';
-                                                    }
-                                        }
-                                        else if($page > 3){
-                                            for ($i = $page - 2; $i <= $page + 2 && $i<$totalPages; $i++) {
-                                                echo '<li class="'.($page == $i ? 'active' : '').'"><a href="'.addOrUpdateQueryParam($currentUrl, "page", $i).'">'.$i.'</a></li>';
-                                            }
+                            ?>
+                        </tbody>
+                    </table>
+                    <div class="paginatoin-area">
+                        <div class="d-flex justify-content-center">
+                            <div class="">
+                                <ul class="pagination-box pt-xs-20 pb-xs-15">
+                                    <?php 
+                                        $currentUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+                                        $page = isset($_GET["page"]) ? $_GET["page"] : 1;
                                         
+                                        $productsPerPage = 5;
+                                        $num_all_rows = isset($quantity) ? $quantity : 0;
+                                        $totalPages = ceil($num_all_rows / $productsPerPage);
+                                        
+                                        if($page > 1) {
+                                            echo '<li><a href="'. addOrUpdateQueryParam($currentUrl, "page", $page - 1) .'" class="Previous"><i class="fa fa-chevron-left"></i> Previous</a></li>';
+                                        }
+                                        
+                                        if($totalPages > 5){
+                                            if($page > 20){
+                                                for ($i = $totalPages - 5; $i < $totalPages; $i++) {
+                                                            echo '<li class="'.($page == $i ? 'active' : '').'"><a href="'.addOrUpdateQueryParam($currentUrl, "page", $i).'">'.$i.'</a></li>';
+                                                        }
+                                            }
+                                            else if($page > 3){
+                                                for ($i = $page - 2; $i <= $page + 2 && $i<$totalPages; $i++) {
+                                                    echo '<li class="'.($page == $i ? 'active' : '').'"><a href="'.addOrUpdateQueryParam($currentUrl, "page", $i).'">'.$i.'</a></li>';
+                                                }
+                                            
+                                            }else{
+                                                for ($i = 1; $i <= 5 && $i<$totalPages; $i++) {
+                                                    echo '<li class="'.($page == $i ? 'active' : '').'"><a href="'.addOrUpdateQueryParam($currentUrl, "page", $i).'">'.$i.'</a></li>';
+                                                }
+                                            }
                                         }else{
-                                            for ($i = 1; $i <= 5 && $i<$totalPages; $i++) {
+                                            for ($i = 1; $i <= 5; $i++) {
                                                 echo '<li class="'.($page == $i ? 'active' : '').'"><a href="'.addOrUpdateQueryParam($currentUrl, "page", $i).'">'.$i.'</a></li>';
                                             }
                                         }
-                                    }else{
-                                        for ($i = 1; $i <= 5; $i++) {
-                                            echo '<li class="'.($page == $i ? 'active' : '').'"><a href="'.addOrUpdateQueryParam($currentUrl, "page", $i).'">'.$i.'</a></li>';
+                                        if($page < $totalPages - 3) {
+                                            echo '<li> <a href="'. addOrUpdateQueryParam($currentUrl, "page", $page + 1) .' " class="Next"> Next <i class="fa fa-chevron-right"></i></a> </li>';
                                         }
-                                    }
-                                    if($page < $totalPages - 3) {
-                                        echo '<li> <a href="'. addOrUpdateQueryParam($currentUrl, "page", $page + 1) .' " class="Next"> Next <i class="fa fa-chevron-right"></i></a> </li>';
-                                    }
-                                ?>
-                            </ul>
+                                    ?>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -121,6 +115,8 @@
         </div>
     </div>
 </div>
+
+
 <div class="update-product-overlay">
     <div class="form-edit-product">
         <i class="fa-solid fa-xmark btn-update-close" onClick="handleClose(0)"></i>

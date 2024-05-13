@@ -68,17 +68,5 @@ class order_manage extends Controller
             echo json_encode(['success'=>true, 'search'=> $result]);
         }
     }
-
-    public function SortDate(){
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
-            $jwt = new jwt();
-            $data = $jwt->decodeToken($_COOKIE['token']);
-            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
-            if ($data['authorName'] != 'admin') exit(json_encode(['status' => 401]));
-            $sort = $this->order_model->SortByDate();
-            echo json_encode(['success'=>true, 'sort'=> $sort]);
-        }
-    }
     
 }

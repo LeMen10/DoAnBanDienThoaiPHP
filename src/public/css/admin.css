@@ -191,6 +191,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    margin-right: 6px;
     background: #FFFFFF;
     border-radius: 40px;
 }
@@ -336,6 +337,7 @@
 
 .product-item {
     background-color: #fff;
+    text-align: center;
 }
 
 .nav-item {
@@ -498,7 +500,6 @@ input:checked+.slider:before {
 
 .button-restore:hover{
     cursor: pointer;
-    text-align: center;
 }
 
 .tr-title-table {
