@@ -1,4 +1,4 @@
-let btnCheckout;
+let btnCheckout, onChangeCheckbox, checkall;
 $(document).ready(() => {
     let dataID = [];
     const qtyButtonAdds = document.querySelectorAll('.qtybutton-add');
@@ -27,7 +27,7 @@ $(document).ready(() => {
         });
     });
 
-    const onChangeCheckbox = document.querySelectorAll('.checkbox-cart');
+    onChangeCheckbox = document.querySelectorAll('.checkbox-cart');
     onChangeCheckbox.forEach((e, index) => {
         e.addEventListener('change', () => {
             if (e.checked == true) dataID.push(Number(e.value));
@@ -52,7 +52,7 @@ $(document).ready(() => {
         updateTotalCart();
     }
 
-    const checkall = document.querySelector('.checkall');
+    checkall = document.querySelector('.checkall');
     checkall.addEventListener('change', () => {
         if (checkall.checked == false) {
             onChangeCheckbox.forEach(element => {
@@ -72,10 +72,14 @@ $(document).ready(() => {
     btnCheckout = document.querySelector('.btn-checkout');
     btnCheckout.addEventListener('click', () => checkout(dataID));
 
-    window.addEventListener('beforeunload', (event) => {
+    window.addEventListener('beforeunload', event => {
         localStorage.removeItem('cartID');
         dataID = [];
-    })
+    });
+
+    for(var i = 0; i< 60; i++){
+        console.log("optio")
+    }
 });
 
 const toast = ({ title = '', message = '', type = 'info', duration = 2000 }) => {
@@ -127,9 +131,14 @@ const checkAll = (dataID, quantityItem) => {
 };
 
 const checkout = dataID => {
-    console.log(dataID)
-    if (dataID.length > 0) window.location.href = 'index.php?ctrl=checkout&data_id=' + encodeURIComponent(dataID);
-    else {
+    console.log(dataID);
+    if (dataID.length > 0) {
+        window.location.href = 'index.php?ctrl=checkout&data_id=' + encodeURIComponent(dataID);
+        checkall.checked = false;
+        onChangeCheckbox.forEach(element => {
+            if (element.checked == true) element.checked = false;
+        });
+    } else {
         toast({
             title: 'Thông báo!',
             message: 'Bạn chưa chọn sản phẩm 😐',
@@ -145,9 +154,10 @@ const removeItemCart = id => {
         url: 'index.php?ctrl=cart&act=remove_item',
         data: { id },
         success: res => {
+            if(res.status == 401) return navigationLogin();
             document.querySelector(`.wrap-product-item[data-id="${id}"]`).remove();
             updateTotalCart();
-            getCountItemCart();
+            getCountCart();
         },
         error: err => {
             console.log('Error Status:', err.status);
@@ -162,6 +172,7 @@ const decreaseQuantity = (id, quantity) => {
         url: 'index.php?ctrl=cart&act=update_quantity',
         data: { quantity, id },
         success: res => {
+            if(res.status == 401) return navigationLogin();
             updateTotalItem(id, quantity);
         },
         error: err => {
@@ -171,13 +182,13 @@ const decreaseQuantity = (id, quantity) => {
 };
 
 const increaseQuantity = (id, quantity) => {
-    console.log(id);
     return $.ajax({
         type: 'post',
         url: 'index.php?ctrl=cart&act=update_quantity',
         data: { id, quantity },
         dataType: 'json',
         success: res => {
+            if(res.status == 401) return navigationLogin();
             if (res.message === 'Exceed the scope')
                 toast({
                     title: 'Thông báo!',
@@ -225,14 +236,16 @@ const getCountCart = () => {
     const tag = document.querySelector('.cart-item-count');
     return $.ajax({
         type: 'get',
-        url: 'index.php?ctrl=cart&a',
+        url: 'index.php?ctrl=cart&getCountItemCart',
         dataType: 'json',
         success: res => {
-            console.log(res)
+            if(res.status == 401) return navigationLogin();
             tag.textContent = res.count || 0;
         },
         error: err => {
             console.log('Error Status:', err.status);
         },
     });
-}
+};
+
+const navigationLogin = () => { window.location.href = 'index.php?ctrl=login' };

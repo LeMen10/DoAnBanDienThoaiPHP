@@ -5,7 +5,8 @@ let selectDistrict,
     heading,
     detailHeading,
     addressID,
-    checkStateModal = false;
+    checkStateModal = false,
+    checkBackModelAdd = false;
 
 $(document).ready(() => {
     modalShowAddress = document.querySelector('.check-show-address');
@@ -26,18 +27,23 @@ $(document).ready(() => {
 
     const btnBackModalAddOrEdit = document.querySelector('.btn-back-modal-add');
     btnBackModalAddOrEdit.addEventListener('click', () => {
-        modalShowAddress.style.display = 'flex';
-        document.querySelector('.check-show-modal').style.display = 'none';
-        recipientName.value = '';
-        recipientPhone.value = '';
-        detail.value = '';
-        provinceID = undefined;
-        districtID = undefined;
-        wardsID = undefined;
+        if (checkBackModelAdd) window.location.href = 'index.php?ctrl=cart';
+        else {
+            modalShowAddress.style.display = 'flex';
+            document.querySelector('.check-show-modal').style.display = 'none';
+            recipientName.value = '';
+            recipientPhone.value = '';
+            detail.value = '';
+            provinceID = undefined;
+            districtID = undefined;
+            wardsID = undefined;
+        }
     });
 
+    getActiveAddress();
+
     const btnPayment = document.querySelector('.btn-payment');
-    btnPayment.addEventListener('click', () => checkout());
+    btnPayment.addEventListener('click', () => payment());
 });
 
 const getCheckoutData = dataID => {
@@ -48,18 +54,17 @@ const getCheckoutData = dataID => {
             data: { dataID },
             dataType: 'json',
             success: res => {
+                if(res.status == 401) return navigationLogin();
                 resolve(res.data);
-                console.log(res)
             },
             error: err => {
-                console.log('Error Status:', err.status);
                 reject(err);
             },
         });
     });
 };
 
-const checkout = async () => {
+const payment = async () => {
     const addressId = document.querySelector('.addressID').getAttribute('data-id');
     const totalPayment = document.querySelector('.total-price').textContent;
     const url = new URL(window.location.href);
@@ -73,8 +78,8 @@ const checkout = async () => {
             url: 'index.php?ctrl=checkout&act=save_order',
             data: { addressId, dataID: checkoutData, totalPayment, orderStatus },
             success: res => {
-                window.location.href = 'index.php?ctrl=purchase_order'
-                console.log(res);
+                if(res.status == 401) return navigationLogin();
+                window.location.href = 'index.php?ctrl=purchase_order';
             },
             error: err => {
                 console.log('Error Status:', err.status);
@@ -110,10 +115,12 @@ const getAddressEdit = id => {
         data: { id },
         dataType: 'json',
         success: res => {
+            if(res.status == 401) return navigationLogin();
             showModalAddressEdit(res.address);
             addressID = res.address[0].id;
             getProvince()
                 .done(response => {
+                    if(response.status == 401) return navigationLogin();
                     showProvince(response.province, res.address[0].provinceID);
                 })
                 .fail(err => {
@@ -122,6 +129,7 @@ const getAddressEdit = id => {
 
             getDistrict(res.address[0].provinceID)
                 .done(response => {
+                    if(response.status == 401) return navigationLogin();
                     showDistrict(response.district, res.address[0].districtID);
                 })
                 .fail(err => {
@@ -130,6 +138,7 @@ const getAddressEdit = id => {
 
             getWards(res.address[0].districtID)
                 .done(response => {
+                    if(response.status == 401) return navigationLogin();
                     showWards(response.wards, res.address[0].wardsID);
                 })
                 .fail(err => {
@@ -158,6 +167,7 @@ const showModalCreateAddress = () => {
 
     getProvince()
         .done(res => {
+            if(res.status == 401) return navigationLogin();
             showProvince(res.province, 0);
         })
         .fail(err => {
@@ -170,7 +180,6 @@ const showModalCreateAddress = () => {
 const checkInputAddress = () => {
     let name = recipientName.value;
     let phone = recipientPhone.value;
-    console.log(provinceID, districtID, wardsID, name, phone, detail.value);
     if (
         provinceID == undefined ||
         districtID == undefined ||
@@ -179,7 +188,12 @@ const checkInputAddress = () => {
         phone == '' ||
         detail.value == ''
     ) {
-        alert('ok');
+        toast({
+            title: 'Thông báo!',
+            message: 'Vui lòng nhập đủ thông tin 😐',
+            type: 'warning',
+            duration: 2000,
+        });
     } else {
         if (checkStateModal === false) saveAddress(provinceID, districtID, wardsID, name, phone, detail.value);
         else updateAddress(provinceID, districtID, wardsID, name, phone, detail.value, addressID);
@@ -192,7 +206,7 @@ const updateAddress = (provinceID, districtID, wardsID, name, phone, detail, add
         url: 'index.php?ctrl=checkout&act=update_address',
         data: { provinceID, districtID, wardsID, name, phone, detail, addressID },
         success: res => {
-            console.log(res);
+            if(res.status == 401) return navigationLogin();
             document.querySelector('.check-show-modal').style.display = 'none';
             changeAddress();
         },
@@ -203,13 +217,17 @@ const updateAddress = (provinceID, districtID, wardsID, name, phone, detail, add
 };
 
 const saveAddress = (provinceID, districtID, wardsID, name, phone, detail) => {
+    let active = 0;
+    if(checkBackModelAdd == true) active = 1;
     return $.ajax({
         type: 'post',
         url: 'index.php?ctrl=checkout&act=save_address',
-        data: { provinceID, districtID, wardsID, name, phone, detail },
+        data: { provinceID, districtID, wardsID, name, phone, detail, active },
         success: res => {
+            if(res.status == 401) return navigationLogin();
             document.querySelector('.check-show-modal').style.display = 'none';
-            changeAddress();
+            if (checkBackModelAdd) getActiveAddress();
+            else changeAddress();
         },
         error: err => {
             console.log('Error Status:', err.status);
@@ -276,9 +294,10 @@ const showWards = (wards, index = 0) => {
 const changeAddress = () => {
     return $.ajax({
         type: 'get',
-        url: 'index.php?ctrl=checkout&act=get_addresses',
+        url: 'index.php?ctrl=checkout&act=get_address',
         dataType: 'json',
         success: res => {
+            if(res.status == 401) return navigationLogin();
             showAddresses(res.address);
         },
         error: err => {
@@ -288,7 +307,6 @@ const changeAddress = () => {
 };
 
 const onChangeProvince = obj => {
-    console.log(obj.value);
     provinceID = Number(obj.value);
     districtID = undefined;
     wardsID = undefined;
@@ -301,6 +319,7 @@ const onChangeProvince = obj => {
     const listdistrict = getDistrict(Number(obj.value));
     listdistrict
         .done(res => {
+            if(res.status == 401) return navigationLogin();
             var district = res.district;
             showDistrict(district);
         })
@@ -316,8 +335,9 @@ const onChangeDistrict = obj => {
     else selectWards.disabled = true;
     const listwards = getWards(Number(obj.value));
     listwards
-        .done(response => {
-            var wards = response.wards;
+        .done(res => {
+            if(res.status == 401) return navigationLogin();
+            var wards = res.wards;
             showWards(wards);
         })
         .fail(err => {
@@ -326,7 +346,6 @@ const onChangeDistrict = obj => {
 };
 
 const onChangeWards = obj => {
-    console.log(obj.value);
     wardsID = Number(obj.value);
 };
 
@@ -341,6 +360,7 @@ const saveShippingAddress = () => {
         data: { addressIdActive },
         dataType: 'json',
         success: res => {
+            if(res.status == 401) return navigationLogin();
             modalShowAddress.style.display = 'none';
             getActiveAddress();
         },
@@ -358,8 +378,14 @@ const getActiveAddress = () => {
         url: 'index.php?ctrl=checkout&act=get_active_address',
         dataType: 'json',
         success: res => {
-            const data = res.address[0];
-            html += `<div class='addressID' data-id=${data.id}>
+            if(res.status == 401) return navigationLogin();
+            if (res.address[0] == undefined) {
+                showModalCreateAddress();
+                checkBackModelAdd = true;
+            } else {
+                checkBackModelAdd = false;
+                const data = res.address[0];
+                html += `<div class='addressID' data-id=${data.id}>
                         <span>${data.recipientName}</span>
                         <span>${data.recipientPhone}</span>, 
                         <span>${data.detail}</span>, 
@@ -367,7 +393,8 @@ const getActiveAddress = () => {
                         <span>${data.district}</span>, 
                         <span>${data.province}</span>.
                     </div>`;
-            addressCheckout.innerHTML = html;
+                addressCheckout.innerHTML = html;
+            }
         },
         error: err => {
             console.log('Error Status:', err.status);
@@ -382,9 +409,8 @@ const showAddresses = address => {
     address.forEach(item => {
         html += `<div class='address-item-wrap'> 
                         <div class='input-check-address'>
-                            <input onchange="changeAddressID(${item.id})" type="radio" name="address-radio" value=${
-            item.id
-        } ${Number(item.active) == 1 ? 'checked' : ''} />
+                            <input onchange="changeAddressID(${item.id})" type="radio" 
+                            name="address-radio" value=${item.id} ${Number(item.active) == 1 ? 'checked' : ''} />
                         </div>
                         <div class='address-item'>
                             <div class='address-item-header'>
@@ -408,4 +434,43 @@ const showAddresses = address => {
                     </div>`;
     });
     addressesWr.innerHTML = html;
+};
+
+const toast = ({ title = '', message = '', type = 'info', duration = 2000 }) => {
+    const main = document.getElementById('toast');
+    if (main) {
+        const toast = document.createElement('div');
+        const autoRemove = setTimeout(function () {
+            main.removeChild(toast);
+        }, duration + 1000);
+        toast.onclick = function (e) {
+            if (e.target.closest('.toast__close')) {
+                main.removeChild(toast);
+                clearTimeout(autoRemove);
+            }
+        };
+        const icons = {
+            success: 'fa-solid fa-circle-check',
+            info: 'fa-solid fa-circle-info',
+            warning: 'fa-solid fa-circle-exclamation',
+        };
+        const icon = icons[type];
+        const delay = (duration / 1000).toFixed(2);
+        toast.classList.add('toast', `toast--${type}`);
+        toast.style.animation = `slideInleft ease .6s, fadeOut linear 1s ${delay}s forwards`;
+
+        toast.innerHTML = `
+                <div class="toast__icon">
+                    <i class="${icon}"></i>
+                </div>
+                <div class="toast__body">
+                    <h3 class="toast__title">${title}</h3>
+                    <p class="toast__msg">${message}</p>
+                </div>
+                <div class="toast__close">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+            `;
+        main.appendChild(toast);
+    }
 };

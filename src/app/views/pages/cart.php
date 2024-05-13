@@ -19,7 +19,7 @@
                                     <th class="li-product-checkall">
                                         <input type="checkbox" class="checkall">
                                     </th>
-                                    <th class="li-product-thumbnail">Images</th>
+                                    <th class="li-product-thumbnail">Image</th>
                                     <th class="cart-product-name">Product</th>
                                     <th class="li-product-price">Unit Price</th>
                                     <th class="li-product-quantity">Quantity</th>

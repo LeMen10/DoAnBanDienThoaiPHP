@@ -8,13 +8,44 @@ class admin extends Controller
     {
         $this->loadModel('ProductModel');
         $this->product_model = new ProductModel();
+        require_once './app/middlewares/jwt.php';
     }
     public function index()
     {
-        // $products = $this->product_model->getAll();
-        return $this->view('main_admin_layout', ['page' => 'home_admin']);
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            if (!isset($_COOKIE['token'])) header('Location: index.php?ctrl=login');
+            $jwt = new jwt();
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if ($data['authorName'] != 'admin') header("Location: index.php?ctrl=login");
+            return $this->view('main_admin_layout', ['page' => 'home_admin']);
+        }
     }
-    public function show()
+
+    public function getSellingProducts()
     {
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 400]));
+            $jwt = new jwt();
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if ($data['authorName'] != 'admin') exit(json_encode(['status' => 401]));
+            $since = $_GET['since'];
+            $toDate = $_GET['toDate'];
+            $data = $this->product_model->getSellingProducts($since, $toDate);
+            echo json_encode(['success' => true, 'data' => $data, 's' => $since, 't' => $toDate]);
+        }
+    }
+
+    public function getBusinessSituation()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
+            $jwt = new jwt();
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if ($data['authorName'] != 'admin') exit(json_encode(['status' => 401]));
+            $since = $_GET['sinceBusiness'];
+            $toDate = $_GET['toDateBusiness'];
+            $data = $this->product_model->getBusinessSituation($since, $toDate);
+            echo json_encode(['success' => true, 'data' => $data, 's' => $since, 't' => $toDate]);
+        }
     }
 }

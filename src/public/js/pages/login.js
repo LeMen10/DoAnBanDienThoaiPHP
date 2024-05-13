@@ -7,7 +7,6 @@ $(document).ready(() => {
     checkShowPass.addEventListener('change', ShowPass);
 
     document.getElementById('input_email').addEventListener('change', validateEmail);
-    document.getElementById('input_email').addEventListener('change', validateEmail);
     document.getElementById('btn_Login').addEventListener('click', handleLogin);
 
     document.getElementById('Forgotten_password').addEventListener('click', FormForgotPassword);
@@ -31,7 +30,6 @@ function handleLogin() {
 }
 
 const LoadAccount = (email, password) => {
-    console.log(1);
     return $.ajax({
         type: 'post',
         url: 'index.php?ctrl=login&act=Login',
@@ -40,16 +38,14 @@ const LoadAccount = (email, password) => {
         success: res => {
             console.log(res);
             if (res.user) {
+                let d = new Date();
+                d.setTime(d.getTime() + 2 * 24 * 60 * 60 * 1000);
+                var expires = 'expires=' + d.toUTCString();
                 if (res.user === 'customer') {
-                    var d = new Date();
-                    // d.setTime(d.getTime() + 20 * 60 * 1000);
-                    d.setTime(d.getTime() + 2 * 24 * 60 * 60 * 1000);
-                    var expires = 'expires=' + d.toUTCString();
                     document.cookie = 'token' + '=' + res.token + ';' + expires + ';path=/';
                     window.location.href = 'index.php';
                 } else if (res.user === 'admin') {
-                    var Taikhoan = JSON.stringify(res.user['id']);
-                    sessionStorage.setItem('token', Taikhoan);
+                    document.cookie = 'token' + '=' + res.token + ';' + expires + ';path=/';
                     window.location.href = 'index.php?ctrl=admin';
                 }
             } else {

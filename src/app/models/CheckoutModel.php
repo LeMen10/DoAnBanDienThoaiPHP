@@ -2,6 +2,7 @@
 include_once './app/database/connect.php';
 class CheckoutModel extends connect
 {
+<<<<<<< Updated upstream
     public function getCheckout($data, $customerID, $orderID = 0)
     {
         $sql = "";
@@ -27,6 +28,21 @@ class CheckoutModel extends connect
                 JOIN phone p ON v.phoneID = p.id 
                 WHERE o.orderID = '.$orderID.' GROUP BY v.id';
         }
+=======
+    public function getCheckout($dataProductID, $customerID)
+    {
+        $temp = explode(',', $dataProductID);
+        $resultString = '(' . implode(', ', $temp) . ')';
+        $sql =
+            'SELECT p.name, v.price, c.quantity, c.id, i.image, v.id as variantID FROM cart c ' .
+            'JOIN variant v ON c.variantID = v.id ' .
+            'JOIN image i ON v.phoneID = i.phoneID ' .
+            'JOIN phone p ON v.phoneID = p.id WHERE i.colorID = v.colorID AND c.customerID = ' .
+            $customerID .
+            ' AND c.id IN ' .
+            $resultString .
+            ' GROUP BY c.id;';
+>>>>>>> Stashed changes
         $result = mysqli_query($this->con, $sql);
         $rows = [];
         while ($row = mysqli_fetch_assoc($result)) {
@@ -35,7 +51,7 @@ class CheckoutModel extends connect
         return $rows;
     }
 
-    public function getAddresses()
+    public function getAddress($customerID)
     {
         $sql =
             'SELECT p.name as province, d.name as district, w.name as wards, ' .
@@ -44,7 +60,7 @@ class CheckoutModel extends connect
             'JOIN province p ON a.provinceID = p.id ' .
             'JOIN district d ON a.districtID = d.id ' .
             'JOIN wards w ON a.wardsID = w.id ' .
-            'WHERE a.customerID = 1 AND a.visible = 1';
+            'WHERE a.customerID = '. $customerID .' AND a.visible = 1';
         $result = mysqli_query($this->con, $sql);
         $rows = [];
         while ($row = mysqli_fetch_assoc($result)) {
@@ -53,7 +69,7 @@ class CheckoutModel extends connect
         return $rows;
     }
 
-    public function getActiveAddress()
+    public function getActiveAddress($customerID)
     {
         $sql =
             'SELECT p.name as province, d.name as district, w.name as wards, ' .
@@ -62,7 +78,9 @@ class CheckoutModel extends connect
             'JOIN province p ON a.provinceID = p.id ' .
             'JOIN district d ON a.districtID = d.id ' .
             'JOIN wards w ON a.wardsID = w.id ' .
-            'WHERE a.customerID = 1 AND a.active = 1';
+            'WHERE a.customerID = ' .
+            $customerID .
+            ' AND a.active = 1';
         $result = mysqli_query($this->con, $sql);
         $rows = [];
         while ($row = mysqli_fetch_assoc($result)) {
@@ -71,11 +89,11 @@ class CheckoutModel extends connect
         return $rows;
     }
 
-    public function saveAddress($provinceID, $districtID, $wardsID, $recipientName, $recipientPhone, $detail)
+    public function saveAddress( $customerID, $provinceID, $districtID, $wardsID, $recipientName, $recipientPhone, $detail, $active)
     {
         $sql =
-            'INSERT INTO `address`(`customerID`, `provinceID`, `districtID`, `detail`, `recipientName`, `recipientPhone`, `wardsID`) ' .
-            "VALUES ( 1, '$provinceID', '$districtID', '$detail', '$recipientName', '$recipientPhone', '$wardsID' )";
+            'INSERT INTO `address`(`customerID`, `provinceID`, `districtID`, `detail`, `recipientName`, `recipientPhone`, `wardsID`, `active`) ' .
+            "VALUES ( '$customerID', '$provinceID', '$districtID', '$detail', '$recipientName', '$recipientPhone', '$wardsID', '$active' )";
         mysqli_query($this->con, $sql);
     }
 
@@ -158,14 +176,14 @@ class CheckoutModel extends connect
 
     public function saveOrderDetail($dataID, $orderID)
     {
-        $sql = "INSERT INTO orderDetail (orderID, variantID, quantity, price) VALUES ";
+        $sql = 'INSERT INTO orderDetail (orderID, variantID, quantity, price) VALUES ';
         foreach ($dataID as $row) {
             $variantID = $row['variantID'];
             $quantity = $row['quantity'];
             $price = $row['price'];
             $sql .= "( $orderID, $variantID, $quantity, $price),";
         }
-        $sql = rtrim($sql, ",");
+        $sql = rtrim($sql, ',');
         mysqli_query($this->con, $sql);
     }
 }

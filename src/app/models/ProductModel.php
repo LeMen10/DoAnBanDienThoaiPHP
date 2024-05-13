@@ -307,13 +307,20 @@ class ProductModel extends connect {
             $query_weight = $weight;
         }
 
+        $query_search = "";
+        if ($query_brand != "" || $query_weight != "") {
+            $query_search = $search != "" ? " AND"." p.`name` LIKE N'%$search%'" : "";
+        } else {
+            $query_search = $search != "" ? " WHERE p.`name` LIKE N'%$search%'" : "";
+        }
+
         $sql = "SELECT * FROM `phone` p 
                 LEFT JOIN image i ON p.`id` = i.`phoneID` 
                 LEFT JOIN variant v ON p.`id` = v.`phoneID` 
                 LEFT JOIN spec s ON p.`id` = s.`phoneID`
                 ". $query_brand ."
                 ".$query_weight."
-                ".($search != "" ? ("WHERE p.`name` LIKE N'%".$search."%'"): "")."
+                ".$query_search."
                 GROUP BY p.`id`";
 
         $result = mysqli_query($this->con, $sql);
@@ -342,21 +349,28 @@ class ProductModel extends connect {
             } else {
                 $query_brand = $brand != "" ? "LEFT JOIN category c ON p.`category` = c.`id` WHERE c.`name` = '".$brand ."'" : "";
             }
+
             $query_weight = $weight != "" ? str_replace("WHERE", "AND", $weight) : " ";
         } else {
             $query_brand = "";
             $query_weight = $weight;
         }
 
-        $begin = ($page * $productsPerPage) - $productsPerPage;
+        $query_search = "";
+        if ($query_brand != "" || $query_weight != "") {
+            $query_search = $search != "" ? " AND"." p.`name` LIKE N'%$search%'" : "";
+        } else {
+            $query_search = $search != "" ? " WHERE p.`name` LIKE N'%$search%'" : "";
+        }
 
+        $begin = ($page * $productsPerPage) - $productsPerPage;
         $sql = "SELECT p.`id` as PhoneId, p.`name` as PhoneName, i.`image` as PhoneImage, v.`price` as PhonePrice FROM `phone` p 
                 LEFT JOIN image i ON p.`id` = i.`phoneID` 
                 LEFT JOIN variant v ON p.`id` = v.`phoneID` 
                 LEFT JOIN spec s ON p.`id` = s.`phoneID`
                 ". $query_brand ."
                 ".$query_weight."
-                ".($search != "" ? ("WHERE p.`name` LIKE N'%".$search."%'"): "")."
+                ".$query_search."
                 GROUP BY p.`id` 
                 ".$sort."
                 LIMIT $begin, $productsPerPage";
@@ -421,6 +435,45 @@ class ProductModel extends connect {
                 GROUP BY p.`id` 
                 LIMIT $begin, $productsPerPage";
                 
+        $result = mysqli_query($this->con, $sql);
+        $rows = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $rows[] = $row;
+        }
+        return $rows;
+    }
+
+    public function getSellingProducts($since, $toDate)
+    {
+        $sql = "SELECT od.variantID, SUM(od.quantity) AS total_sold, p.name, v.price, i.image
+                FROM orderDetail od 
+                JOIN `order` o ON od.orderID = o.id 
+                JOIN variant v ON od.variantID = v.id 
+            	JOIN image i ON v.phoneID = i.phoneID  
+            	JOIN phone p ON v.phoneID = p.id    
+                WHERE o.orderStatus = 'Completed' 
+                AND o.date >= '$since' AND o.date <= '$toDate' 
+                AND i.colorID = v.colorID
+                GROUP BY od.variantID
+                ORDER BY total_sold DESC";
+        $result = mysqli_query($this->con, $sql);
+        $rows = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $rows[] = $row;
+        }
+        return $rows;
+    }
+
+    public function getBusinessSituation($since, $toDate)
+    {
+        $sql = "SELECT phone.category, category.name, SUM(orderDetail.quantity) AS total_quantity, 
+                    SUM(orderDetail.price) AS total_price FROM `order` o 
+                JOIN orderDetail ON o.id = orderDetail.orderID 
+                JOIN variant ON orderDetail.variantID = variant.id 
+                JOIN phone ON variant.phoneID = phone.id 
+                JOIN category ON category.id = phone.category 
+                WHERE o.orderStatus = 'Completed' AND o.date >= '$since' AND o.date <= '$toDate' 
+                GROUP BY phone.category";
         $result = mysqli_query($this->con, $sql);
         $rows = [];
         while ($row = mysqli_fetch_assoc($result)) {
