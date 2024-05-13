@@ -695,9 +695,140 @@ input:checked+.slider:before {
 
 .iput1 {
     height: 27px;
+    display: block;
+    width: 100%;
 }
 
 .priceandquantity {
     display: flex;
     margin-top: 22px
+}
+.form-edit-user {
+    position: relative;
+    width: 37%;
+    padding: 5px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    height: 400px;
+}
+
+.form-add-user {
+    position: relative;
+    width: 37%;
+    padding: 5px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    height: 400px;
+}
+
+.update-user-wapper {
+    display: block;
+    margin-top: 45px;
+}
+
+.add-user-wapper {
+    display: block;
+    margin-top: 45px;
+}
+
+.form-add-user {
+    position: relative;
+    width: 480px;
+    padding: 5px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    height: 530px;
+}
+.btn-update-user {
+    height: 34px;
+    width: 118px;
+    background-color: #a96af2;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-top: 75px;
+}
+
+.btn-add-user {
+    height: 34px;
+    width: 118px;
+    background-color: #a96af2;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-top: 75px;
+}
+
+.searchUser {
+    background-color: #fff;
+    width: 53%;
+    margin-right: 20px;
+    height: 30px;
+    margin-top: 3px;
+}
+
+.wappper-search {
+    width: 75%;
+    display: flex;
+}
+
+#btn-search {
+    margin-right: 10px;
+}
+.update-user-overlay,
+.add-user-overlay {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    /* pointer-events: none; */
+    z-index: 2100;
+}
+
+.update-user-overlay.active,
+.add-user-overlay.active {
+    display: flex;
+}
+.iputuser {
+    height: 30px;
+    width: 100%;
+    font-size: 16px;
+}
+
+.lbuser {
+    font-size: 17px;
+    font-weight: bold;
+}
+.user-pagination {
+    text-align: center;
+}
+
+.page-Index {
+    margin: 10px;
+}
+
+.col-name {
+    width: 134px;
+}
+
+.col-author {
+    width: 112px;
+}
+
+.btndel {
+    margin-right: 10px;
 }

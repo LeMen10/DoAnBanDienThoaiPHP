@@ -8,8 +8,8 @@
         <div class="bg-light rounded h-100 pt-3 pb-3 px-4">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex justify-content-between align-items-center">
-                    <button type="button" class="btn btn-success" onclick="handleOpen(null,1)">Add</button>
-                    <button type="button" class="btn btn-success ml-10" onclick="checkDeleteProduct()">Delete</button>
+                    <button type="button" class="btn btn-success ml-10 btndel" onclick="checkDeleteProduct()">Delete</button>
+                    <button type="button" class="btn btn-success btnadd" onclick="handleOpen(null,1)">Add</button>
                 </div>
                 <a href="index.php?ctrl=trash_product">
                     <i class="fa-regular fa-trash-can icon-trash"></i>
@@ -45,7 +45,7 @@
 
                                     echo "<tr class='product-item'>
                                     <th scope='row'>
-                                        <input type='checkbox' name='' class='child_checkbox' dataid='".$product["variantid"]."'>
+                                        <input type='checkbox' name='' class='child_checkbox_user' dataid='".$product["variantid"]."'>
                                     </th>
                                     <td>".$product["variantid"]."</td>
                                     <td class='td-img-product'>
@@ -230,29 +230,29 @@
                         <img id="update_image" alt='' class='image_product' class="size-img-update">                            
                     </div>      
                 </div>     
-                <label class="lb-suplier" >Suplier:</label>
-                <select class="iput suplier">
-                </select>           
+                <!-- <label class="lb-suplier" >Suplier:</label>
+                <select class="iput1 suplier">
+                </select>            -->
                 <label class="lb-title" >Name Phone:</label>
-                <input class="iput1 title" type="text">
+                <input class="iput1 name-add" type="text">
                                             
                 <label class="lb-category" >Category:</label>
-                <select class="iput1 category">
+                <select class="iput1 category-add">
                 </select>
         
                 <label class="lb-ramrom" >RAM/ROM:</label>
-                <input class="iput1 ramrom" type="text" >
+                <input class="iput1 ramrom-add" type="text" >
             
                 <label class="lb-color" >Color:</label>
-                <input class="iput1 color" type="text" >
-                <div class = "priceandquantity">
+                <input class="iput1 color-add" type="text" >
+                <!-- <div class = "priceandquantity">
                     <label class="lb-price" >Price:</label>
                     <input class="iput1 price" type="number">
             
                     <label class="lb-quantity" >Quantity:</label>
                     <input class="iput1 quantity" type="number">
-                </div>                
+                </div>                 -->
             </div>
-        <button class='btn-add complete' onclick="UpdatePhone()">Add Phone</button>
+        <button class='btn-add complete' onclick="AddPhone()">Add Phone</button>
     </div>
 </div>
