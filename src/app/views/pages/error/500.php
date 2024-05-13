@@ -8,7 +8,7 @@
                         <h2>Opps! PAGE NOT BE FOUND</h2>
                     </div>
                     <div class="error-button">
-                        <a href="index.php">Back to home page</a>
+                    <p onclick="checkRole()">Back to home page</p>
                     </div>
                 </div>
             </div>

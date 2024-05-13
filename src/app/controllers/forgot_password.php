@@ -11,7 +11,7 @@ class forgot_password extends Controller
     }
     public function index()
     {
-        return $this->view('main_layout', ['page' => 'forgot_password']);
+        return $this->view('null_layout', ['page' => 'forgot_password']);
     }
     public function CheckExistEmail(){
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {        

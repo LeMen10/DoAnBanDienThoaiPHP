@@ -6,6 +6,7 @@
         <main class="content">
             <?php include './app/views/components/header_admin.php'; ?>
             <?php include './app/views/pages/' . $data['page'] . '.php'; ?>
+            
             <?php include './app/views/components/footer_admin.php'; ?>
         </main>
     </div>

@@ -1,7 +1,7 @@
 <?php
 require './app/core/Controller.php';
 
-class forgot extends Controller
+class reset extends Controller
 {
     private $forgot_model;
     public function __construct()
@@ -13,7 +13,7 @@ class forgot extends Controller
     {   
         $email = "";
         if(isset($_GET['email'])) $email = $_GET['email'];
-        return $this->view('main_layout', ['page' => 'forgot', 'email'=> $email]);
+        return $this->view('null_layout', ['page' => 'reset', 'email'=> $email]);
     }
 
     public function CheckExistEmail(){
