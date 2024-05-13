@@ -27,6 +27,10 @@ $(document).ready(() => {
         }
     });
 
+    document.querySelector('.user-container').addEventListener('click', () => {
+        window.location.href = 'index.php?ctrl=login';
+    });
+
     loadName();
     getCountItemCart();
 });

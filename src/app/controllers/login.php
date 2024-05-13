@@ -18,6 +18,7 @@ class login extends Controller
             $email = $_POST['email'];
             $password = $_POST['password'];
             $user = $this->acc_model->CheckLogin($email);
+            if(!$user) exit(json_encode(['success' => false]));
             $passworddb = $this->acc_model->checkPassword($user['password'], $password);
             if(!$passworddb) exit(json_encode(['success' => false]));
             $token = $this->acc_model->login($user);

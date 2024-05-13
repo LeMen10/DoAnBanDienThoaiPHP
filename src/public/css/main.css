@@ -7315,7 +7315,7 @@ span.required {
     color: #fed700;
 }
 
-.error-button a {
+.error-button p {
     background: #fed700 none repeat scroll 0 0;
     border-radius: 35px;
     color: #ffffff;
@@ -7329,9 +7329,10 @@ span.required {
     transition: all 0.3s ease-in-out;
 }
 
-.error-button a:hover {
+.error-button p:hover {
     background: #242424;
     color: #fff;
+    cursor: pointer;
 }
 
 .small-version {

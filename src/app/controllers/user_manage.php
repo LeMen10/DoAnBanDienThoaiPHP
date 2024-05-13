@@ -12,12 +12,21 @@ class user_manage extends Controller
     }
     public function index()
     {
-        $page = isset($_GET["page"]) ? $_GET["page"] : 1;
-        $search = isset($_GET["search"]) ? $_GET["search"] : "";
-        $users = $this->user_model->getAllUserByPage($page,$search);
-        $quantity = $this->user_model->QuantityUser();
-        // $quantity = $this->product_model->getQuantityPhone();
-        return $this->view('main_admin_layout', ['page' => 'user_admin', 'users' => $users, 'quantity' => $quantity] ); 
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            if (!isset($_COOKIE['token'])) header("Location: index.php?ctrl=login");
+            $jwt = new jwt();
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+            $checkShow = $this->user_model->checkPermission($data['authorID'], 2);
+            if($checkShow['show'] == 0) header("Location: index.php?ctrl=myerror&act=forbidden");
+
+            $page = isset($_GET["page"]) ? $_GET["page"] : 1;
+            $search = isset($_GET["search"]) ? $_GET["search"] : "";
+            $users = $this->user_model->getAllUserByPage($page,$search);
+            $quantity = $this->user_model->QuantityUser();
+            // $quantity = $this->product_model->getQuantityPhone();
+            return $this->view('main_admin_layout', ['page' => 'user_admin', 'users' => $users, 'quantity' => $quantity] ); 
+        }
     }
     public function load_data(){
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {

@@ -4,11 +4,11 @@
             <div class="col-lg-12">
                 <div class="error-wrapper text-center ptb-50 pt-xs-20">
                     <div class="error-text">
-                        <h1>400</h1>
+                        <h1>403</h1>
                         <h2>Opps! BAD REQUEST</h2>
                     </div>
                     <div class="error-button">
-                    <p onclick="checkRole()">Back to home page</p>
+                        <p onclick="checkRole()">Back to home page</p>
                     </div>
                 </div>
             </div>
