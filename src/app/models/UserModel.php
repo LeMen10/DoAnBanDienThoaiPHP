@@ -166,4 +166,80 @@ class UserModel extends Connect
         }
         return array('price' => $row['totalPrice'], 'quantity' => $row['totalQuantity']);
     }
+    public function getAllUserByPage($page,$search=""){
+        $begin = ($page * 5) - 5;
+        $sql = "SELECT c.*, a.name AS Author, ad.recipientPhone AS sdt 
+        FROM customer c 
+        JOIN author a ON c.author = a.ID 
+        LEFT JOIN `address` ad ON ad.customerID = c.id
+        WHERE ".($search != "" ? ("c.name LIKE N'%".$search."%'  AND "): "")." c.visible = 1  
+        LIMIT $begin, 5;";
+        $result = mysqli_query($this->con, $sql);
+        $rows = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $rows[] = $row;
+        }
+        return $rows;
+    }
+    public function QuantityUser(){
+        $sql = "SELECT COUNT(*) AS Quantity FROM customer WHERE visible = 1";
+        $result = mysqli_query($this->con, $sql);
+        $rows = [];
+        if ($row = mysqli_fetch_assoc($result)) {
+            $rows = $row;
+        }
+        return $rows["Quantity"];
+    }
+    public function DeleteUser($id){
+        $sql = "UPDATE customer SET visible = 0 WHERE id = $id;";
+        $result = mysqli_query($this->con, $sql);
+    }
+    public function GetUser($id){
+        $sql = "SELECT c.*,a.name AS Author, a.id AS AuthorID FROM customer c 
+        JOIN author a ON c.author = a.ID WHERE c.id = $id";
+        $result = mysqli_query($this->con, $sql);
+        $users = [];
+        if ($row = mysqli_fetch_assoc($result)) {
+            $users = $row;
+        }
+        return $users;
+    }
+    public function GetAuthor(){
+        $sql = "SELECT * FROM `author`";
+        $result = mysqli_query($this->con, $sql);
+        $rows = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $rows[] = $row;
+        }
+        return $rows;
+    }
+    function updateUser($id,$name, $email, $author){
+        $sql = "UPDATE customer SET `name` = '$name', email = '$email', author = $author
+        WHERE id = $id";
+        $result = mysqli_query($this->con, $sql); 
+        return $result;
+    }
+    function insertUser($name, $email, $password,$author){
+        $sql = "INSERT INTO customer (`name`, `email`, `password`, `author`, `visible`) 
+        VALUES ('$name','$email','$password',$author, 1)";
+        $result = mysqli_query($this->con, $sql); 
+        return $result;
+    }
+    public function DeleteUserByCheckbox($id)
+    {
+        $temp = explode(',', $id);
+        $resultString = '(' . implode(', ', $temp) . ')'; // (12,32,13,32)
+        $sql = "UPDATE customer SET visible = 0 WHERE id IN $resultString;";
+        $result = mysqli_query($this->con, $sql);
+        return $result;
+    }
+    public function SearchUser($temp){
+        $sql = "SELECT * FROM customer WHERE `name` LIKE '%$temp%' AND visible = 1";
+        $result = mysqli_query($this->con, $sql);
+        $rows = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $rows[] = $row;
+        }
+        return $rows;
+    }
 }

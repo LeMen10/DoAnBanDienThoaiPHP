@@ -70,8 +70,50 @@ class ProductModel extends connect {
         return $rows;
     }
     //========================================================ProductManager==============================
+    public function InsertVariant($name,$category,$ramrom,$color){
+        $sql = "INSERT INTO `variant`(`phoneID`, `sizeID`, `size`, `colorID`, `price`,
+         `quantity`, `visible`) VALUES ('[value-2]','[value-3]','[value-4]','[value-5]',
+         '[value-6]','[value-7]','[value-8]')";
+        $result = mysqli_query($this->con, $sql); 
+        return $result;
+    }
+    // public function InsertProduct($name,$category,$color){
+    //     InsertPhone($name,$category);
+    //     InsertColor($color);
+    // }
+    public function InsertPhone($name,$category){
+        $sql = "INSERT INTO `phone`(`name`, `category`, `visible`) 
+        VALUES ('$name',$category, 1)";
+        $result = mysqli_query($this->con, $sql); 
+        return $result;
+    }
+    public function InsertColor($color,$colorid,$phoneid){
+        $sql = "INSERT INTO `color`( `phoneID`, `colorID`, `color`) 
+        VALUES ($phoneid,$colorid,'$color')";
+        $result = mysqli_query($this->con, $sql); 
+        return $result;
+    }
+    public function GetNewPhoneID(){
+        $sql = "SELECT id FROM phone ORDER BY id DESC LIMIT 1";
+        $result = mysqli_query($this->con, $sql); 
+        $rows = [];
+        if($row = mysqli_fetch_assoc($result)) {
+            $rows = $row;
+        }
+        return $rows;
+    }
+    public function InsertColorId($phoneid){
+        $sql = "SELECT COUNT(*) AS COUNT FROM `color` WHERE phoneiD = $phoneid";
+        $result = mysqli_query($this->con, $sql); 
+        $rows = [];
+        if($row = mysqli_fetch_assoc($result)) {
+            $rows = $row;
+        }
+        return $rows;
+    }
     public function CheckColorOfPhone($phoneid,$color){
-        $sql = "SELECT COUNT(*) AS COUNT FROM `color` WHERE phoneiD = $phoneid AND color like '$color'";
+        $lowerColor = strtolower($color);
+        $sql = "SELECT COUNT(*) AS COUNT FROM `color` WHERE phoneiD = $phoneid AND LOWER(color) like '$lowerColor'";
         $result = mysqli_query($this->con, $sql);
         $rows = [];
         if($row = mysqli_fetch_assoc($result)) {
