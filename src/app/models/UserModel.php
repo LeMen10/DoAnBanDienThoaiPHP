@@ -106,7 +106,17 @@ class UserModel extends Connect
     }
 
     public function getAllCustomerDeleted(){
-        $sql = "SELECT c.* FROM customer c WHERE c.visible = 0";
+        $sql = "SELECT COUNT(*) AS count FROM customer c WHERE c.visible = 0";
+        $result = mysqli_query($this->con, $sql);
+        $Count = 0;
+        if ($row = mysqli_fetch_assoc($result)) {
+            $Count = $row["count"];
+        }
+        return $Count;
+    }
+    public function getAllCustomerDeletedPerPage($page){
+        $begin = ($page * 5) - 5;
+        $sql = "SELECT c.* FROM customer c WHERE c.visible = 0 LIMIT $begin, 6";
         $result = mysqli_query($this->con, $sql);
         $rows = [];
         while ($row = mysqli_fetch_assoc($result)) {
@@ -169,10 +179,9 @@ class UserModel extends Connect
 
     public function getAllUserByPage($page,$search=""){
         $begin = ($page * 5) - 5;
-        $sql = "SELECT c.*, a.name AS Author, ad.recipientPhone AS sdt 
+        $sql = "SELECT c.*, a.name AS Author
         FROM customer c 
         JOIN author a ON c.author = a.ID 
-        LEFT JOIN `address` ad ON ad.customerID = c.id
         WHERE ".($search != "" ? ("c.name LIKE N'%".$search."%'  AND "): "")." c.visible = 1  
         LIMIT $begin, 5;";
         $result = mysqli_query($this->con, $sql);

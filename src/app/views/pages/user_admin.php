@@ -27,7 +27,6 @@
                             <th scope="col">ID</th>
                             <th scope="col" class = "col-name">Name</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Phone Number</th>
                             <th scope="col" class = "col-author" >Author</th>
                             <th scope="col">Action</th>
                         </tr>
@@ -44,7 +43,6 @@
                                     <td>".$user["id"]."</td>
                                     <td>".$user["name"]."</td>
                                     <td>".$user["email"]."</td>
-                                    <td>".$user["sdt"]."</td>
                                     <td>".$user["Author"]."</td>
                                     <td class='td-action'>
                                         <span class='edit-product' onclick='handleOpen(".$user["id"].",0)'>

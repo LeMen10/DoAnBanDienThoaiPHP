@@ -51,9 +51,14 @@
                 $currentUrl = strstr($currentUrl, '&page', true);
             }
             
-            if(isset($listOrder) && isset($listOrderPerPage)){
+            if(isset($customers) && isset($CountCustomer)){
+                $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+                $currentUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+                if (strpos($currentUrl, '&page') !== false) {
+                    $currentUrl = strstr($currentUrl, '&page', true);
+                }
                 echo "<div class='purchase-order-pagination'>";
-                    $totalPages = ceil(count($listOrder) / 5);
+                    $totalPages = ceil($CountCustomer / 6);
                     if($totalPages > 1){
                         $maxPageShow = ($currentPage + 2) < $totalPages? ($currentPage + 2): $totalPages;
                         $i = $currentPage < 3? 1: $currentPage - 2;

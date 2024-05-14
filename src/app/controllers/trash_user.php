@@ -27,8 +27,9 @@ class trash_user extends Controller
             // $all_trash_products = $this->product_model->getAllTrashProduct($query);
             // $quantity = count($all_trash_products);
             // return $this->view('main_admin_layout', ['page' => 'trash_product', 'quantity' => $quantity, 'trash_products_per_page' => $trash_products_per_page]);
-            $customers = $this->user_model->getAllCustomerDeleted();
-            return $this->view('main_admin_layout', ['page' => 'trash_user', 'customers' => $customers]);
+            $CountCustomer = $this->user_model->getAllCustomerDeleted();
+            $customers = $this->user_model->getAllCustomerDeletedPerPage($page);
+            return $this->view('main_admin_layout', ['page' => 'trash_user', 'customers' => $customers , "CountCustomer" => $CountCustomer]);
         }
     }
     public function restore_customer()

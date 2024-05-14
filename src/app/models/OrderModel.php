@@ -76,5 +76,65 @@ class OrderModel extends connect{
         return $arr_search;
     }
 
-
+    //-----Thống kê------
+    public function GetStatisticOrder() {
+        $query = "SELECT  MONTH(o.date) AS thang, SUM(o.totalPayment) AS tongTien
+        FROM `order` o WHERE  YEAR(o.date) = YEAR(CURRENT_DATE())
+        GROUP BY DATE_FORMAT(o.date, '%Y-%m') ORDER BY thang";
+        
+        $result = mysqli_query($this->con, $query);
+         $total = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+             $total[] = $row;
+        }
+        return  $total;
+    }
+    public function GetStatisticPaymentByYear() {
+        $query = "SELECT SUM(o.totalPayment) AS tongTien
+        FROM `order` o WHERE  YEAR(o.date) = YEAR(CURRENT_DATE())";
+        
+        $result = mysqli_query($this->con, $query);
+        $total = [];
+        if ($row = mysqli_fetch_assoc($result)) {
+            if($row["tongTien"] == null) $row["tongTien"] = 0;
+            $total = $row;
+        }
+        return  $total;
+    }
+    public function GetStatisticPaymentByDay() {
+        $query = "SELECT  SUM(o.totalPayment) AS tongTien
+        FROM `order` o WHERE DATE(o.date) = CURRENT_DATE";
+        
+        $result = mysqli_query($this->con, $query);
+        $total = [];
+        if ($row = mysqli_fetch_assoc($result)) {
+            if($row["tongTien"] == null) $row["tongTien"] = 0;
+            $total = $row;
+        }
+        return  $total;
+    }
+    public function GetStatisticQuantityByYear() {
+        $query = "SELECT  SUM(od.quantity) soLuong
+        FROM `order` o JOIN orderdetail od ON o.id = od.orderID WHERE YEAR(o.date) = YEAR(CURRENT_DATE())";
+        
+        $result = mysqli_query($this->con, $query);
+        $total = [];
+        if ($row = mysqli_fetch_assoc($result)) {
+            if($row["soLuong"] == null) $row["soLuong"] = 0;
+            $total = $row;
+        }
+        return  $total;
+    }
+    public function GetStatisticQuantityByDay() {
+        $query = "SELECT  SUM(od.quantity) soLuong
+        FROM `order` o JOIN orderdetail od ON o.id = od.orderID WHERE DATE(o.date) = CURRENT_DATE";
+        
+        $result = mysqli_query($this->con, $query);
+        $total = [];
+        if ($row = mysqli_fetch_assoc($result)) {
+            if($row["soLuong"] == null) $row["soLuong"] = 0;
+            $total = $row;
+        }
+        return  $total;
+    }
 }

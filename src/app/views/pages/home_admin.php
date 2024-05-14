@@ -5,7 +5,7 @@
                 <i class="fa fa-chart-line fa-3x text-primary"></i>
                 <div class="ms-3">
                     <p class="mb-2">Today Sale</p>
-                    <h6 class="mb-0">$1234</h6>
+                    <h6 class="mb-0" id="quantityDay">$1234</h6>
                 </div>
             </div>
         </div>
@@ -14,7 +14,7 @@
                 <i class="fa fa-chart-bar fa-3x text-primary"></i>
                 <div class="ms-3">
                     <p class="mb-2">Total Sale</p>
-                    <h6 class="mb-0">$1234</h6>
+                    <h6 class="mb-0" id="quantityYear">$1234</h6>
                 </div>
             </div>
         </div>
@@ -23,7 +23,7 @@
                 <i class="fa fa-chart-area fa-3x text-primary"></i>
                 <div class="ms-3">
                     <p class="mb-2">Today Revenue</p>
-                    <h6 class="mb-0">$1234</h6>
+                    <h6 class="mb-0" id="paymentDay">$1234</h6>
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
                 <i class="fa fa-chart-pie fa-3x text-primary"></i>
                 <div class="ms-3">
                     <p class="mb-2">Total Revenue</p>
-                    <h6 class="mb-0">$1234</h6>
+                    <h6 class="mb-0" id="paymentYear">$1234</h6>
                 </div>
             </div>
         </div>
@@ -43,7 +43,7 @@
         <div class="col-sm-12 col-xl-6">
             <div class="bg-light text-center rounded p-4">
                 <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h6 class="mb-0">Selling Products</h6>
+                    <h6 class="mb-0">profits</h6>
                     <a href="">show</a>
                 </div>
                 <canvas id="myChart"></canvas>

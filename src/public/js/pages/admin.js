@@ -14,38 +14,74 @@ $(document).ready(() => {
 
     const sinceBusinessInput = document.getElementById('to-date-business');
     sinceBusinessInput.addEventListener('change', handleToDateBusinessChange);
-
-    const months = [
-        'Tháng 1',
-        'Tháng 2',
-        'Tháng 3',
-        'Tháng 4',
-    ];
-
-    const ctx = document.getElementById('myChart');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: months,
-            datasets: [
-                {
-                    label: 'revenue',
-                    data: [12, 19, 0, 5],
-                    borderWidth: 1,
-                },
-            ],
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                },
-            },
-        },
-    });
-
-
+    loadChart();
 });
+
+const loadChart = () => {
+    getProfits()
+    .then(response => {
+        const { data, paymentDay, paymentYear, quantityDay, quantityYear } = response;
+        if (data != null && Array.isArray(data)) {
+            const months = data.map(item => `Tháng ${item.thang}`);
+            const revenues = data.map(item => item.tongTien);
+            document.getElementById("quantityDay").innerHTML = quantityDay;
+            document.getElementById("quantityYear").innerHTML = quantityYear;
+            document.getElementById("paymentDay").innerHTML = paymentDay;
+            document.getElementById("paymentYear").innerHTML = paymentYear;
+            const ctx = document.getElementById('myChart');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: months,
+                    datasets: [
+                        {
+                            label: 'Doanh thu',
+                            data: revenues,
+                            borderWidth: 1,
+                        },
+                    ],
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                        },
+                    },
+                },
+            });
+        } else {
+            console.error("Data format is incorrect or data is null");
+        }
+    })
+    .catch(error => {
+        console.log(error);
+    });
+}
+
+const getProfits = () => {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: 'get',
+            url: 'index.php?ctrl=admin&act=getStatisticOrder',
+            data: {},
+            dataType: 'json',
+            success: res => {
+                if (res.status == 401) return navigationLogin();
+                resolve({
+                    data: res.data,
+                    paymentDay: res.paymentDay,
+                    paymentYear: res.paymentYear,
+                    quantityDay: res.quantityDay,
+                    quantityYear: res.quantityYear
+                });
+            },
+            error: err => {
+                reject(err);
+            },
+        });
+    });
+}
+
 
 const handleToDateChange = event => {
     const currentDateString = new Date().toISOString().slice(0, 10);
