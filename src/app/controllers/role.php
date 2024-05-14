@@ -47,4 +47,15 @@ class role extends Controller
             echo json_encode(['success' => true]);
         }
     }
+
+    
+    public function getRole(){
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
+            $jwt = new jwt();
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+            echo json_encode(['success' => true, 'role' => $data['authorName']]);
+        }
+    }
 }

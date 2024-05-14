@@ -475,17 +475,20 @@ input:checked+.slider:before {
 .mySelect {
     height: 30px;
 }
-.disable-vertical{
+
+.disable-vertical {
     vertical-align: unset !important;
 }
-.time span{
+
+.time span {
     margin-right: 50px;
 }
-.select_tg{
+
+.select_tg {
     border-radius: 38px;
 }
 
-.search-order-admin{
+.search-order-admin {
     background-color: #fff;
     width: 24%;
     border-top-left-radius: 4px;
@@ -494,11 +497,11 @@ input:checked+.slider:before {
 }
 
 /* trash user */
-.button-restore{
+.button-restore {
     text-decoration: underline;
 }
 
-.button-restore:hover{
+.button-restore:hover {
     cursor: pointer;
 }
 
@@ -704,6 +707,7 @@ input:checked+.slider:before {
     display: flex;
     margin-top: 22px
 }
+
 .form-edit-user {
     position: relative;
     width: 37%;
@@ -743,6 +747,7 @@ input:checked+.slider:before {
     background-color: #f9f9f9;
     height: 530px;
 }
+
 .btn-update-user {
     height: 34px;
     width: 118px;
@@ -785,6 +790,7 @@ input:checked+.slider:before {
 #btn-search {
     margin-right: 10px;
 }
+
 .update-user-overlay,
 .add-user-overlay {
     display: none;
@@ -804,6 +810,7 @@ input:checked+.slider:before {
 .add-user-overlay.active {
     display: flex;
 }
+
 .iputuser {
     height: 30px;
     width: 100%;
@@ -814,6 +821,7 @@ input:checked+.slider:before {
     font-size: 17px;
     font-weight: bold;
 }
+
 .user-pagination {
     text-align: center;
 }
@@ -832,47 +840,50 @@ input:checked+.slider:before {
 
 .btndel {
     margin-right: 10px;
-.body-business-situation{
-    background-color: #fff;
+
+    .body-business-situation {
+        background-color: #fff;
+    }
 }
-.body-business-situation tr td{
+
+.body-business-situation tr td {
     padding: 6px;
 }
 
 #since-business,
-#to-date-business{
+#to-date-business {
     width: 64%;
 
 }
 
-.business-situation{
+.business-situation {
     width: 70%;
 }
 
 
-.business-situation-wrap{
+.business-situation-wrap {
     padding: 20px 10px;
     min-height: 326px;
 }
 
 .since,
-.to-date{
+.to-date {
     background-color: #fff;
     padding: 8px 6px;
 }
 
-.selling-product tr td img{
+.selling-product tr td img {
     width: 100%;
 }
 
-.selling-product tr td span{
+.selling-product tr td span {
     font-size: 14px;
 }
 
-.selling-product tr td:first-child{
+.selling-product tr td:first-child {
     width: 10%;
 }
 
-.selling-product tr{
+.selling-product tr {
     background-color: #fff;
 }

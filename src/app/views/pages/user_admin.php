@@ -1,18 +1,19 @@
-
-<div class="row g-4">
-<div class="col-12">
-        <div class="bg-light rounded h-100 pt-3 pb-3 px-4">
-            <div class="d-flex justify-content-between align-items-center">
-                <button type="button" class="btn btn-success" onclick = "handleOpen(0,1)">Add</button>
-                <button type="button" class="btn btn-success ml-10" onclick="checkDeleteUser()">Delete</button>
-                <div class="wappper-search">
-                    <input type="text" class="searchUser">
-                    <button type="button" class="btn btn-success ml-10" id = "btn-search" onclick="searchUser()">Search</button>
-                </div>
-                <a href="index.php?ctrl=trash_user">
-                    <i class="fa-regular fa-trash-can icon-trash"></i>
-                </a>
-            </div> 
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="bg-light rounded h-100 pt-3 pb-3 px-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <button type="button" class="btn btn-success" onclick = "handleOpen(0,1)">Add</button>
+                    <button type="button" class="btn btn-success ml-10" onclick="checkDeleteUser()">Delete</button>
+                    <div class="wappper-search">
+                        <input type="text" class="searchUser">
+                        <button type="button" class="btn btn-success ml-10" id = "btn-search" onclick="searchUser()">Search</button>
+                    </div>
+                    <a href="index.php?ctrl=trash_user">
+                        <i class="fa-regular fa-trash-can icon-trash"></i>
+                    </a>
+                </div> 
+            </div>
         </div>
     </div>
     <div class="col-12 pt-4">
@@ -54,43 +55,44 @@
                                         </td>";
                                 }
                             }
-                        
-                        ?>
-                    </tbody>
-                </table>
-                <?php 
-                        $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
-                        $currentUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-                        if (strpos($currentUrl, '&page') !== false) {
-                            $currentUrl = strstr($currentUrl, '&page', true);
-                        }
-                        echo "</div>";
-                        echo "<div class='user-pagination'>";
-                        $totalPages = ceil(($quantity) / 5);
-                        if($totalPages > 1)
-                        {
-                            $maxPageShow = ($currentPage + 2) < $totalPages? ($currentPage + 2): $totalPages;
-                            $i = $currentPage < 3? 1: $currentPage - 2;
-                            if ($currentPage > 1) {
-                                echo "<a class='page-Index button-action' href='$currentUrl&page=".($currentPage - 1)."'><i class='fa-solid fa-chevron-left'></i></a>";
+                            ?>
+                        </tbody>
+                    </table>
+                    <?php 
+                            $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+                            $currentUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+                            if (strpos($currentUrl, '&page') !== false) {
+                                $currentUrl = strstr($currentUrl, '&page', true);
                             }
-                            for (; $i <= $maxPageShow; $i++) {
-                                if ($i == $currentPage) {
-                                    echo "<span class='page-Index current'>$i</span>";
-                                } else {
-                                    echo "<a class='page-Index' href='$currentUrl&page=$i'>$i</a>";
+                            echo "</div>";
+                            echo "<div class='user-pagination'>";
+                            $totalPages = ceil(($quantity) / 5);
+                            if($totalPages > 1)
+                            {
+                                $maxPageShow = ($currentPage + 2) < $totalPages? ($currentPage + 2): $totalPages;
+                                $i = $currentPage < 3? 1: $currentPage - 2;
+                                if ($currentPage > 1) {
+                                    echo "<a class='page-Index button-action' href='$currentUrl&page=".($currentPage - 1)."'><i class='fa-solid fa-chevron-left'></i></a>";
+                                }
+                                for (; $i <= $maxPageShow; $i++) {
+                                    if ($i == $currentPage) {
+                                        echo "<span class='page-Index current'>$i</span>";
+                                    } else {
+                                        echo "<a class='page-Index' href='$currentUrl&page=$i'>$i</a>";
+                                    }
+                                }
+                                if ($currentPage < $totalPages) {
+                                    echo "<a class='page-Index button-action' href='$currentUrl&page=".($currentPage + 1)."'><i class='fa-solid fa-chevron-right'></i></a>";
                                 }
                             }
-                            if ($currentPage < $totalPages) {
-                                echo "<a class='page-Index button-action' href='$currentUrl&page=".($currentPage + 1)."'><i class='fa-solid fa-chevron-right'></i></a>";
-                            }
-                        }
-                        echo "</div>";
-                    ?>
+                            echo "</div>";
+                        ?>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 <div class="update-user-overlay">
     <div class="form-edit-user">
         <i class="fa-solid fa-xmark btn-update-close" onClick="handleClose(0)"></i>

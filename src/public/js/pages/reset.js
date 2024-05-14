@@ -68,12 +68,14 @@ const CheckExistEmail = (email, password) => {
         data: { email},
         dataType: 'json',
         success: res => {
-            if(res.check){
-                ResetPassword(email, password);
-                
-            }
+            if(res.check) ResetPassword(email, password);
             else{
-                alert("Người dùng không tồn tại!");
+                toast({
+                    title: 'Thông báo!',
+                    message: 'Người dùng không tồn tại! 😐',
+                    type: 'warning',
+                    duration: 2000,
+                });
                 return;
             }
         },

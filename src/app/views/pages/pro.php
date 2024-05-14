@@ -7,7 +7,7 @@ use PHPMailer\PHPMailer\Exception;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $mail = new PHPMailer(true);
-    $link = "http://localhost/DOAN/DoAnBanDienThoaiPHP/src/index.php?ctrl=forgot&email=".$email;
+    $link = "http://localhost/DOAN/DoAnBanDienThoaiPHP/src/index.php?ctrl=reset&email=".$email;
 
     try {
         $mail->isSMTP();
@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         // $mail->addAddress($email);
 
-        $mail->Subject = 'Test Email';
+        $mail->Subject = 'Reset Password';
         $mail->isHTML(true); // Đặt định dạng email thành HTML
         $mail->Body = 'Ấn vào link để đổi mật khẩu <a href="' . $link . '">' . $link . '</a>';
 
@@ -37,29 +37,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }
 }
-// ini_set("SMTP", "smtp.gmail.com");
-// ini_set("smtp_port", "587");
-
-// if ($_SERVER["REQUEST_METHOD"] == "POST") {
-//     $email = $_POST["email"];
-
-//     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-//         // Tạo một mã xác thực ngẫu nhiên
-        
-//         $link = "index.php?ctrl=forgot";
-
-//         // Xử lý gửi email ở đây
-//         $message = "Click the following link: <a href='$link'>$link</a>";
-
-//         // Gửi email
-//         $subject = "Link to Website";
-//         $headers = "From: your_email@example.com\r\n";
-//         $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-//         mail($email, $subject, $message, $headers);
-
-//         $response = "Link sent to " . $email;
-//     } else {
-//         $message = "Invalid email address!";
-//     }
-//     echo $message;
-// }

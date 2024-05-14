@@ -3,20 +3,30 @@ require './app/core/Controller.php';
 
 class product_manage extends Controller
 {
-    private $product_model;
+    private $product_model, $user_model;
     public function __construct()
     {
         $this->loadModel('ProductModel');
         $this->product_model = new ProductModel();
+        $this->loadModel('UserModel');
+        $this->user_model = new UserModel();
     }
     public function index()
     {
-        $page = isset($_GET["page"]) ? $_GET["page"] : 1;
-        $products = $this->product_model->getAllPhoneByPage($page);
-        $quantity = $this->product_model->getQuantityPhone();
-        // $quantity = $this->product_model->getQuantityPhone();
-        return $this->view('main_admin_layout', ['page' => 'product_admin', 'products' => $products, 'quantity' => $quantity] ); 
-        
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            if (!isset($_COOKIE['token'])) header("Location: index.php?ctrl=login");
+            $jwt = new jwt();
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+            $checkShow = $this->user_model->checkPermission($data['authorID'], 2);
+            if($checkShow['show'] == 0) header("Location: index.php?ctrl=myerror&act=forbidden");
+            
+            $page = isset($_GET["page"]) ? $_GET["page"] : 1;
+            $products = $this->product_model->getAllPhoneByPage($page);
+            $quantity = $this->product_model->getQuantityPhone();
+            // $quantity = $this->product_model->getQuantityPhone();
+            return $this->view('main_admin_layout', ['page' => 'product_admin', 'products' => $products, 'quantity' => $quantity] ); 
+        }
     }
     public function load_data()
     {

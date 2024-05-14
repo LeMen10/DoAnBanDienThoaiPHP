@@ -8,8 +8,13 @@
         <div class="col-12">
             <div class="bg-light rounded h-100 pt-3 pb-3 px-4">
                 <div class="d-flex justify-content-between align-items-center">
-                    <button type="button" class="btn btn-success ml-10 btndel" onclick="checkDeleteProduct()">Delete</button>
-                    <button type="button" class="btn btn-success btnadd" onclick="handleOpen(null,1)">Add</button>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <button type="button" class="btn btn-success ml-10 btndel" onclick="checkDeleteProduct()">Delete</button>
+                        <button type="button" class="btn btn-success btnadd" onclick="handleOpen(null,1)">Add</button>
+                    </div>
+                    <a href="index.php?ctrl=trash_product">
+                        <i class="fa-regular fa-trash-can icon-trash"></i>
+                    </a>
                 </div>
             </div>
         </div>
@@ -249,6 +254,7 @@
                     <input class="iput1 quantity" type="number">
                 </div>                 -->
             </div>
-        <button class='btn-add complete' onclick="AddPhone()">Add Phone</button>
+            <button class='btn-add complete' onclick="AddPhone()">Add Phone</button>
+        </div>
     </div>
 </div>

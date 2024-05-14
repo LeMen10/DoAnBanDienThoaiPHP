@@ -120,3 +120,5 @@ function close_formLogin() {
     window.location.href = "index.php";
 
 }
+
+const navigationLogin = () => { window.location.href = 'index.php?ctrl=login' };

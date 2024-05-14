@@ -474,3 +474,5 @@ const toast = ({ title = '', message = '', type = 'info', duration = 2000 }) => 
         main.appendChild(toast);
     }
 };
+
+const navigationLogin = () => { window.location.href = 'index.php?ctrl=login' };

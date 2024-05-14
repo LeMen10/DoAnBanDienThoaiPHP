@@ -13,9 +13,6 @@ $(document).ready(() => {
     icon = document.getElementById('close-icon');
     icon.addEventListener('click', close_formLogin);
 
-    document.querySelector('.user-container').addEventListener('click', () => {
-        window.location.href = 'index.php?ctrl=login';
-    });
 });
 function FormForgotPassword() {
     window.location.href = 'index.php?ctrl=forgot_password';
@@ -37,6 +34,15 @@ const LoadAccount = (email, password) => {
         dataType: 'json',
         success: res => {
             console.log(res);
+            if(res.success == false) {
+                toast({
+                    title: 'Cảnh báo!',
+                    message: 'Tài khoản không tồn tại. Vui lòng đăng nhập lại.',
+                    type: 'warning',
+                    duration: 1000,
+                });
+                return;
+            }
             if (res.user) {
                 let d = new Date();
                 d.setTime(d.getTime() + 2 * 24 * 60 * 60 * 1000);
