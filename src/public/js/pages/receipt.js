@@ -56,7 +56,7 @@ const InsertReceipt = () => {
                 document.querySelector(".add-user-overlay").setAttribute("receiptID", res.receiptsID);
                 toast({
                     title: 'Thông báo!',
-                    message: 'Đã thêm 1 chi tiết phiếu nhập 😊',
+                    message: 'Đã thêm 1 phiếu nhập 😊',
                     type: 'success',
                     duration: 2000,
                 });
@@ -160,7 +160,12 @@ const CreateReceipt = () => {
             dataType: 'json',
             success: res => {
                 if (res.checksucsess == true) {
-                    alert("Đã tạo thành công 1 Receipt Detail")
+                    toast({
+                        title: 'Thông báo!',
+                        message: 'Đã thêm 1 chi tiết phiếu nhập 😊',
+                        type: 'success',
+                        duration: 2000,
+                    });
                     document.querySelector(".price-add").value = "";
                     document.querySelector(".quantity-add").value = "";
                     loadData(receiptID);
@@ -239,7 +244,7 @@ const UpdateByReceipt = () => {
             if (res.check) {
                 console.log(res.check);
                 if (res.check == true) {
-                     toast({
+                    toast({
                         title: 'Thông báo!',
                         message: 'Đã cập nhật thành công 😊',
                         type: 'success',
@@ -255,7 +260,7 @@ const UpdateByReceipt = () => {
                 } else {
                     toast({
                         title: 'Thông báo!',
-                        message: 'Chưa có giá trí để cập nhật 😐',
+                        message: 'Chưa có giá trị để cập nhật 😐',
                         type: 'warning',
                         duration: 2000,
                     });
@@ -267,4 +272,44 @@ const UpdateByReceipt = () => {
             console.log(err);
         },
     });
+};
+const toast = ({ title = '', message = '', type = 'info', duration = 2000 }) => {
+    const main = document.getElementById('toast');
+    if (main) {
+        const toast = document.createElement('div');
+
+        const autoRemove = setTimeout(function () {
+            main.removeChild(toast);
+        }, duration + 1000);
+
+        toast.onclick = function (e) {
+            if (e.target.closest('.toast__close')) {
+                main.removeChild(toast);
+                clearTimeout(autoRemove);
+            }
+        };
+        const icons = {
+            success: 'fa-solid fa-circle-check',
+            info: 'fa-solid fa-circle-info',
+            warning: 'fa-solid fa-circle-exclamation',
+        };
+        const icon = icons[type];
+        const delay = (duration / 1000).toFixed(2);
+        toast.classList.add('toast', `toast--${type}`);
+        toast.style.animation = `slideInleft ease .6s, fadeOut linear 1s ${delay}s forwards`;
+
+        toast.innerHTML = `
+                <div class="toast__icon">
+                    <i class="${icon}"></i>
+                </div>
+                <div class="toast__body">
+                    <h3 class="toast__title">${title}</h3>
+                    <p class="toast__msg">${message}</p>
+                </div>
+                <div class="toast__close">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+            `;
+        main.appendChild(toast);
+    }
 };

@@ -6,7 +6,8 @@ function editProduct() {
     console.log(13312);
 }
 
-function deleteProduct(id) {
+function deleteProduct() {
+    id = document.querySelector(".cancel-form").getAttribute("order-id");
     $.ajax({
         url: 'index.php?ctrl=product_manage&act=delete_phone',
         type: 'POST',
@@ -230,7 +231,9 @@ function showDetailProduct(product, categorys) {
 }
 function updateImage() {
     var variantID = (document.querySelector(".update-product-overlay").getAttribute("variantID"));
-    if (file != null) {
+    if (file == "") {
+        var image = "";
+    } else {
         var image = file.name;
     }
     console.log(image);
@@ -251,25 +254,6 @@ function updateImage() {
         }
     });
 }
-// function updateColor() {
-//     var variantID = (document.querySelector(".update-product-overlay").getAttribute("variantID"));
-//     const color = document.querySelector(".color").value;
-//     $.ajax({
-//         url: 'index.php?ctrl=product_manage&act=update_color',
-//         type: 'post',
-//         data: { variantID, color },
-//         dataType: 'json',
-//         success: function (response) {
-//             alert('Sửa thành công.');
-//             loadData();
-//             handleClose();
-//         },
-//         error: function (xhr, status, error) {
-//             alert('Đã xảy ra lỗi khi khôi phục điện thoại.');
-//             console.error('Đã xảy ra lỗi:', error);
-//         }
-//     });
-// }
 function updateNamePhone() {
     var variantID = (document.querySelector(".update-product-overlay").getAttribute("variantID"));
     const name = document.querySelector(".title").value;
@@ -399,10 +383,7 @@ function UpdatePhone() {
             const categoryid = document.querySelector(".category").value;
             var imagephone = document.querySelector(".image_product").src;
             var image = imagephone.substring(64)
-            if (price <= 0) {
-                alert("Giá bán phải lớn hơn 0");
-                return;
-            }
+
             if (file != null) {
                 if (imagephone != file.name) {
                     updateImage();
@@ -442,7 +423,10 @@ function updateFile() {
     file = fileInput.files[0]; // Lấy tệp từ input
     document.querySelector(".image_product").src = "public/img/phone_image/" + file.name
 }
-
+function DeleteImg() {
+    file = ""
+    document.querySelector(".image_product").src = ""
+}
 function checkInputs(product) {
 
     var inputs = document.querySelectorAll('.iput');
@@ -475,7 +459,7 @@ function AddPhone() {
     var color = document.querySelector(".color-add").value;
     var categoryid = document.querySelector(".category-add").value;
     var size = document.querySelector(".ramrom-add").value;
-    if (name.trim() ==="" || color.trim() === "" || size.trim() === "") {
+    if (name.trim() === "" || color.trim() === "" || size.trim() === "") {
         toast({
             title: 'Thông báo!',
             message: 'Vui lòng điền đầy đủ thông tin!',
@@ -498,9 +482,9 @@ function AddPhone() {
                     type: 'success',
                     duration: 2000,
                 });
+                loadData();
             }
-            if(response.duplicate)
-            {
+            if (response.duplicate) {
                 toast({
                     title: 'Thông báo!',
                     message: response.duplicate,
@@ -554,4 +538,21 @@ const toast = ({ title = '', message = '', type = 'info', duration = 2000 }) => 
             `;
         main.appendChild(toast);
     }
+}
+function ConfirmDelete() {
+    deleteProduct()
+}
+function closeCancelForm(event) {
+    event.preventDefault();
+    var cancelForm = document.querySelector(".cancel-form");
+    var overlay = document.querySelector(".cancel-overlay");
+    cancelForm.classList.remove("cancel-form-active");
+    overlay.classList.remove("cancel-form-active");
+}
+function openCancelForm(id) {
+    document.querySelector(".cancel-form").setAttribute("order-id", id);
+    var cancelForm = document.querySelector(".cancel-form");
+    var overlay = document.querySelector(".cancel-overlay");
+    cancelForm.classList.add("cancel-form-active");
+    overlay.classList.add("cancel-form-active");
 }

@@ -61,7 +61,7 @@
                                             <span class='edit-product' onclick='handleOpen(".$product["variantid"].",0)'>
                                                 <i class='fa-solid fa-pen-to-square prdmng-icon-edit'></i>
                                             </span>
-                                            <span class='delete-product' onclick='deleteProduct(".$product["variantid"].")'>
+                                            <span class='delete-product' onclick='openCancelForm(".$product["variantid"].")'>
                                                 <i class='fa-regular fa-trash-can prdmng-icon-trash'></i>
                                             </span>
                                             </td>";
@@ -132,7 +132,8 @@
                     <input type="file" id="fileInput" onchange="updateFile()" style="display: none;" >
                     <div class='update-img-product' style="height: 84px;">
                         <img id="update_image" alt='' class='image_product' class="size-img-update">                            
-                    </div>      
+                    </div>
+                    <i class="fa-solid fa-xmark btn-xoa-anh" onClick="DeleteImg()"></i>     
                 </div>
                                     
                 <label class="lb-title" >Name Phone:</label>
@@ -258,3 +259,14 @@
         </div>
     </div>
 </div>
+<div class="cancel-overlay"></div>
+<form class="cancel-form" order-id = ''>
+<div class="cancel-body">
+        <i class="fas fa-sad-tear"></i> 
+        <span>Confirm order deletion</span>
+        <button class="close-btn" onclick="closeCancelForm(event)">&times;</button>
+    </div>
+    <div class="cancel-footer">
+        <button class="confirm-btn" onclick="ConfirmDelete()">Confirm</button>
+    </div>
+</form>
