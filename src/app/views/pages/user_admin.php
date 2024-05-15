@@ -9,38 +9,46 @@
             </div> 
         </div>
     </div>
-    <div class="col-12 pt-4">
-        <div class="bg-light rounded h-100 p-4">
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">
-                                <input type="checkbox" name="" id="">
-                            </th>
-                            <th scope="col">First Name</th>
-                            <th scope="col">Last Name</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Country</th>
-                            <th scope="col">ZIP</th>
-                            <th scope="col">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="product-item">
-                            <th scope="row">
-                                <input type="checkbox" name="" id="">
-                            </th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>mark@email.com</td>
-                            <td>UK</td>
-                            <td>456</td>
-                            <td>Member</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+</div>
+
+<div class="update-user-overlay">
+    <div class="form-edit-user">
+        <i class="fa-solid fa-xmark btn-update-close" onClick="handleClose(0)"></i>
+        <div class="update-user-wapper">
+                        
+                <label class="lb-name lbuser" >Name:</label>
+                <input class="iputuser name" type="text">
+                                            
+                <label class="lb-email lbuser" >Email:</label>
+                <input class="iputuser email" type="text" >
+            
+                <label class="lb-author lbuser" >Author:</label>
+                <select class="iputuser author">
+                </select>
+                </div>      
+        <button class='btn-update-user complete' onclick="UpdateUser()">Complete</button>
+       
+    </div>
+</div>
+<div class="add-user-overlay">
+    <div class="form-add-user">
+        <i class="fa-solid fa-xmark btn-update-close" onClick="handleClose(1)"></i>
+        <div class="add-user-wapper">
+            
+                <label class="lb-name lbuser" >Name:</label>
+                <input class="iputuser name-add" type="text">
+                
+                <label class="lb-password lbuser" >Password:</label>
+                <input class="iputuser password-add" type="password">
+
+                <label class="lb-email lbuser" >Email:</label>
+                <input class="iputuser email-add" type="text" >
+
+                <label class="lb-author lbuser" >Author:</label>
+                <select class="iputuser author-add">
+                </select>            
+           
+        <button class='btn-add-user complete' onclick="AddUser()">Add User</button>
+                        </div>
     </div>
 </div>
