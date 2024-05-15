@@ -136,10 +136,20 @@ function UpdateUser() {
         success: function (response) {
             window.location.reload();
             handleClose(0);
-            alert('Sửa thành công');
+            return toast({
+                title: 'Thông báo!',
+                message: 'Sửa thành công 😊',
+                type: 'success',
+                duration: 2000,
+            });
         },
         error: function (xhr, status, error) {
-            alert('Đã xảy ra lỗi khi khôi phục user.');
+            return toast({
+                title: 'Thông báo!',
+                message: 'Đã xảy ra lỗi khi khôi phục user 😐',
+                type: 'warning',
+                duration: 2000,
+            });
             console.error('Đã xảy ra lỗi:', error);
         }
     });
@@ -150,21 +160,37 @@ function AddUser() {
     const password = document.querySelector(".password-add").value;
     const author = document.querySelector(".author-add").value;
     console.log(name, email, password, author)
-    $.ajax({
-        url: 'index.php?ctrl=user_manage&act=add_user',
-        type: 'post',
-        data: { name, email, password, author },
-        dataType: 'json',
-        success: function (response) {
-            loadData();
-            handleClose(1);
-            alert('Thêm thành công');
-        },
-        error: function (xhr, status, error) {
-            alert('Đã xảy ra lỗi khi khôi phục user.');
-            console.error('Đã xảy ra lỗi:', error);
-        }
-    });
+    var regex = /\S+@\S+\.\S+/;
+    var check = false;
+    if (regex.test(email)) {
+        $.ajax({
+            url: 'index.php?ctrl=user_manage&act=add_user',
+            type: 'post',
+            data: { name, email, password, author },
+            dataType: 'json',
+            success: function (response) {
+                loadData();
+                handleClose(1);
+                return toast({
+                    title: 'Thông báo!',
+                    message: 'Thêm thành công 😊',
+                    type: 'success',
+                    duration: 2000,
+                });
+            },
+            error: function (xhr, status, error) {
+                alert('Đã xảy ra lỗi khi khôi phục user.');
+                console.error('Đã xảy ra lỗi:', error);
+            }
+        });
+    } else {
+        return toast({
+            title: 'Thông báo!',
+            message: 'Email sai định dạng 😐',
+            type: 'warning',
+            duration: 2000,
+        });
+    }
 }
 function showAllCheckboxUser() {
     const parent_checkbox = document.querySelector('.parent_checkbox_user')
@@ -190,10 +216,15 @@ function checkDeleteUser() {
 
     if (deleteUserByCheckbox(id_arr.slice(0, -1))) {
         // loadData();
-        window.location.reload();
         alert('Xóa thành công');
+        window.location.reload();
     } else {
-        alert('Chưa chọn đối tượng xóa');
+        toast({
+            title: 'Thông báo!',
+            message: 'Chưa chọn đối tượng xóa 😊',
+            type: 'success',
+            duration: 2000,
+        });
     }
 }
 function deleteUserByCheckbox(id) {
@@ -223,3 +254,43 @@ function searchUser() {
         window.location.href = "index.php?ctrl=user_manage"
     }
 }
+const toast = ({ title = '', message = '', type = 'info', duration = 2000 }) => {
+    const main = document.getElementById('toast');
+    if (main) {
+        const toast = document.createElement('div');
+
+        const autoRemove = setTimeout(function () {
+            main.removeChild(toast);
+        }, duration + 1000);
+
+        toast.onclick = function (e) {
+            if (e.target.closest('.toast__close')) {
+                main.removeChild(toast);
+                clearTimeout(autoRemove);
+            }
+        };
+        const icons = {
+            success: 'fa-solid fa-circle-check',
+            info: 'fa-solid fa-circle-info',
+            warning: 'fa-solid fa-circle-exclamation',
+        };
+        const icon = icons[type];
+        const delay = (duration / 1000).toFixed(2);
+        toast.classList.add('toast', `toast--${type}`);
+        toast.style.animation = `slideInleft ease .6s, fadeOut linear 1s ${delay}s forwards`;
+
+        toast.innerHTML = `
+                <div class="toast__icon">
+                    <i class="${icon}"></i>
+                </div>
+                <div class="toast__body">
+                    <h3 class="toast__title">${title}</h3>
+                    <p class="toast__msg">${message}</p>
+                </div>
+                <div class="toast__close">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+            `;
+        main.appendChild(toast);
+    }
+};

@@ -288,4 +288,5 @@ class UserModel extends Connect
         return $rows;
     }
 
+    
 }

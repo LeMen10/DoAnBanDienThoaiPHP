@@ -1,6 +1,8 @@
 
 <div class="modal-cus">
-
+    <div class='modal-overlay'>
+        <img src="public/img/banner/login.jpg" alt="" class="w-100">
+    </div>
     <div class="modal-body col-sm-12 col-md-12 col-xs-12 col-lg-6">
         <!-- <form action="index.php?ctrl=login" method = "post" class="auth-form"> -->
             <div class="login-form">
