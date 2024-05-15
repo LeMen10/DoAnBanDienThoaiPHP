@@ -7,7 +7,7 @@
                     <div class="comboxnbtn">
                         <div class="divsupplier">
                             <label class="lb-supplier"> Nhà cung cấp:</label>
-                            <select class="iput1 supplier"'>
+                            <select class="iput1 supplier">
                             <?php
                                 if(isset ($suppliers)){
                                     foreach ($suppliers as $item) {

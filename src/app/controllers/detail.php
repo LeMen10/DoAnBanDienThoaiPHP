@@ -56,7 +56,7 @@ class detail extends Controller
             $jwt = new jwt();
             $data = $jwt->decodeToken($_COOKIE['token']);
             if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
-            if ($data['authorName'] != 'customer') exit(json_encode(['status' => 401]));
+            if ($data['authorName'] != 'customer') exit(json_encode(['status' => 403]));
             $phoneID = $_POST['phoneID'];
             $sizeID = $_POST['sizeID'];
             $colorID = $_POST['colorID'];
@@ -78,8 +78,8 @@ class detail extends Controller
             if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
             $jwt = new jwt();
             $data = $jwt->decodeToken($_COOKIE['token']);
-            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
-            if ($data['authorName'] != 'customer') exit(json_encode(['status' => 401]));
+            if (!$data) exit(json_encode(['status' => 401]));
+            if ($data['authorName'] != 'customer') exit(json_encode(['status' => 403]));
 
             $phoneID = $_POST['phoneID'];
             $sizeID = $_POST['sizeID'];
@@ -88,6 +88,21 @@ class detail extends Controller
             $variant = $this->product_model -> getVariant($phoneID, $sizeID, $colorID);
             $cartID = $this->product_model->addToCart($variant['id'], $quantity, $data['id']);
             echo json_encode(['success'=>true, 'cartID' => $cartID]);
+        }
+    }
+    public function checkStock(){
+        if($_SERVER['REQUEST_METHOD'] == 'GET'){
+            if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
+            $jwt = new jwt();
+            $data = $jwt->decodeToken($_COOKIE['token']);
+            if (!$data) exit(json_encode(['status' => 401]));
+            if ($data['authorName'] != 'customer') exit(json_encode(['status' => 403]));
+
+            $phoneID = $_GET['phoneID'];
+            $sizeID = $_GET['sizeID'];
+            $colorID = $_GET['colorID'];
+            $stock = $this->product_model->checkStock($phoneID, $sizeID, $colorID);
+            echo json_encode(['success'=>true, 'stock' => $stock]);
         }
     }
 }

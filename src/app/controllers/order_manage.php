@@ -16,8 +16,8 @@ class order_manage extends Controller
             if (!isset($_COOKIE['token'])) header("Location: index.php?ctrl=login");
             $jwt = new jwt();
             $data = $jwt->decodeToken($_COOKIE['token']);
-            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
-            if ($data['authorName'] != 'admin') header("Location: index.php?ctrl=login");
+            if (!$data) header("Location: index.php?ctrl=login");
+            if ($data['authorName'] != 'admin') header("Location: index.php?ctrl=myerror&act=forbidden");
             $page = isset($_GET["page"]) ? $_GET["page"] : 1;
             $orders = $this->order_model->GetAllOrderByPage($page);
             $quantity = $this->order_model->GetQuantityOrder();
@@ -36,8 +36,8 @@ class order_manage extends Controller
             if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
             $jwt = new jwt();
             $data = $jwt->decodeToken($_COOKIE['token']);
-            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
-            if ($data['authorName'] != 'admin') exit(json_encode(['status' => 401]));
+            if (!$data) exit(json_encode(['status' => 401]));
+            if ($data['authorName'] != 'admin') exit(json_encode(['status' => 403]));
             $id = $_POST['id'];
             $order_detail = $this->order_model->GetDetailOrderProduct($id);
             echo json_encode(['success'=>true, 'order_detail'=> $order_detail]);
@@ -48,8 +48,8 @@ class order_manage extends Controller
             if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
             $jwt = new jwt();
             $data = $jwt->decodeToken($_COOKIE['token']);
-            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
-            if ($data['authorName'] != 'admin') exit(json_encode(['status' => 401]));
+            if (!$data) exit(json_encode(['status' => 401]));
+            if ($data['authorName'] != 'admin') exit(json_encode(['status' => 403]));
             $id = $_POST['id'];
             $status = $_POST['value'];
             $isSuccess = $this->order_model->UpdateStatus($id,$status);
@@ -61,8 +61,8 @@ class order_manage extends Controller
             if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
             $jwt = new jwt();
             $data = $jwt->decodeToken($_COOKIE['token']);
-            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
-            if ($data['authorName'] != 'admin') exit(json_encode(['status' => 401]));
+            if (!$data) exit(json_encode(['status' => 401]));
+            if ($data['authorName'] != 'admin') exit(json_encode(['status' => 403]));
             $ten = $_POST['ten'];
             $result = $this->order_model->Search($ten);
             echo json_encode(['success'=>true, 'search'=> $result]);

@@ -44,13 +44,14 @@ const LoadAccount = (email, password) => {
                 return;
             }
             if (res.user) {
+                console.log(res.user)
                 let d = new Date();
                 d.setTime(d.getTime() + 2 * 24 * 60 * 60 * 1000);
                 var expires = 'expires=' + d.toUTCString();
                 if (res.user === 'customer') {
                     document.cookie = 'token' + '=' + res.token + ';' + expires + ';path=/';
                     window.location.href = 'index.php';
-                } else if (res.user === 'admin') {
+                } else if (res.user === 'admin' || res.user === 'membership') {
                     document.cookie = 'token' + '=' + res.token + ';' + expires + ';path=/';
                     window.location.href = 'index.php?ctrl=admin';
                 }

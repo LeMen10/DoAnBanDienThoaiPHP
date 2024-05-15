@@ -7,6 +7,10 @@ class myerror extends Controller
         return $this->view('null_layout', ['page' => 'error/400']);
     }
 
+    public function unauthorized(){
+        return $this->view('null_layout', ['page' => 'error/401']);
+    }
+
     public function forbidden(){
         return $this->view('null_layout', ['page' => 'error/403']);
     }

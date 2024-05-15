@@ -171,4 +171,20 @@ class CheckoutModel extends connect
         $sql = rtrim($sql, ',');
         mysqli_query($this->con, $sql);
     }
+
+    public function updateStockVariant($updates)
+    {
+        foreach ($updates as $update) {
+            $variantID = $update['variantID'];
+            $quantity = $update['quantity'];
+            $sql = "UPDATE `variant` SET quantity = quantity - ? WHERE id = ?";
+            $stmt = $this->con->prepare($sql);
+            if ($stmt) {
+                $stmt->bind_param("ii", $quantity, $variantID);
+                $stmt->execute();
+                $stmt->close();
+            }
+        }
+        $this->con->close();
+    }
 }

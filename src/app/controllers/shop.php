@@ -72,7 +72,4 @@ class shop extends Controller
             'productsPerPage' => $productsPerPage
         ]);
     }
-    public function show()
-    {
-    }
 }

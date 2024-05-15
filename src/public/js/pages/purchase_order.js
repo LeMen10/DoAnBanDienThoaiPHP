@@ -186,6 +186,7 @@ function cancelOrder(orderID) {
         dataType: 'json',
         success: res => {
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             if (res.result) location.reload();
         },
         error: err => {
@@ -201,6 +202,7 @@ function loadAllProvince(provinceID) {
         dataType: 'json',
         success: res => {
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             if (res.listProvince != null) {
                 var selectProvince = document.getElementById("province-select");
                 selectProvince.innerHTML = "";
@@ -224,6 +226,7 @@ function loadAllDistrict(provinceID) {
             dataType: 'json',
             success: res => {
                 if(res.status == 401) return navigationLogin();
+                if(res.status == 403) return navigation403();
                 if (res.listDistrict != null) {
                     var selectDistrict = document.getElementById("district-select");
                     selectDistrict.innerHTML = "";
@@ -247,6 +250,7 @@ function loadAllWards(districtID) {
         dataType: 'json',
         success: res => {
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             if (res.listWards != null) {
                 var selectWards = document.getElementById("wards-select");
                 selectWards.innerHTML = "";
@@ -270,6 +274,7 @@ const loadCustomerInfoByOrderID = (orderID) => {
             dataType: 'json',
             success: res => {
                 if(res.status == 401) return navigationLogin();
+                if(res.status == 403) return navigation403();
                 resolve(res.result);
             },
             error: err => {
@@ -291,6 +296,7 @@ const saveChange = (orderID, userID, Name, Phone, P, D, W, Detail) => {
         dataType: 'json',
         success: res => {
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             toast({
                 title: 'Thông báo!',
                 message: 'Thay đổi địa chỉ thành công 😊',
@@ -395,3 +401,5 @@ const toast = ({ title = '', message = '', type = 'info', duration = 2000 }) => 
 };
 
 const navigationLogin = () => { window.location.href = 'index.php?ctrl=login' };
+
+const navigation403 = () => { window.location.href = 'index.php?ctrl=myerror&act=forbidden' }

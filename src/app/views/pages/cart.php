@@ -40,8 +40,8 @@
                                             <td class='quantity'>
                                                 <div class='cart-plus-minus'>
                                                     <input class='cart-plus-minus-box ip-quantity' data-id='". $item['id'] ."' value='". $item['quantity'] ."' type='text'>
-                                                    <div class='dec qtybutton qtybutton-add' data-id='". $item['id'] ."'><i class='fa fa-angle-down'></i></div>
-                                                    <div class='inc qtybutton qtybutton-sub' data-id='". $item['id'] ."'><i class='fa fa-angle-up'></i></div>
+                                                    <div class='dec qtybutton qtybutton-add' data-id='". $item['id'] ."'><i class='fa-solid fa-plus'></i></div>
+                                                    <div class='inc qtybutton qtybutton-sub' data-id='". $item['id'] ."'><i class='fa-solid fa-minus'></i></div>
                                                 </div>
                                             </td>
                                             <td class='product-subtotal'><span class='amount' ><span class='currency-unit'>đ</span><span class='product-subtotal-value' data-id='".$item['id']."'>".$item['quantity']*$item['price']."</span></span></td>

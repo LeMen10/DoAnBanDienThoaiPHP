@@ -95,7 +95,7 @@ class ProductModel extends connect {
         
         return $phoneID;
     }
-    public function InsertColor($color, $phoneid) {
+    public function InsertColor($color, $phoneid, $image) {
         //Ép về kiểu tương ứng
         $color = mysqli_real_escape_string($this->con, $color);
         $phoneid = (int)$phoneid;
@@ -122,7 +122,7 @@ class ProductModel extends connect {
             
             if ($insertResult) {
                 $sql = "INSERT INTO `image`( `phoneID`, `colorID`, `image`) 
-                VALUES ($phoneid,$colorid,'')";
+                VALUES ($phoneid,$colorid,'$image')";
                 mysqli_query($this->con, $sql);
                 return $colorid;
             } else {

@@ -50,8 +50,10 @@ function checkDeleteProduct() {
     })
 
     if (check == 1 && deleteProductByCheckbox(id_arr.slice(0, -1))) {
-        window.location.reload();
-        alert('Xóa thành công');
+        // window.location.reload();
+        const url = new URL(window.location.href);
+        console.log(url)
+        window.location.href = url.href
     } else {
         alert('Chưa chọn đối tượng xóa');
     }
@@ -421,7 +423,10 @@ function OpenFileUpdate() {
 }
 function updateFile() {
     file = fileInput.files[0]; // Lấy tệp từ input
+    console.log(file.name)
+    console.log(document.querySelector(".add-img"))
     document.querySelector(".image_product").src = "public/img/phone_image/" + file.name
+    document.querySelector(".add-img-minh").src = "public/img/phone_image/" + file.name
 }
 function DeleteImg() {
     file = ""
@@ -455,6 +460,11 @@ function checkInputs(product) {
     return (!hasEmptyInput && hasChangedInput) ? indexUpdate : [];
 }
 function AddPhone() {
+    if (file == "") {
+        var image = "";
+    } else {
+        var image = file.name;
+    }
     var name = document.querySelector(".name-add").value;
     var color = document.querySelector(".color-add").value;
     var categoryid = document.querySelector(".category-add").value;
@@ -472,7 +482,7 @@ function AddPhone() {
     $.ajax({
         url: 'index.php?ctrl=product_manage&act=insert_phone',
         type: 'post',
-        data: { name, color, categoryid, size },
+        data: { name, color, image, categoryid, size },
         dataType: 'json',
         success: function (response) {
             if (response.mess) {

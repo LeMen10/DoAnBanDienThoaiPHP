@@ -173,15 +173,7 @@ function handleAddCart() {
     const sizeID = elementSizeID.value;
     const colorID = elementColorID.value;
     const quantity = quantityInput.value;
-    if (quantity == 0) {
-        toast({
-            title: 'Thông báo!',
-            message: 'Hàng trong kho đã hết 😐',
-            type: 'warning',
-            duration: 2000,
-        });
-        return;
-    }
+    if (quantity == 0) return;
     loadCart(phoneID, sizeID, colorID, quantity)
         .then(cart => {
             if (cart != null) {
@@ -201,6 +193,7 @@ const loadCart = (phoneID, sizeID, colorID, quantity) => {
             dataType: 'json',
             success: res => {
                 if(res.status == 401) return navigationLogin();
+                if(res.status == 403) return navigation403();
                 resolve(res.cart);
             },
             error: err => {
@@ -233,20 +226,38 @@ const buyNow = () => {
     const colorID = elementColorID.value;
     const quantity = quantityInput.value;
 
-    return $.ajax({
-        type: 'post',
-        url: 'index.php?ctrl=detail&act=buyNow',
-        data: { phoneID, sizeID, colorID, quantity },
-        dataType: 'json',
-        success: res => {
-            if(res.status == 401) return navigationLogin();
-            localStorage.setItem('cartID', res.cartID);
-            window.location.href = 'index.php?ctrl=cart';
-        },
-        error: err => {
-            console.log('Error Status:', err.status);
-        },
-    });
+    checkStock(phoneID, sizeID, colorID)
+        .then(stock => {
+            console.log(Number(stock))
+            if(Number(quantity) > Number(stock)) {
+                return toast({
+                    title: 'Thông báo!',
+                    message: 'Hàng trong kho không đủ 😐',
+                    type: 'warning',
+                    duration: 2000,
+                });
+            }
+            return $.ajax({
+                type: 'post',
+                url: 'index.php?ctrl=detail&act=buyNow',
+                data: { phoneID, sizeID, colorID, quantity },
+                dataType: 'json',
+                success: res => {
+                    if(res.status == 401) return navigationLogin();
+                    if(res.status == 403) return navigation403();
+                    localStorage.setItem('cartID', res.cartID);
+                    window.location.href = 'index.php?ctrl=cart';
+                },
+                error: err => {
+                    console.log('Error Status:', err.status);
+                },
+            });
+        })
+        .catch(error => {
+            console.log(error);
+        })
+
+    
 }
 
 const toast = ({ title = '', message = '', type = 'info', duration = 2000 }) => {
@@ -289,3 +300,23 @@ const toast = ({ title = '', message = '', type = 'info', duration = 2000 }) => 
 };
 
 const navigationLogin = () => { window.location.href = 'index.php?ctrl=login' };
+
+const navigation403 = () => { window.location.href = 'index.php?ctrl=myerror&act=forbidden' }
+
+const checkStock = (phoneID, sizeID, colorID) => {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: 'get',
+            url: 'index.php?ctrl=detail&act=checkStock',
+            data: { phoneID, sizeID, colorID},
+            dataType: 'json',
+            success: res => {
+                if(res.status == 401) return navigationLogin();
+                resolve(res.stock.quantity);
+            },
+            error: err => {
+                reject(err);
+            },
+        });
+    });
+}

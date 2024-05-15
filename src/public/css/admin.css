@@ -840,11 +840,12 @@ input:checked+.slider:before {
 
 .btndel {
     margin-right: 10px;
-
-    .body-business-situation {
-        background-color: #fff;
-    }
 }
+
+.body-business-situation {
+    background-color: #fff;
+}
+
 
 .body-business-situation tr td {
     padding: 6px;
@@ -970,4 +971,14 @@ input:checked+.slider:before {
 .buy-again-form-active {
 
     display: block;
+}
+
+#fileInput{
+    height: 30px;
+    margin-top: 10px;
+    display: block;
+    width: 60%;
+}
+.body_user, #body{
+    background-color: #fff;
 }

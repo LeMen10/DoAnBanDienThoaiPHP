@@ -87,7 +87,7 @@ function restoreProduct(variantID) {
             if(response.status == 401) return navigationLogin();
             // để chỉ xuất ra alert 1 lần khi dùng check all sau đó restore
             if(countRestore == 0) {
-                alert('Khôi phục điện thoại thành công!');
+                // alert('Khôi phục điện thoại thành công!');
                 countRestore++;
             }
             location.reload(); // Tải lại trang để cập nhật danh sách điện thoại

@@ -23,6 +23,7 @@ const SearchOrder = (ten) => {
         dataType: 'json',
         success: res => {
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             if (res.search) {
                 var a = "";
                 document.getElementById("body").innerHTML = "";
@@ -69,6 +70,7 @@ const updateStatus = (id, value) => {
         dataType: 'json',
         success: res => {
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             if (res.isSuccess) {
                 var select = document.querySelector(`.mySelect-${id}`);
                 var va = select.value;
@@ -98,6 +100,7 @@ function LoadOrderDetail(id) {
         dataType: 'json',
         success: res => {
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             if (res.order_detail) {
                 var a = "<div class='detail_product'>" +
                     "<div class='profile'>" +
@@ -147,3 +150,7 @@ function LoadOrderDetail(id) {
         }
     })
 }
+
+const navigationLogin = () => { window.location.href = 'index.php?ctrl=login' };
+
+const navigation403 = () => { window.location.href = 'index.php?ctrl=myerror&act=forbidden' }
