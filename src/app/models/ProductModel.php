@@ -119,8 +119,11 @@ class ProductModel extends connect {
             }
             $sql = "INSERT INTO `color` (`phoneID`, `colorID`, `color`) VALUES ($phoneid, $colorid, '$color')";
             $insertResult = mysqli_query($this->con, $sql);
-    
+            
             if ($insertResult) {
+                $sql = "INSERT INTO `image`( `phoneID`, `colorID`, `image`) 
+                VALUES ($phoneid,$colorid,'')";
+                mysqli_query($this->con, $sql);
                 return $colorid;
             } else {
                 return null;
@@ -141,8 +144,8 @@ class ProductModel extends connect {
             $sizeid = $row['count'] + 1;
         }
     
-        $sql = "INSERT INTO `variant` (`phoneID`, `sizeID`, `size`, `colorID`) 
-                VALUES ($phoneid, $sizeid, '$size', $colorid)";
+        $sql = "INSERT INTO `variant` (`phoneID`, `sizeID`, `size`, `colorID`, `quantity`) 
+                VALUES ($phoneid, $sizeid, '$size', $colorid,0)";
         $insertResult = mysqli_query($this->con, $sql);
     
         if ($insertResult) {
@@ -338,6 +341,7 @@ class ProductModel extends connect {
         $sql = "SELECT v.id AS variantid, v.quantity AS quantity, p.name AS phonename, c.name AS category, cl.color, v.price, v.size, img.image, v.phoneID, v.colorID
         FROM phone p LEFT JOIN category c ON p.category = c.id LEFT JOIN variant v ON p.id = v.phoneID LEFT JOIN color cl ON p.id = cl.phoneID LEFT JOIN (SELECT * FROM image ig GROUP BY ig.phoneID, ig.colorID) AS img ON p.id = img.phoneID 
         WHERE p.visible = 1 AND cl.colorID = v.colorID AND img.colorID = v.colorID AND v.visible = 1
+        ORDER BY v.id DESC
         LIMIT $begin, 5;";
         $result = mysqli_query($this->con, $sql);   
         $products = [];

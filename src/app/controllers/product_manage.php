@@ -10,6 +10,7 @@ class product_manage extends Controller
         $this->product_model = new ProductModel();
         $this->loadModel('UserModel');
         $this->user_model = new UserModel();
+        require_once './app/middlewares/jwt.php';
     }
     public function index()
     {
