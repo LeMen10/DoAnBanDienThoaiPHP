@@ -60,6 +60,12 @@ class product_manage extends Controller
             echo json_encode(["success" => true, 'products'=>$products, 'categorys' => $category]); 
         } 
     }
+    public function get_category(){
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $category =$this->product_model->getCategory();
+            echo json_encode(["success" => true, 'categorys' => $category]); 
+        } 
+    }
     public function update_color(){
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $variantid = $_POST['variantID'];
@@ -139,6 +145,24 @@ class product_manage extends Controller
                 $this->product_model->UpdateColorOfPhone($product["phoneID"], $color, $product["colorID"]);
             }
             echo json_encode(["success" => true,  "check" => $check["COUNT"]]); 
+        }
+    }
+    public function insert_phone(){
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $name = $_POST['name'];
+            $category = $_POST['categoryid'];
+            $color = $_POST['color'];
+            $size = $_POST['size'];
+            $check = $this->product_model->CheckInsertPhone($name,$size,$category,$color);
+            if($check != null && $check["COUNT"] != 0){
+                echo json_encode(["success" => true,  "duplicate" => "Sản phẩm đã tồn tại!"]); 
+            }else{
+                $insertphone = $this->product_model->InsertPhone($name,$category);
+                $insertcolor = $this->product_model->InsertColor($color,$insertphone);
+                $this->product_model->InsertSize($size,$insertphone, $insertcolor);
+                echo json_encode(["success" => true,"mess" => "Thêm sản phẩm thành công!"]);
+            }
+            
         }
     }
 }
