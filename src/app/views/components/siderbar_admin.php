@@ -1,6 +1,6 @@
 <div class="sidebar pe-4 pb-3">
-    <nav class="navbar bg-light navbar-light">
-        <a href="index.html" class="navbar-brand mx-4 mb-3">
+    <nav class="navbar bg-light navbar-light justify-content-center">
+        <a href="index.php?ctrl=admin" class="navbar-brand mx-4 mb-3 mt-3">
             <h3 class="text-primary"></i>ADMIN</h3>
         </a>
         <div class="navbar-nav w-100">

@@ -76,10 +76,6 @@ $(document).ready(() => {
         localStorage.removeItem('cartID');
         dataID = [];
     });
-
-    for(var i = 0; i< 60; i++){
-        console.log("optio")
-    }
 });
 
 const toast = ({ title = '', message = '', type = 'info', duration = 2000 }) => {
@@ -131,7 +127,6 @@ const checkAll = (dataID, quantityItem) => {
 };
 
 const checkout = dataID => {
-    console.log(dataID);
     if (dataID.length > 0) {
         window.location.href = 'index.php?ctrl=checkout&data_id=' + encodeURIComponent(dataID);
         checkall.checked = false;
@@ -155,6 +150,7 @@ const removeItemCart = id => {
         data: { id },
         success: res => {
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             document.querySelector(`.wrap-product-item[data-id="${id}"]`).remove();
             updateTotalCart();
             getCountCart();
@@ -173,6 +169,7 @@ const decreaseQuantity = (id, quantity) => {
         data: { quantity, id },
         success: res => {
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             updateTotalItem(id, quantity);
         },
         error: err => {
@@ -189,6 +186,7 @@ const increaseQuantity = (id, quantity) => {
         dataType: 'json',
         success: res => {
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             if (res.message === 'Exceed the scope')
                 toast({
                     title: 'Thông báo!',
@@ -240,6 +238,7 @@ const getCountCart = () => {
         dataType: 'json',
         success: res => {
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             tag.textContent = res.count || 0;
         },
         error: err => {
@@ -249,3 +248,5 @@ const getCountCart = () => {
 };
 
 const navigationLogin = () => { window.location.href = 'index.php?ctrl=login' };
+
+const navigation403 = () => { window.location.href = 'index.php?ctrl=myerror&act=forbidden' }

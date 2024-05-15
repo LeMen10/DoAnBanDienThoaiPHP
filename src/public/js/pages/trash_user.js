@@ -51,8 +51,7 @@ const restoreCustomer = id => {
         url: 'index.php?ctrl=trash_user&act=restore_customer',
         data: { id },
         success: res => {
-            console.log(res);
-            document.querySelector(`.wrap-product-item[data-id="${id}"]`).remove();
+            window.location.reload()
         },
         error: err => {
             console.log('Error Status:', err.status);
@@ -67,8 +66,7 @@ const restoreMultipleCustomer = arrID => {
         url: 'index.php?ctrl=trash_user&act=restore_multiple_customer',
         data: { arrID },
         success: res => {
-            console.log(res);
-            document.querySelector(`.wrap-product-item[data-id="${id}"]`).remove();
+            window.location.reload()
         },
         error: err => {
             console.log('Error Status:', err.status);

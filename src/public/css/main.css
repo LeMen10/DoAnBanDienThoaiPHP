@@ -5704,7 +5704,8 @@ thead {
 .login-button,
 #bt_sendEmail,
 .register-button,
-.btn-search-order-admin {
+.btn-search-order-admin,
+.btn-reset {
     background-color: #333;
     border: 1px solid #333;
     color: #fff;
@@ -5720,7 +5721,8 @@ thead {
 .login-button:hover,
 #bt_sendEmail:hover,
 .register-button:hover,
-.btn-search-order-admin:hover {
+.btn-search-order-admin:hover,
+.btn-reset:hover {
     background: #fed700;
     cursor: pointer;
     border-color: #fed700;
@@ -7380,6 +7382,11 @@ span.required {
     display: flex;
     width: 100%;
     align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+}
+.show-pass-reset{
+    padding: 0;
 }
 
 /* Purchase order */
@@ -7735,7 +7742,7 @@ span.required {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
+    z-index: 2000;
 }
 
 .cancel-form, 
@@ -7748,7 +7755,7 @@ span.required {
     transform: translate(-50%, -50%);
     background-color: white;
     padding: 20px;
-    z-index: 1000;
+    z-index: 2000;
 }
 
 .cancel-form.cancel-form-active,

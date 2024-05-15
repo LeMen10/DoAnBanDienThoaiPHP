@@ -179,10 +179,9 @@ class UserModel extends Connect
 
     public function getAllUserByPage($page,$search=""){
         $begin = ($page * 5) - 5;
-        $sql ="SELECT c.id, c.name, c.email,c.author, a.name AS Author, ad.recipientPhone AS sdt FROM `address` ad 
-        JOIN customer c ON c.id = ad.customerID 
+        $sql ="SELECT c.id, c.name, c.email,c.author, a.name AS Author FROM `customer` c 
         JOIN author a ON a.ID = c.author 
-        WHERE ".($search != "" ? ("c.name LIKE N'%".$search."%' AND"): "")." ad.active = 1 AND ad.visible = 1 AND c.visible = 1
+        WHERE ".($search != "" ? ("c.name LIKE N'%".$search."%' AND"): "")." c.visible = 1
         LIMIT $begin, 5;";
         $result = mysqli_query($this->con, $sql);
         $rows = [];
@@ -222,7 +221,8 @@ class UserModel extends Connect
         $result = mysqli_query($this->con, $sql); 
         return $result;
     }
-    function insertUser($name, $email, $password,$author){
+    function insertUser($name, $email,$author){
+        $password = md5("1234");
         $sql = "INSERT INTO customer (`name`, `email`, `password`, `author`, `visible`) 
         VALUES ('$name','$email','$password',$author, 1)";
         $result = mysqli_query($this->con, $sql); 

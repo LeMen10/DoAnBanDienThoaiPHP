@@ -28,8 +28,8 @@ const getFeature = (id) => {
                     `<tr class='product-item'>
                         <td>${Number(i)}</td>
                         <td>${item.name}</td>
-                        <td><input data-id=${item.featureID} name="show" onchange="updateShowArr(${item.featureID})" type="checkbox" ${item.show == 1 ? "checked" : ''} ${item.disable == 0 ? "disabled" : ''}/></td>
-                        <td><input data-id=${item.featureID} name="edit" onchange="updateEditArr(${item.featureID})" type="checkbox" ${item.edit == 1 ? "checked" : ''} ${item.disable == 0 ? "disabled" : ''}/></td>
+                        <td><input data-id=${item.featureID} name="show" onchange="updateShowArr(${item.featureID})" type="checkbox" ${item.show == 1 ? "checked" : ''} ${item.disable == 1 ? "disabled" : ''}/></td>
+                        <td><input data-id=${item.featureID} name="edit" onchange="updateEditArr(${item.featureID})" type="checkbox" ${item.edit == 1 ? "checked" : ''} ${item.disable == 1 ? "disabled" : ''}/></td>
                     </tr>`;
             })
             

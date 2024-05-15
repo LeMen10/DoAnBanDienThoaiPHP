@@ -82,5 +82,11 @@ class DetailProductModel extends Connect{
         }
         return array('price' => $row['totalPrice'], 'quantity' => $row['totalQuantity']);
     }
-
+    public function checkStock($phoneID, $sizeID, $colorID){
+        $sql = "SELECT `quantity` FROM `variant` 
+        WHERE phoneID = $phoneID AND sizeID = $sizeID AND colorID = $colorID";
+        $rs = mysqli_query($this->con, $sql);
+        $stock = mysqli_fetch_assoc($rs);
+        return $stock;
+    }
 }

@@ -24,15 +24,15 @@
                         <div class="error" id="error_passwordRe_RS" >Không trùng với Password.</div>
                     </div>
                     <div class="processing">
-                        <div class="col-md-8">
+                        <div class="col-md-8 show-pass-reset">
                             <div class="check-box d-inline-block ml-0 ml-md-2 mt-10">
                                 <input type="checkbox" id="show_pass_RS">
                                 <label for="show_pass_RS">Show pass</label>
                             </div>
                         </div>
                         
-                        <div class="col-md-12">
-                            <button name="bt_ok" id="bt_ok_RS" class="ok-forgotPass-button mt-0">OK</button>
+                        <div class="">
+                            <button name="bt_ok"  id="bt_ok_RS" class="btn-reset ok-forgotPass-button mt-0">OK</button>
                         </div>
                     </div>
                 </div>

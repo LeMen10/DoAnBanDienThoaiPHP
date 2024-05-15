@@ -36,9 +36,8 @@
                 <span class="d-none d-lg-inline-flex">Admin</span>
             </a>
             <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                <a href="#" class="dropdown-item">My Profile</a>
-                <a href="#" class="dropdown-item">Settings</a>
-                <a id="log_outAD" href="#" class="dropdown-item">Log Out</a>
+                <p class="dropdown-item">My Profile</p>
+                <p class="dropdown-item" onclick="logOutAdmin()">Log out</p>
             </div>
         </div>
     </div>

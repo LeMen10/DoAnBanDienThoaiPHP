@@ -15,6 +15,7 @@
 
     <script src="<?php echo 'public/js/pages/' . $_REQUEST['ctrl'] . '.js'; ?>"></script>
     <script src="public/js/pages/site.js"></script>
+    <script src="public/js/pages/siderbar_admin.js"></script>
     <!-- <script src="public/js/pages/header.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="public/js/pages/header_admin.js"></script>

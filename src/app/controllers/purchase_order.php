@@ -15,8 +15,8 @@ class purchase_order extends Controller
         if (!isset($_COOKIE['token'])) header("Location: index.php?ctrl=login");
         $jwt = new jwt();
         $data = $jwt->decodeToken($_COOKIE['token']);
-        if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
-        if ($data['authorName'] != 'customer') header("Location: index.php?ctrl=login");
+        if (!$data) header("Location: index.php?ctrl=login");
+        if ($data['authorName'] != 'customer') header("Location: index.php?ctrl=myerror&act=forbidden");
         $orderID = 0;
         if(isset($_GET['orderID']))
         {
@@ -49,8 +49,8 @@ class purchase_order extends Controller
         if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
         $jwt = new jwt();
         $data = $jwt->decodeToken($_COOKIE['token']);
-        if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
-        if ($data['authorName'] != 'admin') exit(json_encode(['status' => 401]));
+        if (!$data) exit(json_encode(['status' => 401]));
+        if ($data['authorName'] != 'customer') exit(json_encode(['status' => 403]));
         $result = false;
         if($_SERVER['REQUEST_METHOD'] == 'POST')
         {
@@ -64,8 +64,8 @@ class purchase_order extends Controller
         if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
         $jwt = new jwt();
         $data = $jwt->decodeToken($_COOKIE['token']);
-        if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
-        if ($data['authorName'] != 'admin') exit(json_encode(['status' => 401]));
+        if (!$data) exit(json_encode(['status' => 401]));
+        if ($data['authorName'] != 'customer') exit(json_encode(['status' => 403]));
         $result = false;
         if($_SERVER['REQUEST_METHOD'] == 'POST')
         {
@@ -76,11 +76,6 @@ class purchase_order extends Controller
     }
     public function getAllProvince()
     {
-        if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
-        $jwt = new jwt();
-        $data = $jwt->decodeToken($_COOKIE['token']);
-        if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
-        if ($data['authorName'] != 'admin') exit(json_encode(['status' => 401]));
         $result = null;
         if($_SERVER['REQUEST_METHOD'] == 'GET')
         {
@@ -90,11 +85,6 @@ class purchase_order extends Controller
     }
     public function getAllDistrict()
     {
-        if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
-        $jwt = new jwt();
-        $data = $jwt->decodeToken($_COOKIE['token']);
-        if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
-        if ($data['authorName'] != 'admin') exit(json_encode(['status' => 401]));
         $result = null;
         if($_SERVER['REQUEST_METHOD'] == 'POST')
         {
@@ -105,11 +95,6 @@ class purchase_order extends Controller
     }
     public function getAllWards()
     {
-        if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
-        $jwt = new jwt();
-        $data = $jwt->decodeToken($_COOKIE['token']);
-        if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
-        if ($data['authorName'] != 'admin') exit(json_encode(['status' => 401]));
         $result = null;
         if($_SERVER['REQUEST_METHOD'] == 'POST')
         {
@@ -123,8 +108,8 @@ class purchase_order extends Controller
         if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
         $jwt = new jwt();
         $data = $jwt->decodeToken($_COOKIE['token']);
-        if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
-        if ($data['authorName'] != 'admin') exit(json_encode(['status' => 401]));
+        if (!$data) exit(json_encode(['status' => 401]));
+        if ($data['authorName'] != 'customer') exit(json_encode(['status' => 403]));
         if($_SERVER['REQUEST_METHOD'] == 'POST')
         {
             $orderID = $_POST['orderID'];

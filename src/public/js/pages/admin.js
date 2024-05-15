@@ -15,6 +15,7 @@ $(document).ready(() => {
     const sinceBusinessInput = document.getElementById('to-date-business');
     sinceBusinessInput.addEventListener('change', handleToDateBusinessChange);
     loadChart();
+    selectedSiderbar();
 });
 
 const loadChart = () => {
@@ -88,7 +89,13 @@ const handleToDateChange = event => {
     const inputDateString = event.target.value;
     const currentDate = new Date(currentDateString);
     const inputDate = new Date(inputDateString);
-    if (inputDate.getTime() - currentDate.getTime() > 0) console.log(0);
+    if (inputDate.getTime() - currentDate.getTime() > 0) 
+        return toast({
+            title: 'Thông báo!',
+            message: 'Ngày được chọn không hợp lệ 😐',
+            type: 'warning',
+            duration: 2000,
+        });
     else toDate = inputDateString.concat(' ', '23:59:59');
     if (toDate != '' && since != '') getSellingProducts();
 };
@@ -98,7 +105,13 @@ const handleSinceChange = event => {
     const inputDateString = event.target.value;
     const currentDate = new Date(currentDateString);
     const inputDate = new Date(inputDateString);
-    if (inputDate.getTime() - currentDate.getTime() > 0) console.log(0);
+    if (inputDate.getTime() - currentDate.getTime() > 0) 
+        return toast({
+            title: 'Thông báo!',
+            message: 'Ngày được chọn không hợp lệ 😐',
+            type: 'warning',
+            duration: 2000,
+        });
     else since = inputDateString.concat(' ', '00:00:00');
     if (toDate != '' && since != '') getSellingProducts();
 };
@@ -106,15 +119,14 @@ const handleSinceChange = event => {
 const getSellingProducts = () => {
     const body = document.querySelector('.selling-product');
     let html = '';
-    console.log(toDate, since);
     return $.ajax({
         type: 'get',
         url: 'index.php?ctrl=admin&act=getSellingProducts',
         data: { since, toDate },
         dataType: 'json',
         success: res => {
-            console.log(res);
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             res.data.map(item => {
                 html += `<tr>
                             <td><img src="public/img/phone_image/${item.image}" alt=""></td>
@@ -136,7 +148,13 @@ const handleToDateBusinessChange = event => {
     const inputDateString = event.target.value;
     const currentDate = new Date(currentDateString);
     const inputDate = new Date(inputDateString);
-    if (inputDate.getTime() - currentDate.getTime() > 0) console.log(0);
+    if (inputDate.getTime() - currentDate.getTime() > 0)
+        return toast({
+            title: 'Thông báo!',
+            message: 'Ngày được chọn không hợp lệ 😐',
+            type: 'warning',
+            duration: 2000,
+        });
     else toDateBusiness = inputDateString.concat(' ', '23:59:59');
     if (toDateBusiness != '' && sinceBusiness != '') getBusinessSituation();
 };
@@ -146,7 +164,13 @@ const handleSinceBusinessChange = event => {
     const inputDateString = event.target.value;
     const currentDate = new Date(currentDateString);
     const inputDate = new Date(inputDateString);
-    if (inputDate.getTime() - currentDate.getTime() > 0) console.log(0);
+    if (inputDate.getTime() - currentDate.getTime() > 0) 
+        return toast({
+            title: 'Thông báo!',
+            message: 'Ngày được chọn không hợp lệ 😐',
+            type: 'warning',
+            duration: 2000,
+        });
     else sinceBusiness = inputDateString.concat(' ', '00:00:00');
     if (toDateBusiness != '' && sinceBusiness != '') getBusinessSituation();
 };
@@ -160,8 +184,8 @@ const getBusinessSituation = () => {
         data: { sinceBusiness, toDateBusiness },
         dataType: 'json',
         success: res => {
-            console.log(res);
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             res.data.map(item => {
                 html += `<tr>
                             <td>${item.name}</td>
@@ -178,3 +202,45 @@ const getBusinessSituation = () => {
 };
 
 const navigationLogin = () => { window.location.href = 'index.php?ctrl=login' };
+
+const navigation403 = () => { window.location.href = 'index.php?ctrl=myerror&act=forbidden' }
+
+const toast = ({ title = '', message = '', type = 'info', duration = 2000 }) => {
+    const main = document.getElementById('toast');
+    if (main) {
+        const toast = document.createElement('div');
+        const autoRemove = setTimeout(function () {
+            main.removeChild(toast);
+        }, duration + 1000);
+        toast.onclick = function (e) {
+            if (e.target.closest('.toast__close')) {
+                main.removeChild(toast);
+                clearTimeout(autoRemove);
+            }
+        };
+        const icons = {
+            success: 'fa-solid fa-circle-check',
+            info: 'fa-solid fa-circle-info',
+            warning: 'fa-solid fa-circle-exclamation',
+        };
+        const icon = icons[type];
+        const delay = (duration / 1000).toFixed(2);
+        toast.classList.add('toast', `toast--${type}`);
+        toast.style.animation = `slideInleft ease .6s, fadeOut linear 1s ${delay}s forwards`;
+
+        toast.innerHTML = `
+                <div class="toast__icon">
+                    <i class="${icon}"></i>
+                </div>
+                <div class="toast__body">
+                    <h3 class="toast__title">${title}</h3>
+                    <p class="toast__msg">${message}</p>
+                </div>
+                <div class="toast__close">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+            `;
+        main.appendChild(toast);
+    }
+};
+

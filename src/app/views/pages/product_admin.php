@@ -226,11 +226,11 @@
         <div class="add-wapper">
             <div class="add-left">
                 <div class="add-img">
-                    <button class="btn-add-img img" onclick="OpenFileUpdate()">Tải ảnh</button>
+                    <button class="btn-update img" onclick="OpenFileUpdate()">Tải ảnh</button>
                     <input type="file" id="fileInput" onchange="updateFile()" style="display: none;" >
                     <div class='update-img-product' style="height: 84px;">
-                        <img id="update_image" alt='' class='image_product' class="size-img-update">                            
-                    </div>      
+                        <img alt='' class='image_product add-img-minh size-img-update' >                            
+                    </div> 
                 </div>     
                 <!-- <label class="lb-suplier" >Suplier:</label>
                 <select class="iput1 suplier">

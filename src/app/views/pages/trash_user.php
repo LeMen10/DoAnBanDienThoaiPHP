@@ -12,7 +12,7 @@
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
-                            <tr>
+                            <tr class="text-center">
                                 <th scope="col">
                                     <input type="checkbox" name="" class="checkall">
                                 </th>

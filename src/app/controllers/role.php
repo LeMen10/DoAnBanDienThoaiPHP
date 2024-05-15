@@ -15,8 +15,8 @@ class role extends Controller
             if (!isset($_COOKIE['token'])) header("Location: index.php?ctrl=login");
             $jwt = new jwt();
             $data = $jwt->decodeToken($_COOKIE['token']);
-            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
-            if ($data['authorName'] != 'admin') header("Location: index.php?ctrl=login");
+            if (!$data) header("Location: index.php?ctrl=login");
+            if ($data['authorName'] != 'admin') header("Location: index.php?ctrl=myerror&act=forbidden");
             
             $author = $this->user_model->getAuthor();
             return $this->view('main_admin_layout', ['page' => 'role', 'author' => $author]);
@@ -27,8 +27,8 @@ class role extends Controller
             if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
             $jwt = new jwt();
             $data = $jwt->decodeToken($_COOKIE['token']);
-            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
-            if ($data['authorName'] != 'admin') exit(json_encode(['status' => 401]));
+            if (!$data) exit(json_encode(['status' => 401]));
+            if ($data['authorName'] != 'admin') exit(json_encode(['status' => 403]));
             $id = $_GET['id'];
             
             $feature = $this->user_model->getFeature($id);
@@ -40,8 +40,8 @@ class role extends Controller
             if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
             $jwt = new jwt();
             $data = $jwt->decodeToken($_COOKIE['token']);
-            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
-            if ($data['authorName'] != 'admin') exit(json_encode(['status' => 401]));
+            if (!$data) exit(json_encode(['status' => 401]));
+            if ($data['authorName'] != 'admin') exit(json_encode(['status' => 403]));
             $arrID = $_POST['arrID'];
             $this->user_model->saveRole($arrID);
             echo json_encode(['success' => true]);
@@ -54,7 +54,7 @@ class role extends Controller
             if (!isset($_COOKIE['token'])) exit(json_encode(['status' => 401]));
             $jwt = new jwt();
             $data = $jwt->decodeToken($_COOKIE['token']);
-            if (!$data) return $this->view('null_layout', ['page' => 'error/400']);
+            if (!$data) exit(json_encode(['status' => 401]));
             echo json_encode(['success' => true, 'role' => $data['authorName']]);
         }
     }

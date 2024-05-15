@@ -154,12 +154,13 @@ class product_manage extends Controller
             $category = $_POST['categoryid'];
             $color = $_POST['color'];
             $size = $_POST['size'];
+            $image = $_POST['image'];
             $check = $this->product_model->CheckInsertPhone($name,$size,$category,$color);
             if($check != null && $check["COUNT"] != 0){
                 echo json_encode(["success" => true,  "duplicate" => "Sản phẩm đã tồn tại!"]); 
             }else{
                 $insertphone = $this->product_model->InsertPhone($name,$category);
-                $insertcolor = $this->product_model->InsertColor($color,$insertphone);
+                $insertcolor = $this->product_model->InsertColor($color,$insertphone, $image);
                 $this->product_model->InsertSize($size,$insertphone, $insertcolor);
                 echo json_encode(["success" => true,"mess" => "Thêm sản phẩm thành công!"]);
             }

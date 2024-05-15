@@ -55,7 +55,7 @@ function loadName() {
                     <li class="logged-dropdown-item">
                         <a class="logged-dropdown-item-content">
                             <i class="fa-solid fa-right-from-bracket icon-logout"></i>
-                            <p class='log_out' onClick = 'logOut()'>Log Out</p>
+                            <p class='log_out' onClick = 'logOut()'>Log out</p>
                         </a>
                     </li>
                 </ul>
@@ -70,7 +70,7 @@ function loadName() {
         },
     });
 }
-function logOut() {
+const logOut = () => {
     return $.ajax({
         type: 'get',
         url: 'index.php?ctrl=home&act=logout',
@@ -82,6 +82,20 @@ function logOut() {
         },
     });
 }
+
+const logOutAdmin = () => {
+    return $.ajax({
+        type: 'get',
+        url: 'index.php?ctrl=home&act=logout',
+        success: res => {
+            window.location.href = 'index.php?ctrl=login';
+        },
+        error: err => {
+            console.log('Error Status:', err.status);
+        },
+    });
+}
+
 function formLogIn() {
     window.location.href = 'index.php?ctrl=login';
 }

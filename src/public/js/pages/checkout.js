@@ -55,6 +55,7 @@ const getCheckoutData = dataID => {
             dataType: 'json',
             success: res => {
                 if(res.status == 401) return navigationLogin();
+                if(res.status == 403) return navigation403();
                 resolve(res.data);
             },
             error: err => {
@@ -77,12 +78,18 @@ const payment = async () => {
             type: 'post',
             url: 'index.php?ctrl=checkout&act=save_order',
             data: { addressId, dataID: checkoutData, totalPayment, orderStatus },
-            success: res => {
+            success: async res => {
                 if(res.status == 401) return navigationLogin();
-                window.location.href = 'index.php?ctrl=purchase_order';
+                if(res.status == 403) return navigation403();
+                try {
+                    const update = await updateStock(checkoutData);
+                    if(update) window.location.href = 'index.php?ctrl=purchase_order';
+                } catch (error) {
+                    console.log('Error Status:', error);
+                }
             },
             error: err => {
-                console.log('Error Status:', err.status);
+                console.log('Error Status:', err);
             },
         });
     } catch (error) {
@@ -116,11 +123,13 @@ const getAddressEdit = id => {
         dataType: 'json',
         success: res => {
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             showModalAddressEdit(res.address);
             addressID = res.address[0].id;
             getProvince()
                 .done(response => {
                     if(response.status == 401) return navigationLogin();
+                    if(response.status == 403) return navigation403();
                     showProvince(response.province, res.address[0].provinceID);
                 })
                 .fail(err => {
@@ -130,6 +139,7 @@ const getAddressEdit = id => {
             getDistrict(res.address[0].provinceID)
                 .done(response => {
                     if(response.status == 401) return navigationLogin();
+                    if(res.status == 403) return navigation403();
                     showDistrict(response.district, res.address[0].districtID);
                 })
                 .fail(err => {
@@ -139,6 +149,7 @@ const getAddressEdit = id => {
             getWards(res.address[0].districtID)
                 .done(response => {
                     if(response.status == 401) return navigationLogin();
+                    if(res.status == 403) return navigation403();
                     showWards(response.wards, res.address[0].wardsID);
                 })
                 .fail(err => {
@@ -168,6 +179,7 @@ const showModalCreateAddress = () => {
     getProvince()
         .done(res => {
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             showProvince(res.province, 0);
         })
         .fail(err => {
@@ -207,6 +219,7 @@ const updateAddress = (provinceID, districtID, wardsID, name, phone, detail, add
         data: { provinceID, districtID, wardsID, name, phone, detail, addressID },
         success: res => {
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             document.querySelector('.check-show-modal').style.display = 'none';
             changeAddress();
         },
@@ -225,6 +238,7 @@ const saveAddress = (provinceID, districtID, wardsID, name, phone, detail) => {
         data: { provinceID, districtID, wardsID, name, phone, detail, active },
         success: res => {
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             document.querySelector('.check-show-modal').style.display = 'none';
             if (checkBackModelAdd) getActiveAddress();
             else changeAddress();
@@ -298,6 +312,7 @@ const changeAddress = () => {
         dataType: 'json',
         success: res => {
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             showAddresses(res.address);
         },
         error: err => {
@@ -320,6 +335,7 @@ const onChangeProvince = obj => {
     listdistrict
         .done(res => {
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             var district = res.district;
             showDistrict(district);
         })
@@ -337,6 +353,7 @@ const onChangeDistrict = obj => {
     listwards
         .done(res => {
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             var wards = res.wards;
             showWards(wards);
         })
@@ -361,6 +378,7 @@ const saveShippingAddress = () => {
         dataType: 'json',
         success: res => {
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             modalShowAddress.style.display = 'none';
             getActiveAddress();
         },
@@ -379,6 +397,7 @@ const getActiveAddress = () => {
         dataType: 'json',
         success: res => {
             if(res.status == 401) return navigationLogin();
+            if(res.status == 403) return navigation403();
             if (res.address[0] == undefined) {
                 showModalCreateAddress();
                 checkBackModelAdd = true;
@@ -476,3 +495,25 @@ const toast = ({ title = '', message = '', type = 'info', duration = 2000 }) => 
 };
 
 const navigationLogin = () => { window.location.href = 'index.php?ctrl=login' };
+
+const navigation403 = () => { window.location.href = 'index.php?ctrl=myerror&act=forbidden' }
+
+const updateStock = (checkoutData) => {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: 'post',
+            url: 'index.php?ctrl=checkout&act=update_stock_variant',
+            data: { checkoutData },
+            dataType: 'json',
+            success: res => {
+                if(res.status == 401) return navigationLogin();
+                if(res.status == 403) return navigation403();
+                resolve(res.success)
+            },
+            error: err => {
+                reject(err)
+            },
+        });
+    })
+    
+}

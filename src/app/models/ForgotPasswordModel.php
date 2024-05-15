@@ -12,7 +12,8 @@ class ForgotPasswordModel extends connect
         return $check;
     }
     function UpdatePassword($email, $password) {
-        $sql = "UPDATE `customer` SET `password` = '$password' WHERE `email` = '$email'";
+        $pass = md5($password);
+        $sql = "UPDATE `customer` SET `password` = '$pass' WHERE `email` = '$email'";
         $result = mysqli_query($this->con, $sql);
         return $result;
         

@@ -70,9 +70,8 @@ class user_manage extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $name = $_POST['name'];
             $email = $_POST['email'];
-            $password = $_POST['password'];
             $author = $_POST['author'];
-            $this->user_model->insertUser($name, $email,$password, $author);
+            $this->user_model->insertUser($name, $email, $author);
             echo json_encode(["success" => true]); 
         }
     }
