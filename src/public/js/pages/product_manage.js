@@ -12,7 +12,7 @@ function deleteProduct(id) {
         type: 'POST',
         data: { id },
         success: function (response) {
-            loadData();
+            window.location.reload();
             alert('Xóa thành công');
         },
         error: function (xhr, status, error) {
@@ -28,7 +28,6 @@ function deleteProductByCheckbox(id) {
         data: { id },
         dataType: 'json',
         success: res => {
-            console.log(res)
             return 1;
         },
         error: err => {
@@ -40,15 +39,17 @@ function deleteProductByCheckbox(id) {
 }
 function checkDeleteProduct() {
     var id_arr = "";
-    const child_checkbox = document.querySelectorAll('.child_checkbox')
+    const child_checkbox = document.querySelectorAll('.child_checkbox_user');
+    var check = 0;
     child_checkbox.forEach((item) => {
         if (item.checked == true) {
             id_arr += item.getAttribute('dataid') + ",";
+            check = 1;
         }
     })
 
-    if (deleteProductByCheckbox(id_arr.slice(0, -1))) {
-        loadData();
+    if (check == 1 && deleteProductByCheckbox(id_arr.slice(0, -1))) {
+        window.location.reload();
         alert('Xóa thành công');
     } else {
         alert('Chưa chọn đối tượng xóa');
@@ -144,6 +145,27 @@ function handleClose(isAdd) {
 function handleOpen(id, isAdd) {
     if (isAdd) {
         document.querySelector(".add-product-overlay").classList.add("active")
+        $.ajax({
+            url: 'index.php?ctrl=product_manage&act=get_category',
+            type: 'post',
+            data: {},
+            dataType: 'json',
+            success: function (response) {
+                var select = document.querySelector(".category-add");
+                select.innerHTML = "";
+                var category = response.categorys;
+                category.forEach(function (brand) {
+                    var option = document.createElement("option");
+                    option.text = brand["name"];
+                    option.value = brand["id"]
+                    select.appendChild(option);
+                });
+            },
+            error: function (xhr, status, error) {
+                alert('Đã xảy ra lỗi khi load category.');
+                console.error('Đã xảy ra lỗi:', error);
+            }
+        });
     } else {
         document.querySelector(".update-product-overlay").classList.add("active")
         document.querySelector(".update-product-overlay").setAttribute("variantID", id);
@@ -218,8 +240,9 @@ function updateImage() {
         data: { variantID, image },
         dataType: 'json',
         success: function (response) {
-            alert('Sửa thành công.');
-            loadData();
+            alert('Sửa thành công image.');
+            // loadData();
+            window.location.reload();
             handleClose();
         },
         error: function (xhr, status, error) {
@@ -258,8 +281,9 @@ function updateNamePhone() {
         dataType: 'json',
         success: function (response) {
             console.log(response)
-            alert('Sửa thành công.');
-            loadData();
+            alert('Sửa thành công phone.');
+            // loadData();
+            window.location.reload();
             handleClose();
         },
         error: function (xhr, status, error) {
@@ -280,8 +304,9 @@ function updateVariant() {
         dataType: 'json',
         success: function (response) {
             console.log("variant")
-            alert('Sửa thành công.');
-            loadData();
+            alert('Sửa thành công variant.');
+            // loadData();
+            window.location.reload();
             handleClose();
         },
         error: function (xhr, status, error) {
@@ -321,8 +346,9 @@ function updateSpec() {
         },
         dataType: 'json',
         success: function (response) {
-            alert('Sửa thành công.');
-            loadData();
+            alert('Sửa thành công spec.');
+            // loadData();
+            window.location.reload();
             handleClose();
         },
         error: function (xhr, status, error) {
@@ -345,8 +371,9 @@ function updateColor() {
                 alert('Màu đã tồn tại.');
             } else {
                 console.log(response)
-                alert('Sửa thành công.');
-                loadData();
+                alert('Sửa thành công color.');
+                // loadData();
+                window.location.reload();
                 handleClose();
             }
         },
@@ -421,7 +448,7 @@ function checkInputs(product) {
     var inputs = document.querySelectorAll('.iput');
     var hasEmptyInput = false;
     var hasChangedInput = false;
-
+    // console.log(inputs[6].value)
     var valuesArray = Object.values(product);
     var indexUpdate = [];
     inputs.forEach(function (input, index) {
@@ -431,13 +458,100 @@ function checkInputs(product) {
             return
         }
         // Kiểm tra xem giá trị hiện tại có thay đổi so với giá trị ban đầu không
+        if (index == 2) {
+            input.value = input.value.replace("/", " ");
+        }
         if (input.value != valuesArray[index + 4]) {
+
             hasChangedInput = true;
             indexUpdate.push(index);
         }
     });
-    console.log(hasEmptyInput)
-    console.log(hasChangedInput)
     // Nếu có ô input rỗng hoặc không có sự thay đổi giá trị so với giá trị ban đầu, trả về 0, ngược lại trả về 1
     return (!hasEmptyInput && hasChangedInput) ? indexUpdate : [];
+}
+function AddPhone() {
+    var name = document.querySelector(".name-add").value;
+    var color = document.querySelector(".color-add").value;
+    var categoryid = document.querySelector(".category-add").value;
+    var size = document.querySelector(".ramrom-add").value;
+    if (name.trim() ==="" || color.trim() === "" || size.trim() === "") {
+        toast({
+            title: 'Thông báo!',
+            message: 'Vui lòng điền đầy đủ thông tin!',
+            type: 'warning',
+            duration: 2000,
+        });
+        return;
+    }
+    console.log(categoryid);
+    $.ajax({
+        url: 'index.php?ctrl=product_manage&act=insert_phone',
+        type: 'post',
+        data: { name, color, categoryid, size },
+        dataType: 'json',
+        success: function (response) {
+            if (response.mess) {
+                toast({
+                    title: 'Chúc mừng!',
+                    message: response.mess,
+                    type: 'success',
+                    duration: 2000,
+                });
+            }
+            if(response.duplicate)
+            {
+                toast({
+                    title: 'Thông báo!',
+                    message: response.duplicate,
+                    type: 'warning',
+                    duration: 2000,
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            alert('Đã xảy ra lỗi khi khôi phục điện thoại.');
+            console.error('Đã xảy ra lỗi:', error);
+        }
+    });
+}
+const toast = ({ title = '', message = '', type = 'info', duration = 2000 }) => {
+    const main = document.getElementById('toast');
+    if (main) {
+        const toast = document.createElement('div');
+
+        const autoRemove = setTimeout(function () {
+            main.removeChild(toast);
+        }, duration + 1000);
+
+        toast.onclick = function (e) {
+            if (e.target.closest('.toast__close')) {
+                main.removeChild(toast);
+                clearTimeout(autoRemove);
+            }
+        };
+        const icons = {
+            success: 'fa-solid fa-circle-check',
+            info: 'fa-solid fa-circle-info',
+            warning: 'fa-solid fa-circle-exclamation',
+        };
+        const icon = icons[type];
+        const delay = (duration / 1000).toFixed(2);
+        toast.classList.add('toast', `toast--${type}`);
+        toast.style.animation = `slideInleft ease .6s, fadeOut linear 1s ${delay}s forwards`;
+
+        toast.innerHTML = `
+                <div class="toast__icon">
+                    <i class="${icon}"></i>
+                </div>
+                <div class="toast__body">
+                    <h3 class="toast__title">${title}</h3>
+                    <p class="toast__msg">${message}</p>
+                </div>
+                <div class="toast__close">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+            `;
+        main.appendChild(toast);
+    }
 }

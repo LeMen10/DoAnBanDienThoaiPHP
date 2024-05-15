@@ -70,6 +70,103 @@ class ProductModel extends connect {
         return $rows;
     }
     //========================================================ProductManager==============================
+    public function InsertPhone($name, $category) {
+        $name = mysqli_real_escape_string($this->con, $name);
+        $category = (int)$category; 
+
+        $sql = "SELECT id FROM phone WHERE `name` LIKE '$name'";
+        $result = mysqli_query($this->con, $sql);
+        
+        if ($result && mysqli_num_rows($result) > 0) {
+            $row = mysqli_fetch_assoc($result);
+            $phoneID = $row['id'];
+        } else {
+            $sql = "INSERT INTO `phone` (`name`, `category`) VALUES ('$name', $category)";
+            $insertResult = mysqli_query($this->con, $sql);
+            
+            if ($insertResult) {
+                $phoneID = mysqli_insert_id($this->con);
+                $sql = "INSERT INTO `spec`(`phoneID`) VALUES ($phoneID)";
+                $result = mysqli_query($this->con, $sql);
+            } else {
+                $phoneID = null;
+            }
+        }
+        
+        return $phoneID;
+    }
+    public function InsertColor($color, $phoneid) {
+        //Ép về kiểu tương ứng
+        $color = mysqli_real_escape_string($this->con, $color);
+        $phoneid = (int)$phoneid;
+    
+        // Kiểm tra màu đã tồn tại hay chưa
+        $sql = "SELECT colorID FROM `color` WHERE `color` LIKE '$color' AND phoneID = $phoneid";
+        $result = mysqli_query($this->con, $sql);
+    
+        if ($result && mysqli_num_rows($result) > 0) {
+            // tồn tại lấy id màu ra
+            $row = mysqli_fetch_assoc($result);
+            return $row["colorID"]; 
+        } else {
+            // Đếm số màu của điện thoại đang có
+            $sql = "SELECT COUNT(*) AS count FROM `color` WHERE phoneID = $phoneid";
+            $result = mysqli_query($this->con, $sql);
+            $colorid = 1; 
+    
+            if ($result && $row = mysqli_fetch_assoc($result)) {
+                $colorid = $row['count'] + 1;
+            }
+            $sql = "INSERT INTO `color` (`phoneID`, `colorID`, `color`) VALUES ($phoneid, $colorid, '$color')";
+            $insertResult = mysqli_query($this->con, $sql);
+    
+            if ($insertResult) {
+                return $colorid;
+            } else {
+                return null;
+            }
+        }
+    }
+    
+    public function InsertSize($size, $phoneid, $colorid) {
+        $size = mysqli_real_escape_string($this->con, $size);
+        $phoneid = (int)$phoneid; 
+        $colorid = (int)$colorid;
+
+        $sql = "SELECT COUNT(*) AS count FROM variant WHERE colorID = $colorid AND phoneID = $phoneid";
+        $result = mysqli_query($this->con, $sql);
+        $sizeid = 1;
+    
+        if ($result && $row = mysqli_fetch_assoc($result)) {
+            $sizeid = $row['count'] + 1;
+        }
+    
+        $sql = "INSERT INTO `variant` (`phoneID`, `sizeID`, `size`, `colorID`) 
+                VALUES ($phoneid, $sizeid, '$size', $colorid)";
+        $insertResult = mysqli_query($this->con, $sql);
+    
+        if ($insertResult) {
+            $newSizeId = mysqli_insert_id($this->con);
+            return ['id' => $newSizeId];
+        } else {
+            return null;
+        }
+    }
+    
+    public function CheckInsertPhone($phone,$size,$category,$color){
+        $sql = "SELECT COUNT(*) AS COUNT FROM phone p 
+        JOIN color c ON p.id = c.phoneID 
+        JOIN variant v ON v.phoneID = p.id 
+        WHERE p.name like '$phone' 
+        AND c.color like '$color' AND v.size like '$size' 
+        AND p.category =$category";
+        $result = mysqli_query($this->con, $sql); 
+        $rows = [];
+        if($row = mysqli_fetch_assoc($result)) {
+            $rows = $row;
+        }
+        return $rows;
+    }
     public function InsertVariant($name,$category,$ramrom,$color){
         $sql = "INSERT INTO `variant`(`phoneID`, `sizeID`, `size`, `colorID`, `price`,
          `quantity`, `visible`) VALUES ('[value-2]','[value-3]','[value-4]','[value-5]',
@@ -77,22 +174,7 @@ class ProductModel extends connect {
         $result = mysqli_query($this->con, $sql); 
         return $result;
     }
-    // public function InsertProduct($name,$category,$color){
-    //     InsertPhone($name,$category);
-    //     InsertColor($color);
-    // }
-    public function InsertPhone($name,$category){
-        $sql = "INSERT INTO `phone`(`name`, `category`, `visible`) 
-        VALUES ('$name',$category, 1)";
-        $result = mysqli_query($this->con, $sql); 
-        return $result;
-    }
-    public function InsertColor($color,$colorid,$phoneid){
-        $sql = "INSERT INTO `color`( `phoneID`, `colorID`, `color`) 
-        VALUES ($phoneid,$colorid,'$color')";
-        $result = mysqli_query($this->con, $sql); 
-        return $result;
-    }
+
     public function GetNewPhoneID(){
         $sql = "SELECT id FROM phone ORDER BY id DESC LIMIT 1";
         $result = mysqli_query($this->con, $sql); 
@@ -126,14 +208,7 @@ class ProductModel extends connect {
         $result = mysqli_query($this->con, $sql); 
         return $result;
     }
-    // public function UpdateColorOfPhone($phoneid,$color){
-    //     $sql = "SELECT COUNT(*) `color` WHERE phoneiD = $phoneid AND color = '$color'";
-    //     $result = mysqli_query($this->con, $sql);
-    //     while ($row = mysqli_fetch_assoc($result)) {
-    //         $rows[] = $row;
-    //     }
-    //     return $rows;
-    // }
+
     public function updateImagePhone($phoneid,$colorid,$image ){
         $sql = "UPDATE `image` SET `image` = '$image' WHERE colorID = $colorid AND phoneID = $phoneid
         ";

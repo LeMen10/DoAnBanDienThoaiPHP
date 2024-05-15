@@ -151,3 +151,7 @@ const getCountItemCart = () => {
         },
     });
 }
+function showDetail(phoneID)
+{
+    window.location.href = "index.php?ctrl=detail&phoneID="+ phoneID;
+}
