@@ -179,10 +179,10 @@ class UserModel extends Connect
 
     public function getAllUserByPage($page,$search=""){
         $begin = ($page * 5) - 5;
-        $sql = "SELECT c.*, a.name AS Author
-        FROM customer c 
-        JOIN author a ON c.author = a.ID 
-        WHERE ".($search != "" ? ("c.name LIKE N'%".$search."%'  AND "): "")." c.visible = 1  
+        $sql ="SELECT c.id, c.name, c.email,c.author, a.name AS Author, ad.recipientPhone AS sdt FROM `address` ad 
+        JOIN customer c ON c.id = ad.customerID 
+        JOIN author a ON a.ID = c.author 
+        WHERE ".($search != "" ? ("c.name LIKE N'%".$search."%' AND"): "")." ad.active = 1 AND ad.visible = 1 AND c.visible = 1
         LIMIT $begin, 5;";
         $result = mysqli_query($this->con, $sql);
         $rows = [];
