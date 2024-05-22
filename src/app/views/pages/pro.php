@@ -7,7 +7,7 @@ use PHPMailer\PHPMailer\Exception;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $mail = new PHPMailer(true);
-    $link = "http://localhost/thegioididong/src/index.php?ctrl=reset&email=".$email;
+    $link = "http://localhost/DoAnBanDienThoaiPHP/src/index.php?ctrl=reset&email=".$email;
 
     try {
         $mail->isSMTP();
