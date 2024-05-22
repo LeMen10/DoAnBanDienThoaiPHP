@@ -1,0 +1,16 @@
+NHÓM 5
+
+Thành viên nhóm:
+3121410319 - Võ Lê Mến
+3121410315 - Lê Đình Mảnh
+3121410328 - Đỗ Đình Nam
+3121410324 - Trương Gia Minh
+3121410149 - Phạm Tấn Đạt
+
+Tài khoản:
+- admin: 
+    email: admin@gmail.com 
+    password: admin345
+- nhan vien:
+    email: nhanvien@gmail.com
+    password: 12345
